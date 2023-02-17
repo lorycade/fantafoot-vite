@@ -7,17 +7,17 @@ function Classifica() {
       <div className="container">
         <div className="row mt-40 fx-center">
           <div className="col-12">
-            <h2 className="follow-title t-bold text-center">Listone</h2>
+            <h2 className="follow-title t-bold text-center">Classifica</h2>
           </div>
         </div>
         <div className="filters">
           <div className="form-item">
-            <label for="player" class="form-label">
+            <label htmlFor="player" className="form-label">
               Cerca giocatore
             </label>
             <input
               type="text"
-              class="form-control"
+              className="form-control"
               id="player"
               placeholder="Mario Rossi"
             />

@@ -7,6 +7,7 @@ import Listone from "./pages/Listone";
 import Classifica from "./pages/Classifica";
 import Profilo from "./pages/Profilo";
 import InserimentoFormazione from "./pages/InserimentoFormazione";
+import Login from "./pages/Login";
 
 const router = createBrowserRouter([
   { path: '/', 
@@ -18,6 +19,7 @@ const router = createBrowserRouter([
     { path: '/classifica', element: <Classifica />},
     { path: '/profilo', element: <Profilo />},
     { path: '/inserisci-formazione', element: <InserimentoFormazione />},
+    { path: '/login', element: <Login />},
   ]},
 ])
 
