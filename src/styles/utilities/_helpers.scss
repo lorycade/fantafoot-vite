@@ -1,0 +1,91 @@
+/* Mixin to create helper classes for margins and padding */
+$sizes: 8, 10, 15, 20, 22, 25, 30, 32, 35, 40, 45, 50, 60, 65, 70, 75, 80;
+$deviceTypes: ("mobile":"", "tablet":"md", "tablet-land":"lg", "deaktop":"xl");
+$marginDirections: ("mt":"margin-top","ml":"margin-left","mr":"margin-right","mb":"margin-bottom");
+$paddingDirections: ("pt":"padding-top","pl":"padding-left","pr":"padding-right","pb":"padding-bottom");
+@each $name,$type in $deviceTypes {
+	@if($name == "mobile"){
+		@each $prefix,$property in $marginDirections {
+			@each $size in $sizes {
+				.#{$prefix}-#{$size}{
+					#{$property}: #{$size}px!important;
+				}
+			}
+		}
+	}
+	@else{
+		@include media-breakpoint-up(#{$type}){
+			@each $prefix,$property in $marginDirections {
+				@each $size in $sizes {
+					.#{$prefix}-#{$type}-#{$size}{
+						#{$property}: #{$size}px!important;
+					}
+				}
+			}
+		}
+	}
+}
+@each $name,$type in $deviceTypes {
+	@if($name == "mobile"){
+		@each $prefix,$property in $paddingDirections {
+			@each $size in $sizes {
+				.#{$prefix}-#{$size}{
+					#{$property}: #{$size}px!important;
+				}
+			}
+		}
+	}
+	@else{
+		@include media-breakpoint-up(#{$type}){
+			@each $prefix,$property in $paddingDirections {
+				@each $size in $sizes {
+					.#{$prefix}-#{$type}-#{$size}{
+						#{$property}: #{$size}px!important;
+					}
+				}
+			}
+		}
+	}
+}
+
+
+@mixin placeholder-color($color) {
+  &::-webkit-input-placeholder { 
+      color: $color;
+  }
+  &:-moz-placeholder {
+      color: $color;
+  }
+  &::-moz-placeholder {
+      color: $color;
+  }
+  &:-ms-input-placeholder {
+      color: $color;
+  }
+}
+
+@mixin hover-supported {    
+  @media not all and (pointer: coarse) {
+    &:hover {
+        @content;
+    }
+  }
+}
+
+@mixin user-select-none {
+	-webkit-user-select: none;
+	user-select: none;
+	cursor: default;
+}
+
+@mixin hide-scrollbar {
+  &::-webkit-scrollbar { display: none;}
+  -ms-overflow-style: none;
+}
+
+@mixin reset-default {
+	padding: 0;
+	margin: 0;
+	border: 0;
+	background-color: transparent;
+}
