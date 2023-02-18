@@ -1,6 +1,32 @@
 import { Link } from "react-router-dom";
+import axios from "axios";
+import { useState, useEffect, useContext } from "react";
+import { UserContext } from "../context/UserContext";
 
 function Home() {
+  const [myPlayers, setMyPlayers] = useState();
+  const { user } = useContext(UserContext);
+  const userData = localStorage.getItem('user')
+  const userStored = JSON.parse(userData);
+
+  useEffect(() => {
+    if (userStored) {
+      getMyData();
+    }
+  }, []);
+
+  const getMyData = async () => {
+    const response = await axios.get(
+      "http://localhost:1337/api/users/me?populate=*",
+      {
+        headers: {
+          Authorization: `Bearer ${userStored.jwt}`,
+        },
+      }
+    );
+    setMyPlayers(response.data.players);
+  };
+
   return (
     <>
       <div className="container">
@@ -44,51 +70,18 @@ function Home() {
             </Link>
           </div>
           <div className="col-lg-4">
-            <h2>La mia Rosa</h2>
+            {user && <><h2>La mia Rosa</h2>
             <div className="my-team">
-              <div className="player">
-                <div className="img"></div>
-                <div className="info">
-                  <p className="name">Nome Cognome</p>
-                  <p className="team mb-0">Footgolf Spezia</p>
+              {myPlayers && myPlayers.map((player) => (
+                <div className="player" key={player.id}>
+                  <div className="img"></div>
+                  <div className="info">
+                    <p className="name">{player.name} {player.surname}</p>
+                    <p className="team mb-0">Footgolf Spezia</p>
+                  </div>
                 </div>
-              </div>
-              <div className="player">
-                <div className="img"></div>
-                <div className="info">
-                  <p className="name">Nome Cognomem</p>
-                  <p className="team mb-0">Footgolf Spezia</p>
-                </div>
-              </div>
-              <div className="player">
-                <div className="img"></div>
-                <div className="info">
-                  <p className="name">Nome Cognome</p>
-                  <p className="team mb-0">Footgolf Spezia</p>
-                </div>
-              </div>
-              <div className="player">
-                <div className="img"></div>
-                <div className="info">
-                  <p className="name">Nome Cognome</p>
-                  <p className="team mb-0">Footgolf Spezia</p>
-                </div>
-              </div>
-              <div className="player">
-                <div className="img"></div>
-                <div className="info">
-                  <p className="name">Nome Cognome</p>
-                  <p className="team mb-0">Footgolf Spezia</p>
-                </div>
-              </div>
-              <div className="player">
-                <div className="img"></div>
-                <div className="info">
-                  <p className="name">Nome Cognome</p>
-                  <p className="team mb-0">Footgolf Spezia</p>
-                </div>
-              </div>
-            </div>
+              ))}
+            </div></>}
           </div>
         </div>
       </div>

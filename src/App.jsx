@@ -8,6 +8,7 @@ import Classifica from "./pages/Classifica";
 import Profilo from "./pages/Profilo";
 import InserimentoFormazione from "./pages/InserimentoFormazione";
 import Login from "./pages/Login";
+import CreateTeam from "./pages/CreateTeam";
 
 const router = createBrowserRouter([
   { path: '/', 
@@ -19,6 +20,7 @@ const router = createBrowserRouter([
     { path: '/classifica', element: <Classifica />},
     { path: '/profilo', element: <Profilo />},
     { path: '/inserisci-formazione', element: <InserimentoFormazione />},
+    { path: '/crea-squadra', element: <CreateTeam />},
     { path: '/login', element: <Login />},
   ]},
 ])

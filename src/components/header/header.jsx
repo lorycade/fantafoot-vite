@@ -1,12 +1,16 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { UserContext } from "../../context/UserContext";
 
 const Header = ({ toggleModal }) => {
+  const history = useNavigate()
+  const {user, setUser} = useContext(UserContext)
 
-  const {user} = useContext(UserContext)
-
-  console.log(user);
+  const handleLogout = () => {
+    localStorage.removeItem('user')
+    setUser(null)
+    history('/')
+  }
 
   return (
     <header>
@@ -17,7 +21,8 @@ const Header = ({ toggleModal }) => {
         {user && <li className="nav-item"><NavLink to="/profilo" className="nav-link">
             Profilo
           </NavLink></li>}
-        {!user && <li className="nav-item"><NavLink to="/login" className="nav-link">Login</NavLink></li>}
+        {!user && <li className="nav-item"><NavLink to="/login" className="nav-link">Accedi</NavLink></li>}
+        {user && <li className="nav-item"><button onClick={handleLogout} className="nav-link">Esci</button></li>}
         {/* <div className="nav-item"><Button className="nav-link" onClick={toggleModal}>Accedi</Button></div> */}
       </ul>
     </header>

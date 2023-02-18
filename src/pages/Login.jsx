@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import axios from "axios";
-import { useContext } from "react";
 import { UserContext } from "../context/UserContext";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -9,6 +9,14 @@ function Login() {
   const [error, setError] = useState("");
 
   const {user, setUser} = useContext(UserContext)
+
+  const history = useNavigate()
+
+  useEffect(() => {
+    if (user) {
+      history('/')
+    }
+  }, [user])
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -19,9 +27,10 @@ function Login() {
         password,
       })
       .then((response) => {
-        console.log("User profile", response.data.user);
-        console.log("User token", response.data.jwt);
+        console.log("User profile", response);
+        // console.log("User token", response.data.jwt);
         setUser(response.data)
+        localStorage.setItem('user', JSON.stringify(response.data))
       })
       .catch((error) => {
         console.log("An error occurred:", error.response);

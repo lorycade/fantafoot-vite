@@ -69,3 +69,60 @@ body {
   flex-basis: 300px;
   flex-shrink: 0;
 }
+
+.credits-team {
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.5;
+  margin: 20px 0;
+}
+
+.player-line {
+  width: 100%;
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid #000;
+  border-radius: 8px;
+  font-weight: 600;
+  padding: 10px 20px;
+
+  & + .player-line {
+    margin-top: 10px;
+  }
+
+  &.out-budget {
+    background-color: #a9a5a5;
+    opacity: .7;
+    cursor: not-allowed;
+  }
+
+  &.my-team {
+    color: #fff;
+    background-color: #282626;
+  }
+}
+
+.create-team-btn {
+  margin-top: 30px;
+  background-color: rgb(45, 45, 247);
+  border-radius: 4px;
+  color: #fff;
+  font-weight: 600;
+  font-size: 20px;
+  border: 0;
+  padding: 12px 20px;
+
+  &:disabled {
+    background-color: gray;
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  &:not(:disabled) {
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
