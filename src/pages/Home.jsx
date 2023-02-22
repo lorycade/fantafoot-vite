@@ -6,11 +6,11 @@ import { UserContext } from "../context/UserContext";
 function Home() {
   const [myPlayers, setMyPlayers] = useState();
   const { user } = useContext(UserContext);
-  const userData = localStorage.getItem('user')
-  const userStored = JSON.parse(userData);
+  const jwt = JSON.parse(localStorage.getItem('jwt'))
+  // const userStored = JSON.parse(userData);
 
   useEffect(() => {
-    if (userStored) {
+    if (jwt) {
       getMyData();
     }
   }, []);
@@ -20,10 +20,12 @@ function Home() {
       "http://localhost:1337/api/users/me?populate=*",
       {
         headers: {
-          Authorization: `Bearer ${userStored.jwt}`,
+          Authorization: `Bearer ${jwt}`,
         },
       }
     );
+    console.log(response);
+    localStorage.setItem('user', JSON.stringify(response.data))
     setMyPlayers(response.data.players);
   };
 
@@ -65,7 +67,7 @@ function Home() {
                 <div className="cell">30</div>
               </div>
             </div>
-            <Link to="/leaderboard" className="d-inline-block mt-4">
+            <Link to="/classifica" className="d-inline-block mt-4">
               Vedi tutta la classifica
             </Link>
           </div>

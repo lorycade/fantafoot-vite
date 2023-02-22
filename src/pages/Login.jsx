@@ -8,15 +8,15 @@ function Login() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const {user, setUser} = useContext(UserContext)
+  const { user, setUser } = useContext(UserContext);
 
-  const history = useNavigate()
+  const history = useNavigate();
 
   useEffect(() => {
     if (user) {
-      history('/')
+      history("/");
     }
-  }, [user])
+  }, [user]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -29,34 +29,47 @@ function Login() {
       .then((response) => {
         console.log("User profile", response);
         // console.log("User token", response.data.jwt);
-        setUser(response.data)
-        localStorage.setItem('user', JSON.stringify(response.data))
+        setUser(response.data);
+        localStorage.setItem("user", JSON.stringify(response.data.user));
+        localStorage.setItem("jwt", JSON.stringify(response.data.jwt));
       })
       .catch((error) => {
         console.log("An error occurred:", error.response);
         if (error.response.status == 400) {
-          setError('Email o Password errate');
+          setError("Email o Password errate");
         }
       });
   };
 
   return (
     <>
-      <div className="container">
+      <div className="container my-5">
         <h1>Login</h1>
 
         <form className="mt-5" onSubmit={handleSubmit}>
-          <input
-            type="email"
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
-          />
-          <input
-            type="password"
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
-          />
-          <button>Login</button>
+          <div className="form-floating mb-3">
+            <input
+              type="email"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+              className="form-control"
+              id="floatingInput"
+              placeholder="name@example.com"
+            />
+            <label htmlFor="floatingInput">Email</label>
+          </div>
+          <div className="form-floating">
+            <input
+              type="password"
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+              className="form-control"
+              id="floatingPassword"
+              placeholder="Password"
+            />
+            <label htmlFor="floatingPassword">Password</label>
+          </div>
+          <button className="btn btn-primary btn-lg mt-4">Accedi</button>
         </form>
         {error && <p>{error}</p>}
       </div>

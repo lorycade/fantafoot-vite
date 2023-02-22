@@ -45,8 +45,8 @@ function Listone() {
         </div>
         {playerList.map((player) => (
           <div className="line body" key={player.id}>
-            <div className="cell">{player.attributes.name} {player.attributes.surname}</div>
-            <div className="cell">{player.attributes.value}</div>
+            <div className="cell">{player.name} {player.surname}</div>
+            <div className="cell">{player.value}</div>
           </div>
         ))}
       </div>

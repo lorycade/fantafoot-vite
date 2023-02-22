@@ -8,9 +8,10 @@ function CreateTeam() {
   // const {user, setUser} = useContext(UserContext)
   const [playerList, setPlayerlist] = useState([]);
   const [myTeam, setMyTeam] = useState([]);
-  const [credits, setCredits] = useState(200);
+  const [credits, setCredits] = useState(400);
+  const jwt = JSON.parse(localStorage.getItem("jwt"));
   const user = JSON.parse(localStorage.getItem("user"));
-  const history = useNavigate()
+  const history = useNavigate();
 
   useEffect(() => {
     getPlayers();
@@ -20,11 +21,36 @@ function CreateTeam() {
     const response = await axios.get(
       "http://localhost:1337/api/players?sort=value:desc"
     );
-    setPlayerlist(response.data.data);
+
+    if (user.players.length > 0) {
+      setMyTeam(user.players);
+
+      const newPlayerList = response.data.data.filter(
+        ({ id: item1 }) =>
+          !user.players.some(({ id: item2 }) => item2 === item1)
+      );
+
+      setPlayerlist(newPlayerList);
+
+      const myPlayersCost = user.players.reduce((accumulator, object) => {
+        return accumulator + object.value;
+      }, 0);
+
+      setCredits(credits - myPlayersCost);
+    } else {
+      setPlayerlist(response.data.data);
+    }
   };
 
+  function getOrderListByValue(array) {
+    let sortedProducts = array.sort(
+      (p1, p2) => (p1.value < p2.value) ? 1 : (p1.value > p2.value) ? -1 : 0);
+      return sortedProducts
+  }
+
   const handleSelection = (player) => {
-    const playerCredits = player.attributes.value;
+    const playerCredits = player.value;
+
     let myTeamPlayers = [...myTeam];
     myTeamPlayers.push(player);
     setMyTeam(myTeamPlayers);
@@ -36,23 +62,21 @@ function CreateTeam() {
   };
 
   const handleCreateTeam = async () => {
-    console.log("creiamo questa squadra", myTeam);
-    console.log("ce dato utente", user);
     axios
       .put(
-        "http://localhost:1337/api/users/" + user.user.id,
+        "http://localhost:1337/api/users/" + user.id,
         {
           players: myTeam,
         },
         {
           headers: {
-            Authorization: `Bearer ${user.jwt}`,
+            Authorization: `Bearer ${jwt}`,
           },
         }
       )
       .then((response) => {
         console.log("data", response);
-        history('/')
+        history("/");
         // console.log("User token", response.data.jwt);
         // setUser(response.data)
         // localStorage.setItem('user', JSON.stringify(response.data))
@@ -65,9 +89,32 @@ function CreateTeam() {
       });
   };
 
+  const handleRemovePlayer = (player) => {
+    const playerCredits = player.value;
+
+    const myTeamPlayers = myTeam.filter((item) => item !== player);
+    setMyTeam(myTeamPlayers);
+
+    setCredits(credits + playerCredits);
+    
+
+    let listPlayers = [...playerList];
+    listPlayers.push(player);
+    setPlayerlist(getOrderListByValue(listPlayers));
+  }
+
+  const handleRemoveAll = () => {
+    setMyTeam([])
+    setCredits(400)
+    const allPlayers = playerList.concat(myTeam)
+    
+
+    setPlayerlist(getOrderListByValue(allPlayers))
+  }
+
   return (
     <>
-      <div className="container">
+      <div className="container mb-5">
         <div className="row mt-40 fx-center">
           <div className="col-12">
             <h2 className="follow-title t-bold text-center">Crea Squadra</h2>
@@ -78,42 +125,47 @@ function CreateTeam() {
             <h2 className="mb-3">Lista giocatori</h2>
             {playerList.map((player) => (
               <>
-                {credits < player.attributes.value && (
+                {credits < player.value || myTeam.length == 10 && (
                   <button className="player-line out-budget" key={player.id}>
                     <div className="name">
-                      {player.attributes.name} {player.attributes.surname}
+                      {player.name} {player.surname}
                     </div>
-                    <div className="value">{player.attributes.value}</div>
+                    <div className="value">{player.value}</div>
                   </button>
                 )}
-                {credits >= player.attributes.value && (
+                {credits >= player.value && myTeam.length < 10 && (
                   <button
                     className="player-line"
                     key={player.id}
                     onClick={() => handleSelection(player)}
                   >
                     <div className="name">
-                      {player.attributes.name} {player.attributes.surname}
+                      {player.name} {player.surname}
                     </div>
-                    <div className="value">{player.attributes.value}</div>
+                    <div className="value">{player.value}</div>
                   </button>
                 )}
               </>
             ))}
           </div>
-          <div className="col-lg-2"></div>
-          <div className="col-lg-5">
+          <div className="col-lg-5 offset-lg-2">
             <h2 className="mb-3">Giocatori selezionati</h2>
             <p className="credits-team">Crediti residui: {credits}</p>
+            <button className="my-3" onClick={() => handleRemoveAll()}>Elimina tutti</button>
             {myTeam.map((teamPlayer) => (
-              <div className="player-line my-team" key={teamPlayer.id}>
-                <div className="name">
-                  {teamPlayer.attributes.name} {teamPlayer.attributes.surname}
+              <>
+                <div className="my-team-player">
+                  <div className="player-line my-team" key={teamPlayer.id}>
+                    <div className="name">
+                      {teamPlayer.name} {teamPlayer.surname}
+                    </div>
+                    <div className="value">{teamPlayer.value}</div>
+                  </div>
+                  <button onClick={() => handleRemovePlayer(teamPlayer)}>Rimuovi</button>
                 </div>
-                <div className="value">{teamPlayer.attributes.value}</div>
-              </div>
+              </>
             ))}
-            {myTeam.length >= 4 && (
+            {myTeam.length == 10 && (
               <button
                 type="button"
                 className="create-team-btn"
@@ -122,10 +174,8 @@ function CreateTeam() {
                 Crea Squadra
               </button>
             )}
-            {myTeam.length < 4 && (
-              <button disabled type="button" className="create-team-btn">
-                Crea Squadra
-              </button>
+            {myTeam.length < 10 && (
+              <p className="create-warning-text">Aggiungi <strong>{10 - myTeam.length}</strong> {(10 - myTeam.length) > 1 ? 'giocatori' : 'giocatore'} per creare la tua squadra</p>
             )}
           </div>
         </div>
