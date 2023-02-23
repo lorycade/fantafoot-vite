@@ -8,6 +8,8 @@ const Header = ({ toggleModal }) => {
 
   const handleLogout = () => {
     localStorage.removeItem('user')
+    localStorage.removeItem('jwt')
+    localStorage.removeItem('userPlayers')
     setUser(null)
     history('/')
   }

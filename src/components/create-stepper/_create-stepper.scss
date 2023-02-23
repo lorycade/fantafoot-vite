@@ -1,0 +1,63 @@
+.stepper {
+  padding-bottom: 130px;
+  .stepper-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+
+    &::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 50%;
+      translate: 0 -50%;
+      width: 100%;
+      height: 1px;
+      background-color: #000;
+      z-index: -1;
+    }
+
+    .step-button {
+      background-color: #fff;
+      padding: 20px;
+
+      &.active {
+        background-color: lightblue;
+      }
+    }
+  }
+
+  .stepper-content {
+    padding: 32px 0;
+    .step-item {
+      display: none;
+
+      &.active {
+        display: block;
+      }
+    }
+  }
+
+  .stepper-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 24px 0;
+    background-color: #fff;
+    box-shadow: 0 16px 16px 15px rgba($color: #000000, $alpha: 0.5);
+
+    .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    button {
+      &:only-child {
+        margin-left: auto;
+      }
+    }
+  }
+}
