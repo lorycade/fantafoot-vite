@@ -2,12 +2,12 @@ import { useEffect, useState, useContext } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import axios from "axios";
-import { UserContext } from "../../context/UserContext";
+// import { UserContext } from "../../context/UserContext";
 
 function ModalTeamName({ isOpen, openEvent, userData, jwt }) {
   const [show, setShow] = useState(false);
   const [newSquadName, setNewSquadName] = useState("");
-  const { user, setUser } = useContext(UserContext);
+  // const { user, setUser } = useContext(UserContext);
 
   const handleClose = () => {
     setShow(false);
@@ -16,7 +16,6 @@ function ModalTeamName({ isOpen, openEvent, userData, jwt }) {
   };
 
   useEffect(() => {
-    console.log("arriavato", isOpen);
     setShow(isOpen);
   }, [isOpen]);
 
@@ -34,9 +33,7 @@ function ModalTeamName({ isOpen, openEvent, userData, jwt }) {
         }
       )
       .then((response) => {
-        console.log("data", response);
         
-        // console.log("User token", response.data.jwt);
         setUser(response.data)
         localStorage.setItem('user', JSON.stringify(response.data))
         handleClose()
@@ -56,7 +53,7 @@ function ModalTeamName({ isOpen, openEvent, userData, jwt }) {
       </Modal.Header>
       <Modal.Body>
         <p>
-          La tua squadra si chiama: <strong>{user.teamName}</strong>
+          La tua squadra si chiama: <strong>{userData.teamName}</strong>
         </p>
         <p className="mt-4">Inserisci qui sotto il nuovo nome</p>
         <div className="form-floating mb-3">

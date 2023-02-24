@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const steps = [
   {
@@ -18,12 +19,15 @@ const steps = [
 
 const CreateStepper = () => {
   const user = JSON.parse(localStorage.getItem("user"))
+  const userPlayers = JSON.parse(localStorage.getItem("userPlayers"))
   const jwt = JSON.parse(localStorage.getItem("jwt"))
   const [activeStep, setActiveStep] = useState(1)
   const [squadName, setSquadName] = useState(user.teamName)
   const [playerList, setPlayerlist] = useState([])
-  const [myTeam, setMyTeam] = useState(user.players)
+  const [myTeam, setMyTeam] = useState(userPlayers)
   const [credits, setCredits] = useState(400)
+  const [teamCreated, setTeamCreated] = useState(false)
+  const history = useNavigate()
 
   useEffect(() => {
     getPlayers();
@@ -94,8 +98,15 @@ const CreateStepper = () => {
         }
       )
       .then((response) => {
-        console.log("data", response);
-        // history("/");
+        localStorage.setItem('user', JSON.stringify(response.data))
+        setTeamCreated(true)
+
+        setTimeout(() => {
+          setTeamCreated(false);
+          history("/profilo");
+        }, 3000);
+
+        
       })
       .catch((error) => {
         console.log("An error occurred:", error.response);
@@ -104,6 +115,14 @@ const CreateStepper = () => {
 
   return (
     <div className="container my-5">
+      {teamCreated && (
+          <div
+            className="password-alert alert alert-success d-flex align-items-center"
+            role="alert"
+          >
+            <div>Complimenti, hai creato la tua squadra !!</div>
+          </div>
+        )}
       <div className="stepper">
         <div className="stepper-header">
           {steps.map((step) => (
@@ -155,7 +174,7 @@ const CreateStepper = () => {
             <div className="step-item active">
               <h2 className="mb-5">Riepilogo</h2>
               <h3>Nome Squadra</h3>
-              <p className="mb-5"><strong>{squadName}</strong></p>
+              <p className="mb-5 my-team-name"><strong>{squadName}</strong></p>
               <h3>Giocatori scelti</h3>
               {myTeam.map((player) => (
                 <div

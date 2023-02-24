@@ -27,8 +27,6 @@ function Login() {
         password,
       })
       .then((response) => {
-        console.log("User profile", response);
-        // console.log("User token", response.data.jwt);
         setUser(response.data);
         localStorage.setItem("user", JSON.stringify(response.data.user));
         localStorage.setItem("jwt", JSON.stringify(response.data.jwt));

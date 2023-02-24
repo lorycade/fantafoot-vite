@@ -16,11 +16,11 @@ function Profilo() {
   const userData = JSON.parse(localStorage.getItem("user"));
   const userPlayers = JSON.parse(localStorage.getItem("userPlayers"));
   // const { user } = useContext(UserContext);
-  console.log(userPlayers);
 
   // useEffect(() => {
   //   getPlayers();
   // }, []);
+
 
   const handleChangePassword = () => {
     axios
@@ -38,14 +38,12 @@ function Profilo() {
         }
       )
       .then((response) => {
-        console.log("data", response);
         setPasswordChanged(true);
 
         setTimeout(() => {
           setPasswordChanged(false);
         }, 2000);
         // history('/')
-        // console.log("User token", response.data.jwt);
         // setUser(response.data)
         // localStorage.setItem('user', JSON.stringify(response.data))
       })
@@ -80,8 +78,10 @@ function Profilo() {
             </div>
             <div className="user-info">
               Nome Squadra <strong>{userData.teamName}</strong>
-              <button onClick={() => setShowModal(true)}>Modifica</button>
+              {/* <button onClick={() => setShowModal(true)}>Modifica</button> */}
             </div>
+
+            <p>Per creare/modificare il nome della squadra o la tua rosa, clicca qui sotto</p>
 
             <Link to="/crea-squadra">{userPlayers.length > 0 ? 'Modifica Squadra' : 'Crea Squadra'}</Link>
           </div>
@@ -135,7 +135,7 @@ function Profilo() {
           </div>
         </div>
       </div>
-      <ModalTeamName isOpen={showModal} openEvent={setShowModal} userData={userData} jwt={jwt}/>
+      {/* <ModalTeamName isOpen={showModal} openEvent={setShowModal} userData={userData} jwt={jwt}/> */}
     </>
   );
 }
