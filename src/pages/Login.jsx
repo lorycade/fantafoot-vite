@@ -25,6 +25,9 @@ function Login() {
       .post(import.meta.env.VITE_API_URL + "/api/auth/local", {
         identifier: email,
         password,
+      },
+      {
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
       })
       .then((response) => {
         setUser(response.data);
