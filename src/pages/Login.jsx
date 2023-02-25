@@ -22,7 +22,7 @@ function Login() {
     event.preventDefault();
 
     axios
-      .post("http://localhost:1337/api/auth/local", {
+      .post(import.meta.env.VITE_API_URL + "/api/auth/local", {
         identifier: email,
         password,
       })
