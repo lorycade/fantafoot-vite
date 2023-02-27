@@ -1,0 +1,23 @@
+.formation-wrapper {
+  .captain, .single-players, .couple, .bench {
+    margin: 20px;
+    min-height: 40px;
+    padding: 20px;
+  }
+
+  .captain {
+    border: 2px solid red;
+  }
+
+  .single-players {
+    border: 2px solid violet;
+  }
+
+  .couple {
+    border: 2px solid green;
+  }
+
+  .bench {
+    border: 2px solid blue;
+  }
+}

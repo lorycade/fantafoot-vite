@@ -151,3 +151,17 @@ body {
   box-shadow: 0 0 10px 10px rgba($color: #000000, $alpha: 0.3);
   font-size: 32px;
 }
+
+.drag-wrapper {
+  .col-lg-3 {
+    border: 1px solid #000;
+  }
+
+  .draggable {
+    padding: 10px;
+
+    &.used {
+      opacity: 0.3;
+    }
+  }
+}

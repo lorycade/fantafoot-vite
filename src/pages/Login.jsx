@@ -25,14 +25,11 @@ function Login() {
       .post(import.meta.env.VITE_API_URL + "/api/auth/local", {
         identifier: email,
         password,
-      },
-      {
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
       })
       .then((response) => {
-        setUser(response.data);
-        localStorage.setItem("user", JSON.stringify(response.data.user));
-        localStorage.setItem("jwt", JSON.stringify(response.data.jwt));
+        setUser(response.data.user);
+        // localStorage.setItem("user", JSON.stringify(response.data.user));
+        localStorage.setItem("jwt", response.data.jwt);
       })
       .catch((error) => {
         console.log("An error occurred:", error.response);

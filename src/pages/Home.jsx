@@ -6,7 +6,7 @@ import { UserContext } from "../context/UserContext";
 function Home() {
   const [myPlayers, setMyPlayers] = useState();
   const { user, setUser } = useContext(UserContext);
-  const jwt = JSON.parse(localStorage.getItem('jwt'))
+  const jwt = localStorage.getItem('jwt')
   // const userStored = JSON.parse(userData);
 
   useEffect(() => {
@@ -26,8 +26,8 @@ function Home() {
     );
     
     setUser(response.data)
-    localStorage.setItem('user', JSON.stringify(response.data))
-    localStorage.setItem('userPlayers', JSON.stringify(response.data.players))
+    // localStorage.setItem('user', JSON.stringify(response.data))
+    // localStorage.setItem('userPlayers', JSON.stringify(response.data.players))
     setMyPlayers(response.data.players);
   };
 
