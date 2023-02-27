@@ -4,17 +4,33 @@ import axios from "axios";
 
 function InserimentoFormazione() {
   const jwt = localStorage.getItem("jwt");
-  const { user, setUser } = useContext(UserContext);
-  const [players, setPlayers] = useState([]);
+  const { user, setUser } = useContext(UserContext)
+  const [players, setPlayers] = useState([])
+  const [teamInsert, setTeamInsert] = useState(false)
+  const [captainCount, setCaptainCount] = useState(0)
+  const [singlePlayerCount, setSinglePlayerCount] = useState(0)
+  const [coupleCount, setCoupleCount] = useState(0)
+  const [benchCount, setBenchCount] = useState(0)
 
   useEffect(() => {
     if (user && user.lineups) {
-      console.log(user.lineups.tappa1);
       setPlayers(user.lineups.tappa1)
-    } else {
+    } else if(user) {
       setPlayers(user.players)
     }
   }, [user]);
+
+  useEffect(() => {
+    const countCaptains = players.filter(item => item.captain == true).length;
+    const countSinglePlayer = players.filter(item => item.captain == false && item.starter == true && item.couple == false).length;
+    const countCouple = players.filter(item => item.couple == true).length;
+    const countBench = players.filter(item => item.starter == false && item.bench == true).length;
+
+    setCaptainCount(countCaptains)
+    setSinglePlayerCount(countSinglePlayer)
+    setCoupleCount(countCouple)
+    setBenchCount(countBench)
+  }, [players]);
 
   const onDragOver = (e) => {
     e.preventDefault();
@@ -92,12 +108,11 @@ function InserimentoFormazione() {
       .then((response) => {
         const newUser = {...response.data, players: players, lineups: lineup}
         setUser(newUser)
-        // setTeamCreated(true);
+        setTeamInsert(true);
 
-        // setTimeout(() => {
-        //   setTeamCreated(false);
-        //   history("/profilo");
-        // }, 3000);
+        setTimeout(() => {
+          setTeamInsert(false);
+        }, 3000);
       })
       .catch((error) => {
         console.log("An error occurred:", error.response);
@@ -109,6 +124,14 @@ function InserimentoFormazione() {
   return (
     <>
       <div className="container mb-5">
+      {teamInsert && (
+        <div
+          className="password-alert alert alert-success d-flex align-items-center"
+          role="alert"
+        >
+          <div>Complimenti, hai salvato la tua formazione !!</div>
+        </div>
+      )}
         <div className="row mt-40 fx-center">
           <div className="col-12">
             <h2 className="follow-title t-bold text-center">
@@ -144,9 +167,9 @@ function InserimentoFormazione() {
             <div className="formation-wrapper">
               <div
                 className="captain"
-                onDrop={(e) => onDrop(e, true, "captain")}
+                onDrop={captainCount == 1 ? (e) => e.preventDefault() : (e) => onDrop(e, true, "captain")}
               >
-                <h4>capitano</h4>
+                <h4>capitano {captainCount}/1</h4>
                 {players
                   .filter(
                     (item) => item.starter === true && item.captain === true
@@ -164,9 +187,9 @@ function InserimentoFormazione() {
               </div>
               <div
                 className="single-players"
-                onDrop={(e) => onDrop(e, true, "single")}
+                onDrop={singlePlayerCount == 3 ? (e) => e.preventDefault() : (e) => onDrop(e, true, "single")}
               >
-                <h4>Giocatori Singoli</h4>
+                <h4>Giocatori Singoli {singlePlayerCount}/3</h4>
                 {players
                   .filter(
                     (item) => item.starter === true && item.captain === false && item.couple === false
@@ -182,8 +205,8 @@ function InserimentoFormazione() {
                     </div>
                   ))}
               </div>
-              <div className="couple" onDrop={(e) => onDrop(e, true, "couple")}>
-                <h4>Coppia</h4>
+              <div className="couple" onDrop={coupleCount == 2 ? (e) => e.preventDefault() : (e) => onDrop(e, true, "couple")}>
+                <h4>Coppia {coupleCount}/2</h4>
                 {players
                   .filter(
                     (item) =>
@@ -202,8 +225,8 @@ function InserimentoFormazione() {
                     </div>
                   ))}
               </div>
-              <div className="bench" onDrop={(e) => onDrop(e, false, "bench")}>
-                <h4>Panchina</h4>
+              <div className="bench" onDrop={benchCount == 4 ? (e) => e.preventDefault() : (e) => onDrop(e, false, "bench")}>
+                <h4>Panchina {benchCount}/4</h4>
                 {players
                   .filter(
                     (item) => item.starter === false && item.bench === true
