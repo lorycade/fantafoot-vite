@@ -22,7 +22,7 @@ function ModalTeamName({ isOpen, openEvent, userData, jwt }) {
   const handleChangeName = () => {
     axios
       .put(
-        "http://localhost:1337/api/users/" + user.id,
+        import.meta.env.VITE_API_URL + "/api/users/" + user.id,
         {
           teamName: newSquadName,
         },

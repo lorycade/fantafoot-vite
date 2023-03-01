@@ -14,7 +14,7 @@ function InserimentoFormazione() {
 
   useEffect(() => {
     if (user && user.lineups) {
-      setPlayers(user.lineups.tappa1)
+      setPlayers(user.lineups[0].formation)
     } else if(user) {
       setPlayers(user.players)
     }
@@ -89,15 +89,19 @@ function InserimentoFormazione() {
     
     if (areAllInsert.length > 0) return
     const lineup = {
-      "tappa1": players
+      tappa: 1,
+      formation: players
     }
+    // console.log(players);
+    let array = []
+
+    array.push(lineup)
 
     axios
       .put(
-        "http://localhost:1337/api/users/" + user.id,
+        import.meta.env.VITE_API_URL + "/api/users/" + user.id,
         {
-          players,
-          lineups: lineup,
+          lineups: array,
         },
         {
           headers: {
@@ -106,7 +110,8 @@ function InserimentoFormazione() {
         }
       )
       .then((response) => {
-        const newUser = {...response.data, players: players, lineups: lineup}
+        const newUser = {...response.data, lineups: array}
+        console.log(newUser);
         setUser(newUser)
         setTeamInsert(true);
 

@@ -22,7 +22,7 @@ function Profilo() {
   const handleChangePassword = () => {
     axios
       .post(
-        "http://localhost:1337/api/auth/change-password",
+        import.meta.env.VITE_API_URL + "/api/auth/change-password",
         {
           currentPassword: oldPassword,
           password: newPassword,
@@ -55,7 +55,7 @@ function Profilo() {
   return (
     
     <>
-    {user && 
+    {!!user && 
       <div className="container">
         {passwordChanged && (
           <div
@@ -81,8 +81,8 @@ function Profilo() {
             </div>
 
             <p>Per creare/modificare il nome della squadra o la tua rosa, clicca qui sotto</p>
-
             <Link to="/crea-squadra">{user.players.length > 0 ? 'Modifica Squadra' : 'Crea Squadra'}</Link>
+            
           </div>
           <div className="col-lg-5">
             <h3>Modifica Password</h3>

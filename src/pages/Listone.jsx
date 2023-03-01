@@ -12,7 +12,7 @@ function Listone() {
   }, []);
 
   const getPlayers = async () => {
-    const response = await axios.get("http://localhost:1337/api/players?sort=value:desc");
+    const response = await axios.get(import.meta.env.VITE_API_URL + "/api/players?sort=value:desc");
     setPlayerlist(response.data.data);
   };
 

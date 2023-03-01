@@ -14,7 +14,7 @@ export default ({ children }) => {
 
   const getMyData = async () => {
     const response = await axios.get(
-      "http://localhost:1337/api/users/me?populate=*",
+      import.meta.env.VITE_API_URL + "/api/users/me?populate=*",
       {
         headers: {
           Authorization: `Bearer ${jwt}`,
@@ -22,7 +22,7 @@ export default ({ children }) => {
       }
     );
 
-    console.log('context', response);
+    console.log('context', response.data);
     
     setUser(response.data)
     // setMyPlayers(response.data.players);

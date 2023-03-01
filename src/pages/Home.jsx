@@ -17,7 +17,7 @@ function Home() {
 
   const getMyData = async () => {
     const response = await axios.get(
-      "http://localhost:1337/api/users/me?populate=*",
+      import.meta.env.VITE_API_URL + "/api/users/me?populate=*",
       {
         headers: {
           Authorization: `Bearer ${jwt}`,

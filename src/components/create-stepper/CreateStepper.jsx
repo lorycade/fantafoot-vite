@@ -24,7 +24,7 @@ const CreateStepper = () => {
   const [activeStep, setActiveStep] = useState(1);
   const [squadName, setSquadName] = useState("");
   const [playerList, setPlayerlist] = useState([]);
-  const [myTeam, setMyTeam] = useState("");
+  const [myTeam, setMyTeam] = useState([]);
   const [credits, setCredits] = useState(400);
   const [teamCreated, setTeamCreated] = useState(false);
   const [playerSearch, setPlayerSearch] = useState("");
@@ -35,7 +35,11 @@ const CreateStepper = () => {
   }, []);
 
   useEffect(() => {
-    if (user) initChangeMode();
+    if (user) {
+      console.log('llll', user);
+    }
+    
+    if (user.myTeam != null) initChangeMode();
   }, [user]);
 
   useEffect(() => {
@@ -61,12 +65,13 @@ const CreateStepper = () => {
 
   const getPlayers = async () => {
     const response = await axios.get(
-      "http://localhost:1337/api/players?sort=value:desc"
+      import.meta.env.VITE_API_URL + "/api/players?sort=value:desc"
     );
     setPlayerlist(response.data.data);
   };
 
   const handleSelection = (player) => {
+    console.log('kokoko', myTeam);
     const isMyTeam = myTeam.filter((item) => player.id == item.id).length == 1;
     const playerCredits = player.value;
 
@@ -99,7 +104,7 @@ const CreateStepper = () => {
   const handleCreateTeam = async () => {
     axios
       .put(
-        "http://localhost:1337/api/users/" + user.id,
+        import.meta.env.VITE_API_URL + "/api/users/" + user.id,
         {
           players: myTeam,
           teamName: squadName,
@@ -207,10 +212,10 @@ const CreateStepper = () => {
                     <div className="value">{player.value}</div>
                   </button>
                 ))}
-              {myTeam.length < 10 &&
+              {myTeam.length >= 0 && myTeam.length < 10 &&
                 playerList.map((player) => (
                   <button
-                    className={
+                    className={myTeam.length > 0 && 
                       myTeam.filter((item) => player.id == item.id).length == 1
                         ? "player-line selected"
                         : "player-line"
