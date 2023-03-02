@@ -2,13 +2,49 @@ body {
   margin: 0;
 }
 
+.leaderboard-filters-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+
+  button {
+    background-color: transparent;
+    border: 2px solid $green-dark;
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 20px;
+    line-height: 1.3;
+
+    &:disabled {
+      opacity: .2;
+      border-color: $grey;
+      background-color: $grey;
+      color: $black;
+    }
+
+    &:hover:not(:disabled) {
+      background-color: rgba($color: $green-dark, $alpha: 0.1);
+
+      &.active {
+        color: $black;
+      }
+    }
+
+    &.active {
+      background-color: $green-dark;
+      color: $white;
+      font-weight: 600;
+    }
+  }
+}
+
 .leaderboard {
   width: 100%;
   border: 1px solid #000;
 
   .line {
     display: grid;
-    grid-template-columns: 20% 60% 20%;
+    grid-template-columns: 1fr 1fr 1fr;
 
     &:not(:last-child) {
       border-bottom: 1px solid #000;

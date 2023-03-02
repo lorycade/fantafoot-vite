@@ -1,21 +1,21 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import axios from "axios";
+import { UserContext } from "../context/UserContext";
 
 function Classifica() {
-  const [userPlayers, setUserPlayers] = useState([]);
-  // const [resultArray, setresultArray] = useState([]);
-  const jwt = localStorage.getItem("jwt");
+  const [userPlayers, setUserPlayers] = useState([])
+  const { user } = useContext(UserContext)
+  const [sortType, setSortType] = useState(null)
+  const jwt = localStorage.getItem("jwt")
 
   useEffect(() => {
-    getUserPlayers();
+    getUserPlayers()
   }, []);
 
   const getUserPlayers = async () => {
     const response = await axios.get(
-      import.meta.env.VITE_API_URL + "/api/users?populate=*"
+      import.meta.env.VITE_API_URL + "/api/users?sort=points:desc&populate=*"
     );
-
-    console.log('initial', response.data);
 
     setUserPlayers(response.data);
   };
@@ -130,13 +130,10 @@ function Classifica() {
       });
   };
 
-  // const handleLeaderboard = (tappa) => {
-  //   const orderByResult = userPlayers.sort((a, b) =>
-  //     a.userResult[tappa].leaderboardPoint > b.userResult[tappa].leaderboardPoint ? 1 : -1
-  //   )
+  const handleLeaderboard = (tappa) => {
 
-  //   console.log(orderByResult);
-  // }
+    setSortType(tappa)
+  }
 
   return (
     <>
@@ -146,10 +143,15 @@ function Classifica() {
             <h2 className="follow-title t-bold text-center">Classifica</h2>
           </div>
         </div>
-        <div className="filter-wrapper">
-          <button onClick={() => handleLeaderboard(0)}>Generale</button>
-          <button onClick={() => handleLeaderboard(1)}>Tappa 1</button>
-          <button onClick={() => handleLeaderboard(2)}>Tappa 2</button>
+        <div className="leaderboard-filters-wrapper mt-5">
+          <button className={sortType == null ? 'active' : ''} onClick={() => handleLeaderboard(null)}>Generale</button>
+          <button className={sortType == 0 ? 'active' : ''} onClick={() => handleLeaderboard(0)}>Tappa 1</button>
+          <button className={sortType == 1 ? 'active' : ''} onClick={() => handleLeaderboard(1)}>Tappa 2</button>
+          <button disabled className={sortType == 2 ? 'active' : ''} onClick={() => handleLeaderboard(1)}>Tappa 3</button>
+          <button disabled className={sortType == 3 ? 'active' : ''} onClick={() => handleLeaderboard(1)}>Tappa 4</button>
+          <button disabled className={sortType == 4 ? 'active' : ''} onClick={() => handleLeaderboard(1)}>Tappa 5</button>
+          <button disabled className={sortType == 5 ? 'active' : ''} onClick={() => handleLeaderboard(1)}>Tappa 6</button>
+          <button disabled className={sortType == 6 ? 'active' : ''} onClick={() => handleLeaderboard(1)}>Tappa 7</button>
         </div>
         <div className="leaderboard mt-5">
           <div className="line head">
@@ -157,18 +159,35 @@ function Classifica() {
             <div className="cell">Giocatore</div>
             <div className="cell">Punti</div>
           </div>
-          {userPlayers.map((user, i) => (
+          {sortType == null && userPlayers.sort((a, b) => a.points > b.points ? -1 : 1 ).map((user, i) => (
             <>
-              <div className="line body">
+              <div className="line body" key={i}>
                 <div className="cell">{i + 1}</div>
                 <div className="cell">{user.teamName}</div>
                 <div className="cell">{user.points}</div>
               </div>
             </>
           ))}
+          {sortType != null && userPlayers.sort((a, b) =>
+        a.custom_result[sortType].leaderboardPoints > b.custom_result[sortType].leaderboardPoints ? -1 : 1
+      ).map((user, i) => (
+            <>
+              <div className="line body" key={i}>
+                <div className="cell">{i + 1}</div>
+                <div className="cell">{user.teamName}</div>
+                <div className="cell">{user.custom_result[sortType].leaderboardPoints}</div>
+                {/* <div className="cell">{user.custom_result[sortType].leaderboardPoints}</div> */}
+                {/* <div className="cell">{user.points}</div> */}
+              </div>
+            </>
+          ))}
         </div>
-        <button onClick={() => calculatePoints(0)}>Calcola giornata 1</button>
-        <button onClick={() => calculatePoints(1)}>Calcola giornata 2</button>
+        {user && user.role.type == "admin" && 
+          <>
+          <button onClick={() => calculatePoints(0)}>Calcola giornata 1</button>
+          <button onClick={() => calculatePoints(1)}>Calcola giornata 2</button>
+          </>
+        }
       </div>
     </>
   );

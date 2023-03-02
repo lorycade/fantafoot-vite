@@ -19,6 +19,7 @@ const Header = ({ toggleModal }) => {
       <ul className="nav nav-pills">
         <li className="nav-item"><NavLink to="/" className="nav-link" end>Home</NavLink></li>
         <li className="nav-item"><NavLink to="/listone" className="nav-link">Listone</NavLink></li>
+        <li className="nav-item"><NavLink to="/squadre" className="nav-link">Squadre</NavLink></li>
         <li className="nav-item"><NavLink to="/classifica" className="nav-link">Classifica</NavLink></li>
         {user && <li className="nav-item"><NavLink to="/profilo" className="nav-link">
             Profilo

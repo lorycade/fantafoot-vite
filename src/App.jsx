@@ -9,6 +9,8 @@ import Profilo from "./pages/Profilo";
 import InserimentoFormazione from "./pages/InserimentoFormazione";
 import Login from "./pages/Login";
 import CreateTeam from "./pages/CreateTeam";
+import Teams from "./pages/Teams";
+import TeamDetail from "./pages/TeamDetail";
 
 const router = createBrowserRouter([
   { path: '/', 
@@ -22,6 +24,8 @@ const router = createBrowserRouter([
     { path: '/inserisci-formazione', element: <InserimentoFormazione />},
     { path: '/crea-squadra', element: <CreateTeam />},
     { path: '/login', element: <Login />},
+    { path: '/squadre', element: <Teams />},
+    { path: '/squadre/:id', element: <TeamDetail />},
   ]},
 ])
 
