@@ -15,8 +15,6 @@ function Teams() {
       import.meta.env.VITE_API_URL + "/api/users?populate=*"
     );
 
-    console.log(response.data);
-
     setUsers(response.data);
   };
 

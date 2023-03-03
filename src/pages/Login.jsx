@@ -2,6 +2,7 @@ import { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { UserContext } from "../context/UserContext";
 import { useNavigate } from "react-router-dom";
+import LoginBackground from "../resources/imgaes/login-background.jpg"
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -41,35 +42,37 @@ function Login() {
 
   return (
     <>
-      <div className="container my-5">
-        <h1>Login</h1>
-
-        <form className="mt-5" onSubmit={handleSubmit}>
-          <div className="form-floating mb-3">
-            <input
-              type="email"
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
-              className="form-control"
-              id="floatingInput"
-              placeholder="name@example.com"
-            />
-            <label htmlFor="floatingInput">Email</label>
-          </div>
-          <div className="form-floating">
-            <input
-              type="password"
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-              className="form-control"
-              id="floatingPassword"
-              placeholder="Password"
-            />
-            <label htmlFor="floatingPassword">Password</label>
-          </div>
-          <button className="btn btn-primary btn-lg mt-4">Accedi</button>
-        </form>
-        {error && <p>{error}</p>}
+      <div className="login-page">
+        <img src={LoginBackground} alt="" />
+        <div className="login-form">
+          <h1>Accedi</h1>
+          <form className="mt-5" onSubmit={handleSubmit}>
+            <div className="form-floating mb-3">
+              <input
+                type="email"
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+                className="form-control"
+                id="floatingInput"
+                placeholder="name@example.com"
+              />
+              <label htmlFor="floatingInput">Email</label>
+            </div>
+            <div className="form-floating">
+              <input
+                type="password"
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
+                className="form-control"
+                id="floatingPassword"
+                placeholder="Password"
+              />
+              <label htmlFor="floatingPassword">Password</label>
+            </div>
+            <button className="btn btn-primary btn-lg mt-4">Accedi</button>
+          </form>
+          {error && <p>{error}</p>}
+        </div>
       </div>
     </>
   );

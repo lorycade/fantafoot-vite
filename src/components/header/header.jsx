@@ -1,35 +1,40 @@
 import { NavLink, useNavigate } from "react-router-dom";
+import Container from 'react-bootstrap/Container';
+import Nav from 'react-bootstrap/Nav';
+import Navbar from 'react-bootstrap/Navbar';
 import { useContext } from "react";
 import { UserContext } from "../../context/UserContext";
 
-const Header = ({ toggleModal }) => {
+function Header() {
   const history = useNavigate()
   const {user, setUser} = useContext(UserContext)
 
   const handleLogout = () => {
-    localStorage.removeItem('user')
     localStorage.removeItem('jwt')
-    localStorage.removeItem('userPlayers')
     setUser(null)
     history('/')
   }
 
   return (
     <header>
-      <ul className="nav nav-pills">
-        <li className="nav-item"><NavLink to="/" className="nav-link" end>Home</NavLink></li>
-        <li className="nav-item"><NavLink to="/listone" className="nav-link">Listone</NavLink></li>
-        <li className="nav-item"><NavLink to="/squadre" className="nav-link">Squadre</NavLink></li>
-        <li className="nav-item"><NavLink to="/classifica" className="nav-link">Classifica</NavLink></li>
-        {user && <li className="nav-item"><NavLink to="/profilo" className="nav-link">
-            Profilo
-          </NavLink></li>}
-        {!user && <li className="nav-item"><NavLink to="/login" className="nav-link">Accedi</NavLink></li>}
-        {user && <li className="nav-item"><button onClick={handleLogout} className="nav-link">Esci</button></li>}
-        {/* <div className="nav-item"><Button className="nav-link" onClick={toggleModal}>Accedi</Button></div> */}
-      </ul>
+      <Navbar bg="light" expand="lg" sticky="top">
+        <Container>
+          <NavLink to="/" className="navbar-brand">FANTAFOOTGOLF</NavLink>
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Collapse id="basic-navbar-nav">
+            <Nav className="me-auto">
+              <NavLink to="/listone" className="nav-link">Listone</NavLink>
+              <NavLink to="/classifica" className="nav-link">Classifica</NavLink>
+              <NavLink to="/squadre" className="nav-link">Squadre</NavLink>
+              {user && <NavLink to="/profilo" className="nav-link">Profilo</NavLink>}
+              {!user && <NavLink to="/login" className="nav-link">Accedi</NavLink>}
+              {user && <button onClick={handleLogout} className="nav-link logout">Esci</button>}
+            </Nav>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
     </header>
-  )
+  );
 }
 
-export default Header
+export default Header;

@@ -74,18 +74,7 @@ function Home() {
             </Link>
           </div>
           <div className="col-lg-4">
-            {user && <><h2>La mia Rosa</h2>
-            <div className="my-team">
-              {myPlayers && myPlayers.map((player) => (
-                <div className="player" key={player.id}>
-                  <div className="img"></div>
-                  <div className="info">
-                    <p className="name">{player.name} {player.surname}</p>
-                    <p className="team mb-0">Footgolf Spezia</p>
-                  </div>
-                </div>
-              ))}
-            </div></>}
+            <p>vedremo cosa inserire</p>
           </div>
         </div>
       </div>

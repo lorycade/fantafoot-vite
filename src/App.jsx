@@ -25,7 +25,7 @@ const router = createBrowserRouter([
     { path: '/crea-squadra', element: <CreateTeam />},
     { path: '/login', element: <Login />},
     { path: '/squadre', element: <Teams />},
-    { path: '/squadre/:id', element: <TeamDetail />},
+    { path: '/squadre/:teamId', element: <TeamDetail />},
   ]},
 ])
 
