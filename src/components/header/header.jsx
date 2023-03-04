@@ -4,6 +4,7 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { useContext } from "react";
 import { UserContext } from "../../context/UserContext";
+import Icon from '@mui/material/Icon';
 
 function Header() {
   const history = useNavigate()
