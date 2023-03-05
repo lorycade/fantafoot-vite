@@ -16,6 +16,22 @@
     width: 100%;
   }
 
+  .password-alert {
+    position: absolute;
+    left: 50%;
+    top: 125px;
+    translate: -50% -50%;
+    z-index: 999;
+    width: calc(100% - 30px);
+    
+    @include media-breakpoint-up(md) {
+      width: 70%;
+      max-width: 600px;
+      display: flex;
+      justify-content: center;
+    }
+  }
+
   .login-form {
     position: absolute;
     left: 50%;

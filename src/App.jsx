@@ -25,7 +25,7 @@ const router = createBrowserRouter([
     { path: '/inserisci-formazione', element: <InserimentoFormazione />},
     { path: '/crea-squadra', element: <CreateTeam />},
     { path: '/login', element: <Login />},
-    { path: '/login/recover-password', element: <RecoverPassword />},
+    { path: '/login/recover-password/:recoverCode', element: <RecoverPassword />},
     { path: '/squadre', element: <Teams />},
     { path: '/squadre/:teamId', element: <TeamDetail />},
   ]},
