@@ -27,9 +27,10 @@ function Header() {
               <NavLink to="/listone" className="nav-link">Listone</NavLink>
               <NavLink to="/classifica" className="nav-link">Classifica</NavLink>
               <NavLink to="/squadre" className="nav-link">Squadre</NavLink>
-              {user && <NavLink to="/profilo" className="nav-link">Profilo</NavLink>}
+              {user && user.confirmed && <NavLink to="/profilo" className="nav-link">Profilo</NavLink>}
               {!user && <NavLink to="/login" className="nav-link">Accedi</NavLink>}
-              {user && <button onClick={handleLogout} className="nav-link logout">Esci</button>}
+              {!user && <NavLink to="/registrazione" className="nav-link">Registrati</NavLink>}
+              {user && user.confirmed && <button onClick={handleLogout} className="nav-link logout">Esci</button>}
             </Nav>
           </Navbar.Collapse>
         </Container>

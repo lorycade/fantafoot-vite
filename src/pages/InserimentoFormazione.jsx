@@ -1,6 +1,7 @@
 import { useState, useContext, useEffect } from "react";
 import { UserContext } from "../context/UserContext";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function InserimentoFormazione() {
   const jwt = localStorage.getItem("jwt");
@@ -11,6 +12,13 @@ function InserimentoFormazione() {
   const [singlePlayerCount, setSinglePlayerCount] = useState(0)
   const [coupleCount, setCoupleCount] = useState(0)
   const [benchCount, setBenchCount] = useState(0)
+  const history = useNavigate()
+
+  useEffect(() => {
+    if (!jwt) {
+      history('/')
+    }
+  }, [])
 
   useEffect(() => {
     if (user && user.lineups) {

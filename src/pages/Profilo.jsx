@@ -1,6 +1,6 @@
 import { useState, useContext } from "react";
 import { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { UserContext } from "../context/UserContext";
 
@@ -16,8 +16,13 @@ function Profilo() {
   // const userData = JSON.parse(localStorage.getItem("user"));
   // const userPlayers = JSON.parse(localStorage.getItem("userPlayers"));
   const { user } = useContext(UserContext);
+  const history = useNavigate()
 
-
+  useEffect(() => {
+    if (!jwt) {
+      history('/')
+    }
+  }, [])
 
   const handleChangePassword = () => {
     axios
@@ -81,7 +86,7 @@ function Profilo() {
             </div>
 
             <p>Per creare/modificare il nome della squadra o la tua rosa, clicca qui sotto</p>
-            <Link to="/crea-squadra">{user.players.length > 0 ? 'Modifica Squadra' : 'Crea Squadra'}</Link>
+            <Link to="/crea-squadra">{user && user.players.length > 0 ? 'Modifica Squadra' : 'Crea Squadra'}</Link>
             
           </div>
           <div className="col-lg-5">

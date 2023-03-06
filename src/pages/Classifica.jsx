@@ -3,13 +3,13 @@ import axios from "axios";
 import { UserContext } from "../context/UserContext";
 
 function Classifica() {
-  const [userPlayers, setUserPlayers] = useState([])
-  const { user } = useContext(UserContext)
-  const [sortType, setSortType] = useState(null)
-  const jwt = localStorage.getItem("jwt")
+  const [userPlayers, setUserPlayers] = useState([]);
+  const { user } = useContext(UserContext);
+  const [sortType, setSortType] = useState(null);
+  const jwt = localStorage.getItem("jwt");
 
   useEffect(() => {
-    getUserPlayers()
+    getUserPlayers();
   }, []);
 
   const getUserPlayers = async () => {
@@ -68,12 +68,32 @@ function Classifica() {
   };
 
   const calculateTourLeaderboards = (tappaId) => {
-
     const orderByResult = userPlayers.sort((a, b) =>
       a.custom_result[tappaId].gamePoints > b.custom_result[tappaId].gamePoints
         ? 1
         : -1
     );
+    console.log("orderByResult", orderByResult);
+
+    const foundDuplicateName = orderByResult.find((nnn, index) => {
+      return orderByResult.find(
+        (x, ind) =>
+          x.custom_result[tappaId].gamePoints ===
+            nnn.custom_result[tappaId].gamePoints && index !== ind
+      );
+    });
+
+    // const duplicatePoint = foundDuplicateName.custom_result[tappaId].gamePoints;
+
+    // const listOfDuplicates = orderByResult.filter(item => item.custom_result[tappaId].gamePoints == duplicatePoint)
+
+    // const sumPointsDivider = listOfDuplicates.reduce((accumulator, object) => {
+    //   return accumulator + Number(object.custom_result[tappaId].leaderboardPoints);
+    // }, 0);
+
+    // const pointsForPlayersDivider = sumPointsDivider / listOfDuplicates.length;
+
+    // console.log("non ce la farò", pointsForPlayersDivider);
 
     let leaderboardPoint;
     orderByResult.forEach((user, i) => {
@@ -90,15 +110,80 @@ function Classifica() {
         case 4:
           leaderboardPoint = 37;
           break;
+        case 5:
+          leaderboardPoint = 34;
+          break;
+        case 6:
+          leaderboardPoint = 31;
+          break;
+        case 7:
+          leaderboardPoint = 28;
+          break;
+        case 8:
+          leaderboardPoint = 25;
+          break;
+        case 9:
+          leaderboardPoint = 22;
+          break;
+        case 10:
+          leaderboardPoint = 20;
+          break;
+        case 11:
+          leaderboardPoint = 18;
+          break;
+        case 12:
+          leaderboardPoint = 16;
+          break;
+        case 13:
+          leaderboardPoint = 14;
+          break;
+        case 14:
+          leaderboardPoint = 12;
+          break;
+        case 15:
+          leaderboardPoint = 11;
+          break;
+        case 16:
+          leaderboardPoint = 10;
+          break;
+        case 17:
+          leaderboardPoint = 9;
+          break;
+        case 18:
+          leaderboardPoint = 8;
+          break;
+        case 19:
+          leaderboardPoint = 7;
+          break;
+        case 20:
+          leaderboardPoint = 6;
+          break;
+        case 21:
+          leaderboardPoint = 5;
+          break;
+        case 22:
+          leaderboardPoint = 4;
+          break;
+        case 23:
+          leaderboardPoint = 3;
+          break;
+        case 24:
+          leaderboardPoint = 2;
+          break;
 
         default:
+          leaderboardPoint = 1;
           break;
       }
+      
+      console.log(user);
 
       user.custom_result[tappaId].leaderboardPoints = leaderboardPoint;
       user.points = user.points + leaderboardPoint;
-      handleCalculate(user)
+      handleCalculate(user);
     });
+
+    
   };
 
   const handleCalculate = (user) => {
@@ -131,9 +216,8 @@ function Classifica() {
   };
 
   const handleLeaderboard = (tappa) => {
-
-    setSortType(tappa)
-  }
+    setSortType(tappa);
+  };
 
   return (
     <>
@@ -144,14 +228,59 @@ function Classifica() {
           </div>
         </div>
         <div className="leaderboard-filters-wrapper mt-5">
-          <button className={sortType == null ? 'active' : ''} onClick={() => handleLeaderboard(null)}>Generale</button>
-          <button className={sortType == 0 ? 'active' : ''} onClick={() => handleLeaderboard(0)}>Tappa 1</button>
-          <button className={sortType == 1 ? 'active' : ''} onClick={() => handleLeaderboard(1)}>Tappa 2</button>
-          <button disabled className={sortType == 2 ? 'active' : ''} onClick={() => handleLeaderboard(1)}>Tappa 3</button>
-          <button disabled className={sortType == 3 ? 'active' : ''} onClick={() => handleLeaderboard(1)}>Tappa 4</button>
-          <button disabled className={sortType == 4 ? 'active' : ''} onClick={() => handleLeaderboard(1)}>Tappa 5</button>
-          <button disabled className={sortType == 5 ? 'active' : ''} onClick={() => handleLeaderboard(1)}>Tappa 6</button>
-          <button disabled className={sortType == 6 ? 'active' : ''} onClick={() => handleLeaderboard(1)}>Tappa 7</button>
+          <button
+            className={sortType == null ? "active" : ""}
+            onClick={() => handleLeaderboard(null)}
+          >
+            Generale
+          </button>
+          <button
+            className={sortType == 0 ? "active" : ""}
+            onClick={() => handleLeaderboard(0)}
+          >
+            Tappa 1
+          </button>
+          <button
+            className={sortType == 1 ? "active" : ""}
+            onClick={() => handleLeaderboard(1)}
+          >
+            Tappa 2
+          </button>
+          <button
+            disabled
+            className={sortType == 2 ? "active" : ""}
+            onClick={() => handleLeaderboard(1)}
+          >
+            Tappa 3
+          </button>
+          <button
+            disabled
+            className={sortType == 3 ? "active" : ""}
+            onClick={() => handleLeaderboard(1)}
+          >
+            Tappa 4
+          </button>
+          <button
+            disabled
+            className={sortType == 4 ? "active" : ""}
+            onClick={() => handleLeaderboard(1)}
+          >
+            Tappa 5
+          </button>
+          <button
+            disabled
+            className={sortType == 5 ? "active" : ""}
+            onClick={() => handleLeaderboard(1)}
+          >
+            Tappa 6
+          </button>
+          <button
+            disabled
+            className={sortType == 6 ? "active" : ""}
+            onClick={() => handleLeaderboard(1)}
+          >
+            Tappa 7
+          </button>
         </div>
         <div className="leaderboard mt-5">
           <div className="line head">
@@ -159,35 +288,50 @@ function Classifica() {
             <div className="cell">Giocatore</div>
             <div className="cell">Punti</div>
           </div>
-          {sortType == null && userPlayers.sort((a, b) => a.points > b.points ? -1 : 1 ).map((user, i) => (
-            <>
-              <div className="line body" key={i}>
-                <div className="cell">{i + 1}</div>
-                <div className="cell">{user.teamName}</div>
-                <div className="cell">{user.points}</div>
-              </div>
-            </>
-          ))}
-          {sortType != null && userPlayers.sort((a, b) =>
-        a.custom_result[sortType].leaderboardPoints > b.custom_result[sortType].leaderboardPoints ? -1 : 1
-      ).map((user, i) => (
-            <>
-              <div className="line body" key={i}>
-                <div className="cell">{i + 1}</div>
-                <div className="cell">{user.teamName}</div>
-                <div className="cell">{user.custom_result[sortType].leaderboardPoints}</div>
-                {/* <div className="cell">{user.custom_result[sortType].leaderboardPoints}</div> */}
-                {/* <div className="cell">{user.points}</div> */}
-              </div>
-            </>
-          ))}
+          {sortType == null &&
+            userPlayers
+              .sort((a, b) => (a.points > b.points ? -1 : 1))
+              .map((user, i) => (
+                <>
+                  <div className="line body" key={i}>
+                    <div className="cell">{i + 1}</div>
+                    <div className="cell">{user.teamName}</div>
+                    <div className="cell">{user.points}</div>
+                  </div>
+                </>
+              ))}
+          {sortType != null &&
+            userPlayers
+              .sort((a, b) =>
+                a.custom_result[sortType].leaderboardPoints >
+                b.custom_result[sortType].leaderboardPoints
+                  ? -1
+                  : 1
+              )
+              .map((user, i) => (
+                <>
+                  <div className="line body" key={i}>
+                    <div className="cell">{i + 1}</div>
+                    <div className="cell">{user.teamName}</div>
+                    <div className="cell">
+                      {user.custom_result[sortType].leaderboardPoints}
+                    </div>
+                    {/* <div className="cell">{user.custom_result[sortType].leaderboardPoints}</div> */}
+                    {/* <div className="cell">{user.points}</div> */}
+                  </div>
+                </>
+              ))}
         </div>
-        {user && user.role.type == "admin" && 
+        {user && user.role.type == "admin" && (
           <>
-          <button onClick={() => calculatePoints(0)}>Calcola giornata 1</button>
-          <button onClick={() => calculatePoints(1)}>Calcola giornata 2</button>
+            <button onClick={() => calculatePoints(0)}>
+              Calcola giornata 1
+            </button>
+            <button onClick={() => calculatePoints(1)}>
+              Calcola giornata 2
+            </button>
           </>
-        }
+        )}
       </div>
     </>
   );

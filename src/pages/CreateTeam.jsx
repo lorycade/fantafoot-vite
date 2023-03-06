@@ -1,13 +1,19 @@
 import { useContext, useState, useEffect } from "react";
-// import { UserContext } from "../context/UserContext";
-// import { Link } from "react-router-dom"
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import CreateStepper from "../components/create-stepper/CreateStepper";
 
 // import playerImg from "../assets/user.png";
 
 function CreateTeam() {
+  const jwt = localStorage.getItem("jwt");
+  const history = useNavigate()
+
+  useEffect(() => {
+    if (!jwt) {
+      history('/')
+    }
+  }, [])
+
   return (
     <>
       <div className="container mb-5">

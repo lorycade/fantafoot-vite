@@ -1,35 +1,10 @@
 import { Link } from "react-router-dom";
-import axios from "axios";
-import { useState, useEffect, useContext } from "react";
-import { UserContext } from "../context/UserContext";
+// import axios from "axios";
+// import { useState, useEffect, useContext } from "react";
+// import { UserContext } from "../context/UserContext";
 
 function Home() {
-  const [myPlayers, setMyPlayers] = useState();
-  const { user, setUser } = useContext(UserContext);
-  const jwt = localStorage.getItem('jwt')
-  // const userStored = JSON.parse(userData);
-
-  useEffect(() => {
-    if (jwt) {
-      getMyData();
-    }
-  }, []);
-
-  const getMyData = async () => {
-    const response = await axios.get(
-      import.meta.env.VITE_API_URL + "/api/users/me?populate=*",
-      {
-        headers: {
-          Authorization: `Bearer ${jwt}`,
-        },
-      }
-    );
-    
-    setUser(response.data)
-    // localStorage.setItem('user', JSON.stringify(response.data))
-    // localStorage.setItem('userPlayers', JSON.stringify(response.data.players))
-    setMyPlayers(response.data.players);
-  };
+  // const { user, setUser } = useContext(UserContext);
 
   return (
     <>

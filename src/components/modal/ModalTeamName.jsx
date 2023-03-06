@@ -35,7 +35,7 @@ function ModalTeamName({ isOpen, openEvent, userData, jwt }) {
       .then((response) => {
         
         setUser(response.data)
-        localStorage.setItem('user', JSON.stringify(response.data))
+        // localStorage.setItem('user', JSON.stringify(response.data))
         handleClose()
       })
       .catch((error) => {
