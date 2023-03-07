@@ -3,8 +3,10 @@ import axios from "axios";
 import { UserContext } from "../context/UserContext";
 import { useNavigate } from "react-router-dom";
 import LoginBackground from "../resources/imgaes/login-background.jpg";
+import { EyeFill, EyeSlashFill } from 'react-bootstrap-icons';
 
 function Login() {
+  const [showPassword, setShowPassword] = useState(false)
   const [isRecover, setIsRecover] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -22,8 +24,6 @@ function Login() {
   }, [user]);
 
   const handleSubmit = async (event) => {
-    event.preventDefault();
-
     axios
       .post(import.meta.env.VITE_API_URL + "/api/auth/local", {
         identifier: email,
@@ -62,7 +62,7 @@ function Login() {
         <div className="login-form">
           <h1>{isRecover ? "Recupera Password" : "Accedi"}</h1>
           {!isRecover && (
-            <form className="mt-5" onSubmit={handleSubmit}>
+            <form className="mt-5" onSubmit={(e) => e.preventDefault()}>
               <div className="form-floating mb-3">
                 <input
                   type="email"
@@ -76,17 +76,20 @@ function Login() {
               </div>
               <div className="form-floating">
                 <input
-                  type="password"
+                  type={showPassword ? 'text' : 'password'}
                   value={password}
                   onChange={(event) => setPassword(event.target.value)}
                   className="form-control"
                   id="floatingPassword"
                   placeholder="Password"
                 />
+                <button className="toggle-psw-btn" onClick={() => setShowPassword(!showPassword)}>
+                  {showPassword ? <EyeFill/> : <EyeSlashFill/>}
+                </button>
                 <label htmlFor="floatingPassword">Password</label>
               </div>
               {error && <p className="error-text">{error}</p>}
-              <button className="btn btn-primary btn-lg login-btn mt-4">
+              <button onClick={() => handleSubmit()} className="btn btn-primary btn-lg login-btn mt-4">
                 Accedi
               </button>
               <button
@@ -98,7 +101,7 @@ function Login() {
             </form>
           )}
           {isRecover && (
-            <form className="mt-5" onSubmit={handleRecoverPassword}>
+            <form className="mt-5" onSubmit={(e) => e.preventDefault()}>
               <div className="form-floating mb-3">
                 <input
                   type="email"
@@ -110,7 +113,7 @@ function Login() {
                 />
                 <label htmlFor="floatingInput">Email</label>
               </div>
-              <button className="btn btn-primary btn-lg login-btn mt-4">
+              <button onClick={() => handleRecoverPassword()} className="btn btn-primary btn-lg login-btn mt-4">
                 Recupera password
               </button>
               <button

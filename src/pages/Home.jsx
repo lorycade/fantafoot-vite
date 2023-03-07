@@ -1,11 +1,6 @@
 import { Link } from "react-router-dom";
-// import axios from "axios";
-// import { useState, useEffect, useContext } from "react";
-// import { UserContext } from "../context/UserContext";
 
 function Home() {
-  // const { user, setUser } = useContext(UserContext);
-
   return (
     <>
       <div className="container">

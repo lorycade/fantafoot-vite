@@ -201,3 +201,18 @@ body {
     }
   }
 }
+
+.form-floating {
+  .toggle-psw-btn {
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    translate: 0 -50%;
+    border: 0;
+    background-color: transparent;
+    
+    svg {
+      font-size: 20px;
+    }
+  }
+}

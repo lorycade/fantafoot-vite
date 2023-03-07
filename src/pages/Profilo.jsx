@@ -3,10 +3,14 @@ import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { UserContext } from "../context/UserContext";
+import { EyeFill, EyeSlashFill } from 'react-bootstrap-icons';
 
 // import ModalTeamName from "../components/modal/ModalTeamName";
 
 function Profilo() {
+  const [showOldPassword, setShowOldPassword] = useState(false)
+  const [showNewPassword, setShowNewPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
@@ -86,7 +90,7 @@ function Profilo() {
             </div>
 
             <p>Per creare/modificare il nome della squadra o la tua rosa, clicca qui sotto</p>
-            <Link to="/crea-squadra">{user && user.players.length > 0 ? 'Modifica Squadra' : 'Crea Squadra'}</Link>
+            <Link to="/crea-squadra">{user && user.teamName ? 'Modifica Squadra' : 'Crea Squadra'}</Link>
             
           </div>
           <div className="col-lg-5">
@@ -94,29 +98,35 @@ function Profilo() {
             <div className="mt-5 change-password-form">
               <div className="form-floating mb-3">
                 <input
-                  type="password"
+                  type={showOldPassword ? 'text' : 'password'}
                   value={oldPassword}
                   onChange={(event) => setOldPassword(event.target.value)}
                   className="form-control"
                   id="old-password"
                   placeholder="Password"
                 />
+                <button className="toggle-psw-btn" onClick={() => setShowOldPassword(!showOldPassword)}>
+                  {showOldPassword ? <EyeFill/> : <EyeSlashFill/>}
+                </button>
                 <label htmlFor="old-password">Vecchia password</label>
               </div>
               <div className="form-floating mb-3">
                 <input
-                  type="password"
+                  type={showNewPassword ? 'text' : 'password'}
                   value={newPassword}
                   onChange={(event) => setNewPassword(event.target.value)}
                   className="form-control"
                   id="new-password"
                   placeholder="Password"
                 />
+                <button className="toggle-psw-btn" onClick={() => setShowNewPassword(!showNewPassword)}>
+                  {showNewPassword ? <EyeFill/> : <EyeSlashFill/>}
+                </button>
                 <label htmlFor="new-password">Nuova password</label>
               </div>
               <div className="form-floating">
                 <input
-                  type="password"
+                  type={showConfirmPassword ? 'text' : 'password'}
                   value={confirmNewPassword}
                   onChange={(event) =>
                     setConfirmNewPassword(event.target.value)
@@ -125,6 +135,9 @@ function Profilo() {
                   id="confirm-password"
                   placeholder="Password"
                 />
+                <button className="toggle-psw-btn" onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
+                  {showConfirmPassword ? <EyeFill/> : <EyeSlashFill/>}
+                </button>
                 <label htmlFor="confirm-password">
                   Conferma nuova password
                 </label>
