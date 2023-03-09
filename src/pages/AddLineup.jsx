@@ -2,31 +2,31 @@ import { useState, useContext, useEffect } from "react";
 import { UserContext } from "../context/UserContext";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
+import { CCircleFill, PeopleFill, PersonFill, PersonFillSlash } from "react-bootstrap-icons";
 
 function InserimentoFormazione() {
   const jwt = localStorage.getItem("jwt");
   const { user, setUser } = useContext(UserContext);
   const [players, setPlayers] = useState([]);
   const [teamInsert, setTeamInsert] = useState(false);
+  const [insertCorrect, setInsertCorrect] = useState(false);
 
-  const [age, setAge] = useState('');
+  const [age, setAge] = useState("");
 
-  // const [captainCount, setCaptainCount] = useState(0);
-  // const [singlePlayerCount, setSinglePlayerCount] = useState(0);
-  // const [coupleCount, setCoupleCount] = useState(0);
-  // const [benchCount, setBenchCount] = useState(0);
+  const [captainCount, setCaptainCount] = useState(0);
+  const [singlePlayerCount, setSinglePlayerCount] = useState(0);
+  const [coupleCount, setCoupleCount] = useState(0);
+  const [benchCount, setBenchCount] = useState(0);
   const history = useNavigate();
 
-  const handleRoleChange = (e, role, benchOrder) => {
+  const handleRoleChange = (e, player) => {
     // console.log(e.target, role);
     // console.log(id);
-    const id = e.target.value;
+    const role = e.target.value;
+    const id = player.id;
+    console.log(id);
     let tasks;
+
     switch (role) {
       case "captain":
         tasks = players.map((item) =>
@@ -67,7 +67,7 @@ function InserimentoFormazione() {
             : item
         );
         break;
-      case "bench":
+      case "bench-1":
         tasks = players.map((item) =>
           item.id === id
             ? (item = {
@@ -76,7 +76,49 @@ function InserimentoFormazione() {
                 bench: true,
                 captain: false,
                 couple: false,
-                benchOrder,
+                benchOrder: 1,
+              })
+            : item
+        );
+        break;
+      case "bench-2":
+        tasks = players.map((item) =>
+          item.id === id
+            ? (item = {
+                ...item,
+                starter: false,
+                bench: true,
+                captain: false,
+                couple: false,
+                benchOrder: 2,
+              })
+            : item
+        );
+        break;
+      case "bench-3":
+        tasks = players.map((item) =>
+          item.id === id
+            ? (item = {
+                ...item,
+                starter: false,
+                bench: true,
+                captain: false,
+                couple: false,
+                benchOrder: 3,
+              })
+            : item
+        );
+        break;
+      case "bench-4":
+        tasks = players.map((item) =>
+          item.id === id
+            ? (item = {
+                ...item,
+                starter: false,
+                bench: true,
+                captain: false,
+                couple: false,
+                benchOrder: 4,
               })
             : item
         );
@@ -116,22 +158,30 @@ function InserimentoFormazione() {
     }
   }, [user]);
 
-  // useEffect(() => {
-  //   const countCaptains = players.filter((item) => item.captain == true).length;
-  //   const countSinglePlayer = players.filter(
-  //     (item) =>
-  //       item.captain == false && item.starter == true && item.couple == false
-  //   ).length;
-  //   const countCouple = players.filter((item) => item.couple == true).length;
-  //   const countBench = players.filter(
-  //     (item) => item.starter == false && item.bench == true
-  //   ).length;
+  useEffect(() => {
+    const countCaptains = players.filter((item) => item.captain == true).length;
+    const countSinglePlayer = players.filter(
+      (item) =>
+        item.captain == false && item.starter == true && item.couple == false
+    ).length;
+    const countCouple = players.filter((item) => item.couple == true).length;
+    const countBench = players.filter(
+      (item) => item.starter == false && item.bench == true
+    ).length;
 
-  //   setCaptainCount(countCaptains);
-  //   setSinglePlayerCount(countSinglePlayer);
-  //   setCoupleCount(countCouple);
-  //   setBenchCount(countBench);
-  // }, [players]);
+    setCaptainCount(countCaptains);
+    setSinglePlayerCount(countSinglePlayer);
+    setCoupleCount(countCouple);
+    setBenchCount(countBench);
+
+    const allRight =
+      countCaptains === 1 &&
+      countSinglePlayer === 3 &&
+      countCouple === 2 &&
+      countBench === 4;
+
+    setInsertCorrect(allRight);
+  }, [players]);
 
   const handleSaveSquad = () => {
     const areAllInsert = players.filter(
@@ -176,10 +226,6 @@ function InserimentoFormazione() {
       });
   };
 
-  const handleChange = (event) => {
-    setAge(event.target.value);
-  };
-
   return (
     <>
       <div className="container mb-5 formation-container">
@@ -191,27 +237,48 @@ function InserimentoFormazione() {
             <div>Complimenti, hai salvato la tua formazione !!</div>
           </div>
         )}
-        <div className="mb-5"></div>
 
-        <FormControl fullWidth>
-          <InputLabel id="demo-simple-select-label">Capitano</InputLabel>
-          <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            value={players.filter(item => item.captain == true).name}
-            label="Age"
-            onChange={(e) => handleRoleChange(e, "captain")}
+        <div className="role-selection-wrapper">
+          {players.map((player) => (
+            <div className="player-item" key={player.id}>
+              <div className="player-info">
+                {player.name} {player.surname}
+              </div>
+              <select
+                onChange={(e) => handleRoleChange(e, player)}
+                name={`select-role`}
+                id={`select-role`}
+              >
+                <option value="" disabled selected={player.captain == false && player.starter == false && player.couple == false && player.bench == false}>Seleziona ruolo</option>
+                <option value="captain" selected={player.captain == true}>Capitano</option>
+                <option value="single" selected={player.captain == false && player.starter == true && player.couple == false}>Singolo</option>
+                <option value="couple" selected={player.captain == false && player.starter == true && player.couple == true}>Coppia</option>
+                <option value="bench-1" selected={player.starter == false && player.benchOrder === 1}>Panchina 1</option>
+                <option value="bench-2" selected={player.starter == false && player.benchOrder === 2}>Panchina 2</option>
+                <option value="bench-3" selected={player.starter == false && player.benchOrder === 3}>Panchina 3</option>
+                <option value="bench-4" selected={player.starter == false && player.benchOrder === 4}>Panchina 4</option>
+              </select>
+            </div>
+          ))}
+        </div>
+
+        <div className="bottom-action">
+          <div className="container">
+          <ul className="count-wrapper">
+            <li><CCircleFill /> {captainCount}/1</li>
+            <li><PersonFill />  {singlePlayerCount}/3</li>
+            <li><PeopleFill /> {coupleCount}/2</li>
+            <li><PersonFillSlash /> {benchCount}/4</li>
+          </ul>
+          <button
+            disabled={!insertCorrect}
+            className="btn btn-primary"
+            onClick={() => handleSaveSquad()}
           >
-            {players.map(player => (
-              <MenuItem value={player.id}>{player.name} {player.surname}</MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-
-        <div className="mb-5"></div>
-        <button className="btn btn-primary" onClick={() => handleSaveSquad()}>
-          Salva formazione
-        </button>
+            Salva formazione
+          </button>
+          </div>
+        </div>
       </div>
     </>
   );
