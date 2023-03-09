@@ -35,11 +35,9 @@ const CreateStepper = () => {
   }, []);
 
   useEffect(() => {
-    if (user) {
-      console.log('llll', user);
+    if (user && user.teamName != null) {
+      initChangeMode()
     }
-    
-    if (user.myTeam != null) initChangeMode();
   }, [user]);
 
   useEffect(() => {
@@ -93,6 +91,7 @@ const CreateStepper = () => {
   };
 
   const initChangeMode = () => {
+    console.log('arriva qua');
     setMyTeam(user.players)
     setSquadName(user.teamName)
     const myPlayersCost = user.players.reduce((accumulator, object) => {
@@ -222,6 +221,7 @@ const CreateStepper = () => {
                     }
                     key={player.id}
                     onClick={() => handleSelection(player)}
+                    disabled={player.value > credits && myTeam.filter((item) => player.id == item.id).length != 1}
                   >
                     <div className="name">
                       {player.name} {player.surname}
