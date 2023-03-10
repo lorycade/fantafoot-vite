@@ -1,5 +1,6 @@
 .stepper {
-  padding-bottom: 130px;
+  padding-bottom: 80px;
+
   .stepper-header {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
@@ -64,24 +65,46 @@
 
     .filter-wrapper {
       display: flex;
-      align-items: center;
-      justify-content: space-between;
+      align-items: flex-end;
+      gap: 24px;
+      flex-direction: column;
       margin-bottom: 32px;
 
+      @include media-breakpoint-up(sm) {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+      }
+
       .form-floating {
+        width: 100%;
         @include media-breakpoint-up(md) {
-          min-width: 400px;
+          max-width: 300px;
+        }
+
+        @include media-breakpoint-up(lg) {
+          max-width: 400px;
         }
 
         .clear-input {
           position: absolute;
-          right: 10px;
+          right: 40px;
           top: 50%;
           translate: 0 -50%;
           background-color: transparent;
           border: 0;
-          
         }
+
+        .search-icon {
+          position: absolute;
+          right: 10px;
+          top: 50%;
+          translate: 0 -50%;
+        }
+      }
+
+      .add-player {
+        margin-left: auto;
       }
     }
 
@@ -116,6 +139,31 @@
     button {
       &:only-child {
         margin-left: auto;
+      }
+    }
+
+    .info-creation {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      gap: 12px;
+      list-style: none;
+      padding-left: 0;
+      margin-bottom: 0;
+
+      @include media-breakpoint-up(sm) {
+        flex-direction: row;
+        gap: 32px;
+      }
+
+      li {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+
+        svg {
+          font-size: 20px;
+        }
       }
     }
   }

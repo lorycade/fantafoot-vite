@@ -85,6 +85,9 @@ function Profilo() {
               Ciao <strong>{user.name}</strong>
             </div>
             <div className="user-info">
+              Crediti disponibili <strong>{user.credits}</strong>
+            </div>
+            <div className="user-info">
               Nome Squadra <strong>{user.teamName}</strong>
               {/* <button onClick={() => setShowModal(true)}>Modifica</button> */}
             </div>

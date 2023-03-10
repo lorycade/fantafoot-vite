@@ -33,7 +33,7 @@ function TeamDetail() {
         <div className="col-lg-6">
           <h3>Lista giocatori</h3>
           {user && user.players.sort((a, b) => a.value > b.value ? -1 : 1 ).map(player => (
-            <p>{player.name} {player.surname}</p>
+            <p key={player.id}>{player.name} {player.surname}</p>
           ))}
         </div>
       </div>

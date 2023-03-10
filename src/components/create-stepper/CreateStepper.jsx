@@ -2,6 +2,8 @@ import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../context/UserContext";
+import { CashCoin, PersonFill, Search, XLg } from "react-bootstrap-icons";
+import Offcanvas from "react-bootstrap/Offcanvas";
 
 const steps = [
   {
@@ -22,13 +24,25 @@ const CreateStepper = () => {
   const { user, setUser } = useContext(UserContext);
   const jwt = localStorage.getItem("jwt");
   const [activeStep, setActiveStep] = useState(1);
-  const [squadName, setSquadName] = useState("");
+  const [squadName, setSquadName] = useState('');
   const [playerList, setPlayerlist] = useState([]);
   const [myTeam, setMyTeam] = useState([]);
   const [credits, setCredits] = useState(400);
   const [teamCreated, setTeamCreated] = useState(false);
-  const [playerSearch, setPlayerSearch] = useState("");
+  const [playerSearch, setPlayerSearch] = useState('');
+  const [showPlayerCanvas, setPlayerCanvas] = useState(false);
+  const [nameAdd, setNameAdd] = useState('');
+  const [surnameAdd, setSurnameAdd] = useState('');
+
   const history = useNavigate();
+
+  // const handleShow = () => setPlayerCanvas(true)
+  const handleClose = () => {
+    setPlayerCanvas(false);
+    setNameAdd('')
+    setSurnameAdd('')
+  }
+
 
   useEffect(() => {
     getPlayers();
@@ -36,17 +50,25 @@ const CreateStepper = () => {
 
   useEffect(() => {
     if (user && user.teamName != null) {
-      initChangeMode()
+      initChangeMode();
     }
   }, [user]);
 
   useEffect(() => {
     if (playerSearch.length < 3) {
-      getPlayers()
+      getPlayers();
     } else {
-      const filteredList = playerList.filter(player => player.name.toLowerCase().includes(playerSearch.toLocaleLowerCase()) || player.surname.toLowerCase().includes(playerSearch.toLocaleLowerCase()))
-  
-      setPlayerlist(filteredList)
+      const filteredList = playerList.filter(
+        (player) =>
+          player.name
+            .toLowerCase()
+            .includes(playerSearch.toLocaleLowerCase()) ||
+          player.surname
+            .toLowerCase()
+            .includes(playerSearch.toLocaleLowerCase())
+      );
+
+      setPlayerlist(filteredList);
     }
   }, [playerSearch]);
 
@@ -69,7 +91,6 @@ const CreateStepper = () => {
   };
 
   const handleSelection = (player) => {
-    console.log('kokoko', myTeam);
     const isMyTeam = myTeam.filter((item) => player.id == item.id).length == 1;
     const playerCredits = player.value;
 
@@ -91,22 +112,25 @@ const CreateStepper = () => {
   };
 
   const initChangeMode = () => {
-    console.log('arriva qua');
-    setMyTeam(user.players)
-    setSquadName(user.teamName)
+    setMyTeam(user.players);
+    setSquadName(user.teamName);
     const myPlayersCost = user.players.reduce((accumulator, object) => {
       return accumulator + object.value;
     }, 0);
     setCredits(credits - myPlayersCost);
   };
 
-  const handleCreateTeam = async () => {
+  const handleAddPlayer = () => {
+    console.log(nameAdd, surnameAdd);
     axios
-      .put(
-        import.meta.env.VITE_API_URL + "/api/users/" + user.id,
+      .post(
+        import.meta.env.VITE_API_URL + "/api/players",
         {
-          players: myTeam,
-          teamName: squadName,
+          data: {
+            name: nameAdd,
+            surname: surnameAdd,
+            value: 10
+          }
         },
         {
           headers: {
@@ -115,8 +139,34 @@ const CreateStepper = () => {
         }
       )
       .then((response) => {
-        const newUser = {...response.data, players: myTeam}
-        setUser(newUser)
+        let newList = playerList
+        newList.push(response.data.data)
+        setPlayerlist(newList)
+        setPlayerCanvas(false)
+      })
+      .catch((error) => {
+        console.log("An error occurred:", error.response);
+      });
+  }
+
+  const handleCreateTeam = async () => {
+    axios
+      .put(
+        import.meta.env.VITE_API_URL + "/api/users/" + user.id,
+        {
+          players: myTeam,
+          teamName: squadName,
+          credits,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${jwt}`,
+          },
+        }
+      )
+      .then((response) => {
+        const newUser = { ...response.data, players: myTeam };
+        setUser(newUser);
         setTeamCreated(true);
 
         setTimeout(() => {
@@ -182,13 +232,65 @@ const CreateStepper = () => {
                     id="floatingInput"
                     placeholder="name@example.com"
                   />
-                  {playerSearch.length >= 3 && <button className="clear-input" onClick={() => setPlayerSearch("")}>x</button>}
+                  <Search className="search-icon" />
+                  {playerSearch.length >= 3 && (
+                    <button
+                      className="clear-input"
+                      onClick={() => setPlayerSearch("")}
+                    >
+                      <XLg />
+                    </button>
+                  )}
                   <label htmlFor="floatingInput">Cerca giocatore</label>
                 </div>
-                <button onClick={() => handleRemoveAll()}>
+                <button
+                  className="add-player btn btn-primary"
+                  onClick={() => setPlayerCanvas(true)}
+                >
+                  Aggiungi giocatore
+                </button>
+                <button
+                  className="btn btn-danger"
+                  onClick={() => handleRemoveAll()}
+                >
                   Elimina tutti
                 </button>
               </div>
+              <Offcanvas show={showPlayerCanvas} onHide={handleClose}>
+                <Offcanvas.Header closeButton>
+                  <Offcanvas.Title>Aggiungi Giocatore</Offcanvas.Title>
+                </Offcanvas.Header>
+                <Offcanvas.Body>
+                <div className="form-floating mb-3">
+                  <input
+                    type="text"
+                    value={nameAdd}
+                    onChange={(event) => setNameAdd(event.target.value)}
+                    className="form-control"
+                    id="name"
+                    placeholder="name@example.com"
+                  />
+                  <label htmlFor="name">Nome</label>
+                </div>
+                <div className="form-floating mb-3">
+                  <input
+                    type="text"
+                    value={surnameAdd}
+                    onChange={(event) => setSurnameAdd(event.target.value)}
+                    className="form-control"
+                    id="surname"
+                    placeholder="name@example.com"
+                  />
+                  <label htmlFor="surname">Cognome</label>
+                </div>
+                <button
+                  className="add-player btn btn-primary"
+                  onClick={() => handleAddPlayer()}
+                >
+                  Aggiungi giocatore
+                </button>
+                </Offcanvas.Body>
+              </Offcanvas>
               {myTeam.length == 10 &&
                 playerList.map((player) => (
                   <button
@@ -211,17 +313,22 @@ const CreateStepper = () => {
                     <div className="value">{player.value}</div>
                   </button>
                 ))}
-              {myTeam.length >= 0 && myTeam.length < 10 &&
+              {myTeam.length >= 0 &&
+                myTeam.length < 10 &&
                 playerList.map((player) => (
                   <button
-                    className={myTeam.length > 0 && 
+                    className={
+                      myTeam.length > 0 &&
                       myTeam.filter((item) => player.id == item.id).length == 1
                         ? "player-line selected"
                         : "player-line"
                     }
                     key={player.id}
                     onClick={() => handleSelection(player)}
-                    disabled={player.value > credits && myTeam.filter((item) => player.id == item.id).length != 1}
+                    disabled={
+                      player.value > credits &&
+                      myTeam.filter((item) => player.id == item.id).length != 1
+                    }
                   >
                     <div className="name">
                       {player.name} {player.surname}
@@ -257,18 +364,18 @@ const CreateStepper = () => {
                 className="btn btn-secondary prev"
                 onClick={() => handlePrev()}
               >
-                Prev
+                Indietro
               </button>
             )}
             {activeStep == 2 && (
-              <div className="info-creation">
-                <p>
-                  Crediti residui <strong>{credits}</strong>/400
-                </p>
-                <p className="mb-0">
-                  Giocatori selezionati <strong>{myTeam.length}</strong>/10
-                </p>
-              </div>
+              <ul className="info-creation">
+                <li>
+                  <CashCoin /> <strong>{credits}/400</strong>
+                </li>
+                <li>
+                  <PersonFill /> <strong>{myTeam.length}/10</strong>
+                </li>
+              </ul>
             )}
             {activeStep == 1 && (
               <button
@@ -276,7 +383,7 @@ const CreateStepper = () => {
                 disabled={!squadName}
                 onClick={() => handleNext()}
               >
-                next
+                Avanti
               </button>
             )}
             {activeStep == 2 && (
@@ -285,7 +392,7 @@ const CreateStepper = () => {
                 disabled={myTeam.length != 10}
                 onClick={() => handleNext()}
               >
-                next
+                Avanti
               </button>
             )}
             {activeStep == 3 && (
