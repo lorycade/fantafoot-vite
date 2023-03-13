@@ -252,6 +252,7 @@ function Classifica() {
           <button
             className={sortType == 1 ? "active" : ""}
             onClick={() => handleLeaderboard(1)}
+            disabled
           >
             Tappa 2
           </button>
@@ -331,7 +332,7 @@ function Classifica() {
                 </>
               ))}
         </div>
-        {user && user.role.type == "admin" && (
+        {user && user.role && user.role.type == "admin" && (
           <>
             <button onClick={() => calculatePoints(0)}>
               Calcola giornata 1

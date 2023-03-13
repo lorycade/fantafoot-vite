@@ -2,7 +2,12 @@ import { useState, useContext, useEffect } from "react";
 import { UserContext } from "../context/UserContext";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { CCircleFill, PeopleFill, PersonFill, PersonFillSlash } from "react-bootstrap-icons";
+import {
+  CCircleFill,
+  PeopleFill,
+  PersonFill,
+  PersonFillSlash,
+} from "react-bootstrap-icons";
 
 function InserimentoFormazione() {
   const jwt = localStorage.getItem("jwt");
@@ -20,11 +25,8 @@ function InserimentoFormazione() {
   const history = useNavigate();
 
   const handleRoleChange = (e, player) => {
-    // console.log(e.target, role);
-    // console.log(id);
     const role = e.target.value;
     const id = player.id;
-    console.log(id);
     let tasks;
 
     switch (role) {
@@ -34,6 +36,7 @@ function InserimentoFormazione() {
             ? (item = {
                 ...item,
                 starter: true,
+                benchOrder: null,
                 captain: true,
                 bench: false,
                 couple: false,
@@ -47,6 +50,7 @@ function InserimentoFormazione() {
             ? (item = {
                 ...item,
                 starter: true,
+                benchOrder: null,
                 captain: false,
                 couple: false,
                 bench: false,
@@ -60,6 +64,7 @@ function InserimentoFormazione() {
             ? (item = {
                 ...item,
                 starter: true,
+                benchOrder: null,
                 couple: true,
                 captain: false,
                 bench: false,
@@ -140,7 +145,6 @@ function InserimentoFormazione() {
         break;
     }
 
-    console.log("task", tasks);
     setPlayers(tasks);
   };
 
@@ -193,17 +197,32 @@ function InserimentoFormazione() {
       tappa: 1,
       formation: players,
     };
-    // console.log(players);
-    let array = [];
 
-    array.push(lineup);
+    let oldLineups;
+    if (user.lineups == null) {
+      let emptyArr = []
+      emptyArr.push(lineup)
+      oldLineups = emptyArr;
+    } else {
+      const isSetYet = user.lineups.filter(
+        (item) => item.tappa == lineup.tappa
+      );
 
-    console.log(array);
+      if (isSetYet.length === 1) {
+        const index = user.lineups.indexOf(isSetYet[0])
+        user.lineups[index] = lineup
+        oldLineups = user.lineups
+      } else {
+        user.lineups.push(lineup)
+        oldLineups = user.lineups
+      }
+    }
+
     axios
       .put(
         import.meta.env.VITE_API_URL + "/api/users/" + user.id,
         {
-          lineups: array,
+          lineups: oldLineups,
         },
         {
           headers: {
@@ -212,7 +231,7 @@ function InserimentoFormazione() {
         }
       )
       .then((response) => {
-        const newUser = { ...response.data, lineups: array };
+        const newUser = { ...response.data, lineups: oldLineups };
         console.log(newUser);
         setUser(newUser);
         setTeamInsert(true);
@@ -222,7 +241,7 @@ function InserimentoFormazione() {
         }, 3000);
       })
       .catch((error) => {
-        console.log("An error occurred:", error.response);
+        console.log("An error occurred:", error);
       });
   };
 
@@ -249,14 +268,67 @@ function InserimentoFormazione() {
                 name={`select-role`}
                 id={`select-role`}
               >
-                <option value="" disabled selected={player.captain == false && player.starter == false && player.couple == false && player.bench == false}>Seleziona ruolo</option>
-                <option value="captain" selected={player.captain == true}>Capitano</option>
-                <option value="single" selected={player.captain == false && player.starter == true && player.couple == false}>Singolo</option>
-                <option value="couple" selected={player.captain == false && player.starter == true && player.couple == true}>Coppia</option>
-                <option value="bench-1" selected={player.starter == false && player.benchOrder === 1}>Panchina 1</option>
-                <option value="bench-2" selected={player.starter == false && player.benchOrder === 2}>Panchina 2</option>
-                <option value="bench-3" selected={player.starter == false && player.benchOrder === 3}>Panchina 3</option>
-                <option value="bench-4" selected={player.starter == false && player.benchOrder === 4}>Panchina 4</option>
+                <option
+                  value=""
+                  disabled
+                  selected={
+                    player.captain == false &&
+                    player.starter == false &&
+                    player.couple == false &&
+                    player.bench == false
+                  }
+                >
+                  Seleziona ruolo
+                </option>
+                {!players.slice(0, 9).includes(player) && (
+                  <option value="captain" selected={player.captain == true}>
+                    Capitano
+                  </option>
+                )}
+                <option
+                  value="single"
+                  selected={
+                    player.captain == false &&
+                    player.starter == true &&
+                    player.couple == false
+                  }
+                >
+                  Singolo
+                </option>
+                <option
+                  value="couple"
+                  selected={
+                    player.captain == false &&
+                    player.starter == true &&
+                    player.couple == true
+                  }
+                >
+                  Coppia
+                </option>
+                <option
+                  value="bench-1"
+                  selected={player.starter == false && player.benchOrder === 1}
+                >
+                  Panchina 1
+                </option>
+                <option
+                  value="bench-2"
+                  selected={player.starter == false && player.benchOrder === 2}
+                >
+                  Panchina 2
+                </option>
+                <option
+                  value="bench-3"
+                  selected={player.starter == false && player.benchOrder === 3}
+                >
+                  Panchina 3
+                </option>
+                <option
+                  value="bench-4"
+                  selected={player.starter == false && player.benchOrder === 4}
+                >
+                  Panchina 4
+                </option>
               </select>
             </div>
           ))}
@@ -264,19 +336,27 @@ function InserimentoFormazione() {
 
         <div className="bottom-action">
           <div className="container">
-          <ul className="count-wrapper">
-            <li><CCircleFill /> {captainCount}/1</li>
-            <li><PersonFill />  {singlePlayerCount}/3</li>
-            <li><PeopleFill /> {coupleCount}/2</li>
-            <li><PersonFillSlash /> {benchCount}/4</li>
-          </ul>
-          <button
-            disabled={!insertCorrect}
-            className="btn btn-primary"
-            onClick={() => handleSaveSquad()}
-          >
-            Salva formazione
-          </button>
+            <ul className="count-wrapper">
+              <li>
+                <CCircleFill /> {captainCount}/1
+              </li>
+              <li>
+                <PersonFill /> {singlePlayerCount}/3
+              </li>
+              <li>
+                <PeopleFill /> {coupleCount}/2
+              </li>
+              <li>
+                <PersonFillSlash /> {benchCount}/4
+              </li>
+            </ul>
+            <button
+              disabled={!insertCorrect}
+              className="btn btn-primary"
+              onClick={() => handleSaveSquad()}
+            >
+              Salva formazione
+            </button>
           </div>
         </div>
       </div>
