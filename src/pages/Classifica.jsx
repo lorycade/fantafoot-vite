@@ -24,10 +24,19 @@ function Classifica() {
     userPlayers.forEach((user) => {
       if (!user.lineups) return;
 
-      const playerResults = user.lineups[0].formation.map((obj) => {
-        obj.results = user.players.find(({ id }) => id === obj.id).results;
-        return obj;
-      });
+      let playerResults;
+      if (user.lineups[tappaId]) {
+        playerResults = user.lineups[tappaId].formation.map((obj) => {
+          obj.results = user.players.find(({ id }) => id === obj.id).results;
+          return obj;
+        });
+      } else {
+        playerResults = user.lineups[tappaId - 1].formation.map((obj) => {
+          obj.results = user.players.find(({ id }) => id === obj.id).results;
+          return obj;
+        });
+      }
+      
 
       let captainResult = Number(
         playerResults.find((item) => item.captain == true).results[tappaId]
@@ -44,7 +53,7 @@ function Classifica() {
       }, 0);
 
       const captainIsBest = singlePlayers.filter(
-        (item) => Number(item.results[tappaId].result) < captainResult
+        (item) => Number(item.results[tappaId].result) <= captainResult
       );
 
       if (captainIsBest.length == 0) {
@@ -283,9 +292,10 @@ function Classifica() {
           </button>
         </div>
         <div className="leaderboard mt-5">
-          <div className="line head">
-            <div className="cell">Posizione</div>
+          <div className={sortType != null ? 'line head single-tour' : 'line head'}>
+            <div className="cell">Pos.</div>
             <div className="cell">Giocatore</div>
+            {sortType !== null && <div className="cell">Punteggio</div>}
             <div className="cell">Punti</div>
           </div>
           {sortType == null &&
@@ -310,14 +320,13 @@ function Classifica() {
               )
               .map((user, i) => (
                 <>
-                  <div className="line body" key={i}>
+                  <div className="line body single-tour" key={i}>
                     <div className="cell">{i + 1}</div>
                     <div className="cell">{user.teamName}</div>
+                    <div className="cell">{user.custom_result[0].gamePoints}</div>
                     <div className="cell">
                       {user.custom_result[sortType].leaderboardPoints}
                     </div>
-                    {/* <div className="cell">{user.custom_result[sortType].leaderboardPoints}</div> */}
-                    {/* <div className="cell">{user.points}</div> */}
                   </div>
                 </>
               ))}

@@ -25,6 +25,7 @@ const CreateStepper = () => {
   const jwt = localStorage.getItem("jwt");
   const [activeStep, setActiveStep] = useState(1);
   const [squadName, setSquadName] = useState('');
+  const [fullPlayerList, setFullPlayerList] = useState([]);
   const [playerList, setPlayerlist] = useState([]);
   const [myTeam, setMyTeam] = useState([]);
   const [credits, setCredits] = useState(400);
@@ -58,14 +59,14 @@ const CreateStepper = () => {
     if (playerSearch.length < 3) {
       getPlayers();
     } else {
-      const filteredList = playerList.filter(
+      const filteredList = fullPlayerList.filter(
         (player) =>
           player.name
             .toLowerCase()
-            .includes(playerSearch.toLocaleLowerCase()) ||
+            .includes(playerSearch.toLowerCase()) ||
           player.surname
             .toLowerCase()
-            .includes(playerSearch.toLocaleLowerCase())
+            .includes(playerSearch.toLowerCase())
       );
 
       setPlayerlist(filteredList);
@@ -88,6 +89,7 @@ const CreateStepper = () => {
       import.meta.env.VITE_API_URL + "/api/players?sort=value:desc"
     );
     setPlayerlist(response.data.data);
+    setFullPlayerList(response.data.data)
   };
 
   const handleSelection = (player) => {
