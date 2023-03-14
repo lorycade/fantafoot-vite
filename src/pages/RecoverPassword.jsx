@@ -19,7 +19,6 @@ function RecoverPassword() {
 
 
   const handleSubmit = async (event) => {
-    event.preventDefault();
 
     axios
       .post(import.meta.env.VITE_API_URL + "/api/auth/reset-password", {
