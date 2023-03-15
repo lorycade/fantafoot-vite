@@ -19,7 +19,7 @@ function Login() {
 
   useEffect(() => {
     if (user) {
-      history("/");
+      history("/profilo");
     }
   }, [user]);
 

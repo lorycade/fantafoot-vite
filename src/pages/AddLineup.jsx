@@ -153,12 +153,13 @@ function InserimentoFormazione() {
       history("/");
     }
 
-    getAllPlayers()
-    
+    getAllPlayers();
   }, []);
 
   const getAllPlayers = async () => {
-    const response = await axios.get(import.meta.env.VITE_API_URL + "/api/players?sort=value:desc");
+    const response = await axios.get(
+      import.meta.env.VITE_API_URL + "/api/players?sort=value:desc"
+    );
     setAllPlayers(response.data.data);
   };
 
@@ -208,8 +209,8 @@ function InserimentoFormazione() {
 
     let oldLineups;
     if (user.lineups == null) {
-      let emptyArr = []
-      emptyArr.push(lineup)
+      let emptyArr = [];
+      emptyArr.push(lineup);
       oldLineups = emptyArr;
     } else {
       const isSetYet = user.lineups.filter(
@@ -217,12 +218,12 @@ function InserimentoFormazione() {
       );
 
       if (isSetYet.length === 1) {
-        const index = user.lineups.indexOf(isSetYet[0])
-        user.lineups[index] = lineup
-        oldLineups = user.lineups
+        const index = user.lineups.indexOf(isSetYet[0]);
+        user.lineups[index] = lineup;
+        oldLineups = user.lineups;
       } else {
-        user.lineups.push(lineup)
-        oldLineups = user.lineups
+        user.lineups.push(lineup);
+        oldLineups = user.lineups;
       }
     }
 
@@ -288,11 +289,9 @@ function InserimentoFormazione() {
                 >
                   Seleziona ruolo
                 </option>
-                {!allPlayers.slice(0, 9).includes(player) && (
-                  <option value="captain" selected={player.captain == true}>
-                    Capitano
-                  </option>
-                )}
+                <option value="captain" selected={player.captain == true}>
+                  Capitano
+                </option>
                 <option
                   value="single"
                   selected={
