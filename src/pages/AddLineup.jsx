@@ -16,7 +16,7 @@ function InserimentoFormazione() {
   const [teamInsert, setTeamInsert] = useState(false);
   const [insertCorrect, setInsertCorrect] = useState(false);
 
-  const [age, setAge] = useState("");
+  const [allPlayers, setAllPlayers] = useState([]);
 
   const [captainCount, setCaptainCount] = useState(0);
   const [singlePlayerCount, setSinglePlayerCount] = useState(0);
@@ -152,7 +152,15 @@ function InserimentoFormazione() {
     if (!jwt) {
       history("/");
     }
+
+    getAllPlayers()
+    
   }, []);
+
+  const getAllPlayers = async () => {
+    const response = await axios.get(import.meta.env.VITE_API_URL + "/api/players?sort=value:desc");
+    setAllPlayers(response.data.data);
+  };
 
   useEffect(() => {
     if (user && user.lineups) {
@@ -280,7 +288,7 @@ function InserimentoFormazione() {
                 >
                   Seleziona ruolo
                 </option>
-                {!players.slice(0, 9).includes(player) && (
+                {!allPlayers.slice(0, 9).includes(player) && (
                   <option value="captain" selected={player.captain == true}>
                     Capitano
                   </option>
