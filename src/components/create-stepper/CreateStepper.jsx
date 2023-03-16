@@ -43,6 +43,7 @@ const CreateStepper = () => {
     setPlayerCanvas(false);
     setNameAdd('')
     setSurnameAdd('')
+    setAddPlayerError(false)
   }
 
 
