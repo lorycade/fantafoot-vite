@@ -34,6 +34,7 @@ const CreateStepper = () => {
   const [showPlayerCanvas, setPlayerCanvas] = useState(false);
   const [nameAdd, setNameAdd] = useState('');
   const [surnameAdd, setSurnameAdd] = useState('');
+  const [addPlayerError, setAddPlayerError] = useState(false)
 
   const history = useNavigate();
 
@@ -123,7 +124,17 @@ const CreateStepper = () => {
   };
 
   const handleAddPlayer = () => {
-    console.log(nameAdd, surnameAdd);
+    const surnameExist = fullPlayerList.filter(item => item.surname.toLowerCase() === surnameAdd.toLowerCase())
+
+    if (surnameExist.length > 0) {
+      const nameExist = surnameExist.filter(item => item.name.toLowerCase() === nameAdd.toLowerCase())
+
+      if (nameExist.length > 0) {
+        setAddPlayerError(true)
+        return
+      } 
+    }
+
     axios
       .post(
         import.meta.env.VITE_API_URL + "/api/players",
@@ -145,6 +156,7 @@ const CreateStepper = () => {
         newList.push(response.data.data)
         setPlayerlist(newList)
         setPlayerCanvas(false)
+        setAddPlayerError(false)
       })
       .catch((error) => {
         console.log("An error occurred:", error.response);
@@ -285,6 +297,7 @@ const CreateStepper = () => {
                   />
                   <label htmlFor="surname">Cognome</label>
                 </div>
+                {addPlayerError && <p className="text-danger">Esiste già un giocatore con lo stesso Nome e Cognome, cerca nella lista dei giocatori.</p>}
                 <button
                   className="add-player btn btn-primary"
                   onClick={() => handleAddPlayer()}
