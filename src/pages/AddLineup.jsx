@@ -289,9 +289,10 @@ function InserimentoFormazione() {
                 >
                   Seleziona ruolo
                 </option>
-                <option value="captain" selected={player.captain == true}>
+                {player.id > 10 && <option value="captain" selected={player.captain == true}>
                   Capitano
-                </option>
+                </option>}
+                
                 <option
                   value="single"
                   selected={
