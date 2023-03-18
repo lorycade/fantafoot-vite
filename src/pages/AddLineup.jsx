@@ -8,6 +8,7 @@ import {
   PersonFill,
   PersonFillSlash,
 } from "react-bootstrap-icons";
+import { Alert } from "@mui/material";
 
 function InserimentoFormazione() {
   const jwt = localStorage.getItem("jwt");
@@ -15,8 +16,6 @@ function InserimentoFormazione() {
   const [players, setPlayers] = useState([]);
   const [teamInsert, setTeamInsert] = useState(false);
   const [insertCorrect, setInsertCorrect] = useState(false);
-
-  const [allPlayers, setAllPlayers] = useState([]);
 
   const [captainCount, setCaptainCount] = useState(0);
   const [singlePlayerCount, setSinglePlayerCount] = useState(0);
@@ -152,16 +151,7 @@ function InserimentoFormazione() {
     if (!jwt) {
       history("/");
     }
-
-    getAllPlayers();
   }, []);
-
-  const getAllPlayers = async () => {
-    const response = await axios.get(
-      import.meta.env.VITE_API_URL + "/api/players?sort=value:desc"
-    );
-    setAllPlayers(response.data.data);
-  };
 
   useEffect(() => {
     if (user && user.lineups) {
@@ -247,6 +237,7 @@ function InserimentoFormazione() {
 
         setTimeout(() => {
           setTeamInsert(false);
+          history('/profilo')
         }, 3000);
       })
       .catch((error) => {
@@ -258,12 +249,7 @@ function InserimentoFormazione() {
     <>
       <div className="container mb-5 formation-container">
         {teamInsert && (
-          <div
-            className="password-alert alert alert-success d-flex align-items-center"
-            role="alert"
-          >
-            <div>Complimenti, hai salvato la tua formazione !!</div>
-          </div>
+          <Alert severity="success" className="alert-custom">Formazione inserita correttaemnte</Alert>
         )}
 
         <div className="role-selection-wrapper">

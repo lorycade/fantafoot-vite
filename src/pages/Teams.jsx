@@ -22,7 +22,7 @@ function Teams() {
     <div className="container">
       <div className="row mt-5 g-4">
         {users.map((user) => (
-          <div className="col-sm-6 col-md-4 col-lg-3 col-xl-2" key={user.id}>
+          <div className="col-sm-6 col-md-4 col-lg-3" key={user.id}>
             <TeamCard user={user}/>
           </div>
         ))}

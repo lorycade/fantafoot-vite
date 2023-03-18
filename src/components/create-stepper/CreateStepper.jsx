@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../context/UserContext";
 import { CashCoin, PersonFill, Search, XLg } from "react-bootstrap-icons";
 import Offcanvas from "react-bootstrap/Offcanvas";
+import { Alert } from "@mui/material";
 
 const steps = [
   {
@@ -126,8 +127,9 @@ const CreateStepper = () => {
 
   const handleAddPlayer = () => {
     const surnameExist = fullPlayerList.filter(item => item.surname.toLowerCase() === surnameAdd.toLowerCase())
-
+    console.log('surnameExist', surnameExist);
     if (surnameExist.length > 0) {
+      console.log('log dentro if');
       const nameExist = surnameExist.filter(item => item.name.toLowerCase() === nameAdd.toLowerCase())
 
       if (nameExist.length > 0) {
@@ -197,12 +199,7 @@ const CreateStepper = () => {
   return (
     <div className="container my-5">
       {teamCreated && (
-        <div
-          className="password-alert alert alert-success d-flex align-items-center"
-          role="alert"
-        >
-          <div>Complimenti, hai creato la tua squadra !!</div>
-        </div>
+        <Alert severity="success" className="alert-custom">Complimenti, hai creato la tua squadra !!</Alert>
       )}
       <div className="stepper">
         <div className="stepper-header">

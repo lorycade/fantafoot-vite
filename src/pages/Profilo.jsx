@@ -3,14 +3,15 @@ import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { UserContext } from "../context/UserContext";
-import { EyeFill, EyeSlashFill } from 'react-bootstrap-icons';
+import { EyeFill, EyeSlashFill } from "react-bootstrap-icons";
+import { Alert } from "@mui/material";
 
 // import ModalTeamName from "../components/modal/ModalTeamName";
 
 function Profilo() {
-  const [showOldPassword, setShowOldPassword] = useState(false)
-  const [showNewPassword, setShowNewPassword] = useState(false)
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+  const [showOldPassword, setShowOldPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
@@ -20,13 +21,13 @@ function Profilo() {
   // const userData = JSON.parse(localStorage.getItem("user"));
   // const userPlayers = JSON.parse(localStorage.getItem("userPlayers"));
   const { user } = useContext(UserContext);
-  const history = useNavigate()
+  const history = useNavigate();
 
   useEffect(() => {
     if (!jwt) {
-      history('/')
+      history("/");
     }
-  }, [])
+  }, []);
 
   const handleChangePassword = () => {
     axios
@@ -62,101 +63,110 @@ function Profilo() {
   };
 
   return (
-    
     <>
-    {!!user && 
-      <div className="container">
-        {passwordChanged && (
-          <div
-            className="password-alert alert alert-success d-flex align-items-center"
-            role="alert"
-          >
-            <div>Password modificata con successo</div>
+      {!!user && (
+        <div className="container">
+          {passwordChanged && (
+            <Alert severity="success" className="alert-custom">
+              Password modificata correttamente
+            </Alert>
+          )}
+          <div className="row mt-40 fx-center">
+            <div className="col-12">
+              <h2 className="follow-title t-bold text-center">Profilo</h2>
+            </div>
           </div>
-        )}
-        <div className="row mt-40 fx-center">
-          <div className="col-12">
-            <h2 className="follow-title t-bold text-center">Profilo</h2>
-          </div>
-        </div>
-        <div className="row mt-5">
-          <div className="col-lg-7">
-            <div className="user-info">
-              Ciao <strong>{user.name}</strong>
-            </div>
-            <div className="user-info">
-              Crediti disponibili <strong>{user.credits}</strong>
-            </div>
-            <div className="user-info">
-              Nome Squadra <strong>{user.teamName}</strong>
-              {/* <button onClick={() => setShowModal(true)}>Modifica</button> */}
-            </div>
+          <div className="row mt-5">
+            <div className="col-lg-7">
+              <div className="user-info mb-5">
+                Ciao <strong>{user.name}</strong>
+              </div>
+              <div className="user-info mb-2">
+                Crediti disponibili <strong>{user.credits}</strong>
+              </div>
+              <div className="user-info mb-5">
+                Nome Squadra <strong>{user.teamName}</strong>
+                {/* <button onClick={() => setShowModal(true)}>Modifica</button> */}
+              </div>
 
-            <p>Per creare/modificare il nome della squadra o la tua rosa, clicca qui sotto</p>
-            <Link to="/crea-squadra">{user && user.teamName ? 'Modifica Squadra' : 'Crea Squadra'}</Link>
-            
-          </div>
-          <div className="col-lg-5">
-            <h3>Modifica Password</h3>
-            <div className="mt-5 change-password-form">
-              <div className="form-floating mb-3">
-                <input
-                  type={showOldPassword ? 'text' : 'password'}
-                  value={oldPassword}
-                  onChange={(event) => setOldPassword(event.target.value)}
-                  className="form-control"
-                  id="old-password"
-                  placeholder="Password"
-                />
-                <button className="toggle-psw-btn" onClick={() => setShowOldPassword(!showOldPassword)}>
-                  {showOldPassword ? <EyeFill/> : <EyeSlashFill/>}
+              <p>
+                Per creare/modificare il nome della squadra o la tua rosa,
+                clicca qui sotto
+              </p>
+              <Link to="/crea-squadra">
+                {user && user.teamName ? "Modifica Squadra" : "Crea Squadra"}
+              </Link>
+            </div>
+            <div className="col-lg-5">
+              <h3>Modifica Password</h3>
+              <div className="mt-5 change-password-form">
+                <div className="form-floating mb-3">
+                  <input
+                    type={showOldPassword ? "text" : "password"}
+                    value={oldPassword}
+                    onChange={(event) => setOldPassword(event.target.value)}
+                    className="form-control"
+                    id="old-password"
+                    placeholder="Password"
+                  />
+                  <button
+                    className="toggle-psw-btn"
+                    onClick={() => setShowOldPassword(!showOldPassword)}
+                  >
+                    {showOldPassword ? <EyeFill /> : <EyeSlashFill />}
+                  </button>
+                  <label htmlFor="old-password">Vecchia password</label>
+                </div>
+                <div className="form-floating mb-3">
+                  <input
+                    type={showNewPassword ? "text" : "password"}
+                    value={newPassword}
+                    onChange={(event) => setNewPassword(event.target.value)}
+                    className="form-control"
+                    id="new-password"
+                    placeholder="Password"
+                  />
+                  <button
+                    className="toggle-psw-btn"
+                    onClick={() => setShowNewPassword(!showNewPassword)}
+                  >
+                    {showNewPassword ? <EyeFill /> : <EyeSlashFill />}
+                  </button>
+                  <label htmlFor="new-password">Nuova password</label>
+                </div>
+                <div className="form-floating">
+                  <input
+                    type={showConfirmPassword ? "text" : "password"}
+                    value={confirmNewPassword}
+                    onChange={(event) =>
+                      setConfirmNewPassword(event.target.value)
+                    }
+                    className="form-control"
+                    id="confirm-password"
+                    placeholder="Password"
+                  />
+                  <button
+                    className="toggle-psw-btn"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  >
+                    {showConfirmPassword ? <EyeFill /> : <EyeSlashFill />}
+                  </button>
+                  <label htmlFor="confirm-password">
+                    Conferma nuova password
+                  </label>
+                </div>
+                <button
+                  className="btn btn-primary btn-lg mt-4"
+                  onClick={() => handleChangePassword()}
+                >
+                  Modifica
                 </button>
-                <label htmlFor="old-password">Vecchia password</label>
               </div>
-              <div className="form-floating mb-3">
-                <input
-                  type={showNewPassword ? 'text' : 'password'}
-                  value={newPassword}
-                  onChange={(event) => setNewPassword(event.target.value)}
-                  className="form-control"
-                  id="new-password"
-                  placeholder="Password"
-                />
-                <button className="toggle-psw-btn" onClick={() => setShowNewPassword(!showNewPassword)}>
-                  {showNewPassword ? <EyeFill/> : <EyeSlashFill/>}
-                </button>
-                <label htmlFor="new-password">Nuova password</label>
-              </div>
-              <div className="form-floating">
-                <input
-                  type={showConfirmPassword ? 'text' : 'password'}
-                  value={confirmNewPassword}
-                  onChange={(event) =>
-                    setConfirmNewPassword(event.target.value)
-                  }
-                  className="form-control"
-                  id="confirm-password"
-                  placeholder="Password"
-                />
-                <button className="toggle-psw-btn" onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
-                  {showConfirmPassword ? <EyeFill/> : <EyeSlashFill/>}
-                </button>
-                <label htmlFor="confirm-password">
-                  Conferma nuova password
-                </label>
-              </div>
-              <button
-                className="btn btn-primary btn-lg mt-4"
-                onClick={() => handleChangePassword()}
-              >
-                Modifica
-              </button>
             </div>
           </div>
         </div>
-      </div>
-    }</>
-  
+      )}
+    </>
   );
 }
 
