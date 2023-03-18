@@ -10,7 +10,7 @@ import {
 } from "react-bootstrap-icons";
 import { Alert } from "@mui/material";
 
-function InserimentoFormazione() {
+function AddLineup() {
   const jwt = localStorage.getItem("jwt");
   const { user, setUser } = useContext(UserContext);
   const [players, setPlayers] = useState([]);
@@ -358,4 +358,4 @@ function InserimentoFormazione() {
   );
 }
 
-export default InserimentoFormazione;
+export default AddLineup;

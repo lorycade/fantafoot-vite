@@ -6,7 +6,6 @@ import Homepage from "./pages/Home";
 import Listone from "./pages/Listone";
 import Classifica from "./pages/Classifica";
 import Profilo from "./pages/Profilo";
-import InserimentoFormazione from "./pages/InserimentoFormazione";
 import Login from "./pages/Login";
 import CreateTeam from "./pages/CreateTeam";
 import Teams from "./pages/Teams";
