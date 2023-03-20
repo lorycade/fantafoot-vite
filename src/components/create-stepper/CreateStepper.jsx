@@ -119,10 +119,14 @@ const CreateStepper = () => {
   const initChangeMode = () => {
     setMyTeam(user.players);
     setSquadName(user.teamName);
-    const myPlayersCost = user.players.reduce((accumulator, object) => {
-      return accumulator + object.value;
-    }, 0);
-    setCredits(credits - myPlayersCost);
+    if (user.players) {
+      const myPlayersCost = user.players.reduce((accumulator, object) => {
+        return accumulator + object.value;
+      }, 0);
+      setCredits(credits - myPlayersCost);
+    }
+    
+    
   };
 
   const handleAddPlayer = () => {
@@ -174,6 +178,7 @@ const CreateStepper = () => {
           players: myTeam,
           teamName: squadName,
           credits,
+          lineups: null //modificare dopo prima giornata
         },
         {
           headers: {

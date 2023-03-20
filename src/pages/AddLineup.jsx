@@ -231,7 +231,6 @@ function AddLineup() {
       )
       .then((response) => {
         const newUser = { ...response.data, lineups: oldLineups };
-        console.log(newUser);
         setUser(newUser);
         setTeamInsert(true);
 
