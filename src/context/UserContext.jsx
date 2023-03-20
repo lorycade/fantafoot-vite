@@ -12,17 +12,19 @@ export default ({ children }) => {
     }
   }, [])
 
+  useEffect(() => {
+    // getMyData()
+  }, [user])
+
   const getMyData = async () => {
     const response = await axios.get(
-      import.meta.env.VITE_API_URL + "/api/users/me",
+      import.meta.env.VITE_API_URL + "/api/users/me?populate=*",
       {
         headers: {
           Authorization: `Bearer ${jwt}`,
         },
       }
     );
-
-    console.log('context', response.data);
     
     setUser(response.data)
     // setMyPlayers(response.data.players);

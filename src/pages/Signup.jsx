@@ -17,8 +17,6 @@ function Signup() {
   // const history = useNavigate();
 
   const handleSubmit = async (event) => {
-    console.log(name, surname, username, email, password);
-
     axios
       .post(import.meta.env.VITE_API_URL + "/api/auth/local/register", {
         name,

@@ -130,11 +130,9 @@ const CreateStepper = () => {
   };
 
   const handleAddPlayer = () => {
-    const surnameExist = fullPlayerList.filter(item => item.surname.toLowerCase() === surnameAdd.toLowerCase())
-    console.log('surnameExist', surnameExist);
+    const surnameExist = fullPlayerList.filter(item => item.surname.toLowerCase().trim() === surnameAdd.toLowerCase().trim())
     if (surnameExist.length > 0) {
-      console.log('log dentro if');
-      const nameExist = surnameExist.filter(item => item.name.toLowerCase() === nameAdd.toLowerCase())
+      const nameExist = surnameExist.filter(item => item.name.toLowerCase().trim() === nameAdd.toLowerCase().trim())
 
       if (nameExist.length > 0) {
         setAddPlayerError(true)
@@ -147,8 +145,8 @@ const CreateStepper = () => {
         import.meta.env.VITE_API_URL + "/api/players",
         {
           data: {
-            name: nameAdd,
-            surname: surnameAdd,
+            name: nameAdd.trim(),
+            surname: surnameAdd.trim(),
             value: 10
           }
         },
@@ -178,7 +176,7 @@ const CreateStepper = () => {
           players: myTeam,
           teamName: squadName,
           credits,
-          lineups: null //modificare dopo prima giornata
+          lineups: null, //modificare dopo prima giornata
         },
         {
           headers: {

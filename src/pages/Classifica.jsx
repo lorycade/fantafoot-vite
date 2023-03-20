@@ -82,15 +82,14 @@ function Classifica() {
         ? 1
         : -1
     );
-    console.log("orderByResult", orderByResult);
 
-    const foundDuplicateName = orderByResult.find((nnn, index) => {
-      return orderByResult.find(
-        (x, ind) =>
-          x.custom_result[tappaId].gamePoints ===
-            nnn.custom_result[tappaId].gamePoints && index !== ind
-      );
-    });
+    // const foundDuplicateName = orderByResult.find((nnn, index) => {
+    //   return orderByResult.find(
+    //     (x, ind) =>
+    //       x.custom_result[tappaId].gamePoints ===
+    //         nnn.custom_result[tappaId].gamePoints && index !== ind
+    //   );
+    // });
 
     // const duplicatePoint = foundDuplicateName.custom_result[tappaId].gamePoints;
 
@@ -184,8 +183,6 @@ function Classifica() {
           leaderboardPoint = 1;
           break;
       }
-      
-      console.log(user);
 
       user.custom_result[tappaId].leaderboardPoints = leaderboardPoint;
       user.points = user.points + leaderboardPoint;

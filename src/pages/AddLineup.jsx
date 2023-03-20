@@ -1,7 +1,7 @@
 import { useState, useContext, useEffect } from "react";
 import { UserContext } from "../context/UserContext";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import {
   CCircleFill,
   PeopleFill,
@@ -16,6 +16,8 @@ function AddLineup() {
   const [players, setPlayers] = useState([]);
   const [teamInsert, setTeamInsert] = useState(false);
   const [insertCorrect, setInsertCorrect] = useState(false);
+
+  const [playerLengthOk, setPlayerLengthOk] = useState(false);
 
   const [captainCount, setCaptainCount] = useState(0);
   const [singlePlayerCount, setSinglePlayerCount] = useState(0);
@@ -159,6 +161,13 @@ function AddLineup() {
     } else if (user) {
       setPlayers(user.players);
     }
+
+    if (user && user.players) {
+      user.players.length === 10 ? setPlayerLengthOk(true) : setPlayerLengthOk(false);
+    }
+
+    
+
   }, [user]);
 
   useEffect(() => {
@@ -198,7 +207,7 @@ function AddLineup() {
     };
 
     let oldLineups;
-    if (user.lineups == null) {
+    if (user && user.lineups == null) {
       let emptyArr = [];
       emptyArr.push(lineup);
       oldLineups = emptyArr;
@@ -230,13 +239,13 @@ function AddLineup() {
         }
       )
       .then((response) => {
-        const newUser = { ...response.data, lineups: oldLineups };
+        const newUser = { ...response.data, lineups: oldLineups, players: user.players };
         setUser(newUser);
         setTeamInsert(true);
 
         setTimeout(() => {
           setTeamInsert(false);
-          history('/profilo')
+          history("/profilo");
         }, 3000);
       })
       .catch((error) => {
@@ -248,110 +257,144 @@ function AddLineup() {
     <>
       <div className="container mb-5 formation-container">
         {teamInsert && (
-          <Alert severity="success" className="alert-custom">Formazione inserita correttaemnte</Alert>
+          <Alert severity="success" className="alert-custom">
+            Formazione inserita correttaemnte
+          </Alert>
         )}
 
-        <div className="role-selection-wrapper">
-          {players.map((player) => (
-            <div className="player-item" key={player.id}>
-              <div className="player-info">
-                {player.name} {player.surname}
-              </div>
-              <select
-                onChange={(e) => handleRoleChange(e, player)}
-                name={`select-role`}
-                id={`select-role`}
-              >
-                <option
-                  value=""
-                  disabled
-                  selected={
-                    player.captain == false &&
-                    player.starter == false &&
-                    player.couple == false &&
-                    player.bench == false
-                  }
-                >
-                  Seleziona ruolo
-                </option>
-                {player.id > 10 && <option value="captain" selected={player.captain == true}>
-                  Capitano
-                </option>}
-                
-                <option
-                  value="single"
-                  selected={
-                    player.captain == false &&
-                    player.starter == true &&
-                    player.couple == false
-                  }
-                >
-                  Singolo
-                </option>
-                <option
-                  value="couple"
-                  selected={
-                    player.captain == false &&
-                    player.starter == true &&
-                    player.couple == true
-                  }
-                >
-                  Coppia
-                </option>
-                <option
-                  value="bench-1"
-                  selected={player.starter == false && player.benchOrder === 1}
-                >
-                  Panchina 1
-                </option>
-                <option
-                  value="bench-2"
-                  selected={player.starter == false && player.benchOrder === 2}
-                >
-                  Panchina 2
-                </option>
-                <option
-                  value="bench-3"
-                  selected={player.starter == false && player.benchOrder === 3}
-                >
-                  Panchina 3
-                </option>
-                <option
-                  value="bench-4"
-                  selected={player.starter == false && player.benchOrder === 4}
-                >
-                  Panchina 4
-                </option>
-              </select>
+        {!playerLengthOk && (
+          <>
+            <div className="text-center my-5">
+              <h2 className="mb-5">Completa la tua rosa</h2>
+              <p>
+                La tua rosa non è completa, questo può succedere perchè è stato
+                rilevato un giocatore doppione, e quindi di conseguenza è stato
+                eliminato.
+              </p>
+              <p>
+                Torna alla creazione squadra per completarla e poi inserire la
+                tua formazione
+              </p>
+              <Link to="/crea-squadra">Completa Squadra</Link>
             </div>
-          ))}
-        </div>
+          </>
+        )}
 
-        <div className="bottom-action">
-          <div className="container">
-            <ul className="count-wrapper">
-              <li>
-                <CCircleFill /> {captainCount}/1
-              </li>
-              <li>
-                <PersonFill /> {singlePlayerCount}/3
-              </li>
-              <li>
-                <PeopleFill /> {coupleCount}/2
-              </li>
-              <li>
-                <PersonFillSlash /> {benchCount}/4
-              </li>
-            </ul>
-            <button
-              disabled={!insertCorrect}
-              className="btn btn-primary"
-              onClick={() => handleSaveSquad()}
-            >
-              Salva formazione
-            </button>
-          </div>
-        </div>
+        {playerLengthOk && (
+          <>
+            <div className="role-selection-wrapper">
+              {players.map((player) => (
+                <div className="player-item" key={player.id}>
+                  <div className="player-info">
+                    {player.name} {player.surname}
+                  </div>
+                  <select
+                    onChange={(e) => handleRoleChange(e, player)}
+                    name={`select-role`}
+                    id={`select-role`}
+                  >
+                    <option
+                      value=""
+                      disabled
+                      selected={
+                        player.captain == false &&
+                        player.starter == false &&
+                        player.couple == false &&
+                        player.bench == false
+                      }
+                    >
+                      Seleziona ruolo
+                    </option>
+                    {player.id > 10 && (
+                      <option value="captain" selected={player.captain == true}>
+                        Capitano
+                      </option>
+                    )}
+
+                    <option
+                      value="single"
+                      selected={
+                        player.captain == false &&
+                        player.starter == true &&
+                        player.couple == false
+                      }
+                    >
+                      Singolo
+                    </option>
+                    <option
+                      value="couple"
+                      selected={
+                        player.captain == false &&
+                        player.starter == true &&
+                        player.couple == true
+                      }
+                    >
+                      Coppia
+                    </option>
+                    <option
+                      value="bench-1"
+                      selected={
+                        player.starter == false && player.benchOrder === 1
+                      }
+                    >
+                      Panchina 1
+                    </option>
+                    <option
+                      value="bench-2"
+                      selected={
+                        player.starter == false && player.benchOrder === 2
+                      }
+                    >
+                      Panchina 2
+                    </option>
+                    <option
+                      value="bench-3"
+                      selected={
+                        player.starter == false && player.benchOrder === 3
+                      }
+                    >
+                      Panchina 3
+                    </option>
+                    <option
+                      value="bench-4"
+                      selected={
+                        player.starter == false && player.benchOrder === 4
+                      }
+                    >
+                      Panchina 4
+                    </option>
+                  </select>
+                </div>
+              ))}
+            </div>
+
+            <div className="bottom-action">
+              <div className="container">
+                <ul className="count-wrapper">
+                  <li>
+                    <CCircleFill /> {captainCount}/1
+                  </li>
+                  <li>
+                    <PersonFill /> {singlePlayerCount}/3
+                  </li>
+                  <li>
+                    <PeopleFill /> {coupleCount}/2
+                  </li>
+                  <li>
+                    <PersonFillSlash /> {benchCount}/4
+                  </li>
+                </ul>
+                <button
+                  disabled={!insertCorrect}
+                  className="btn btn-primary"
+                  onClick={() => handleSaveSquad()}
+                >
+                  Salva formazione
+                </button>
+              </div>
+            </div>
+          </>
+        )}
       </div>
     </>
   );
