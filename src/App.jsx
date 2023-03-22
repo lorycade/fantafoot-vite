@@ -13,6 +13,7 @@ import TeamDetail from "./pages/TeamDetail";
 import RecoverPassword from "./pages/RecoverPassword";
 import Signup from "./pages/Signup";
 import AddLineup from "./pages/AddLineup";
+import Lineups from "./pages/Lineups";
 
 const router = createBrowserRouter([
   { path: '/', 
@@ -31,6 +32,7 @@ const router = createBrowserRouter([
     { path: '/registrazione', element: <Signup />},
     { path: '/squadre', element: <Teams />},
     { path: '/squadre/:teamId', element: <TeamDetail />},
+    { path: '/formazioni', element: <Lineups />},
   ]},
 ])
 

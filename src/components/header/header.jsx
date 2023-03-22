@@ -26,6 +26,7 @@ function Header() {
             <Nav className="me-auto">
               <NavLink to="/listone" className="nav-link">Listone</NavLink>
               <NavLink to="/classifica" className="nav-link">Classifica</NavLink>
+              <NavLink to="/formazioni" className="nav-link">Formazioni</NavLink>
               <NavLink to="/squadre" className="nav-link">Squadre</NavLink>
               {user && user.confirmed && <NavLink to="/profilo" className="nav-link">Profilo</NavLink>}
               {!user && <NavLink to="/login" className="nav-link">Accedi</NavLink>}
