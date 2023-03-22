@@ -36,7 +36,6 @@ export default ({ children }) => {
     );
     
     setUser(response.data)
-    // setMyPlayers(response.data.players);
   };
   
   return (

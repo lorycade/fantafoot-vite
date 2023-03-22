@@ -54,6 +54,7 @@ const CreateStepper = () => {
 
   useEffect(() => {
     if (user && user.teamName != null) {
+      console.log(user);
       initChangeMode();
     }
   }, [user]);
@@ -307,7 +308,7 @@ const CreateStepper = () => {
                 </button>
                 </Offcanvas.Body>
               </Offcanvas>
-              {myTeam.length == 10 &&
+              {myTeam && myTeam.length == 10 &&
                 playerList.map((player) => (
                   <button
                     className={
@@ -329,7 +330,7 @@ const CreateStepper = () => {
                     <div className="value">{player.value}</div>
                   </button>
                 ))}
-              {myTeam.length >= 0 &&
+              {myTeam && myTeam.length >= 0 &&
                 myTeam.length < 10 &&
                 playerList.map((player) => (
                   <button
@@ -389,7 +390,7 @@ const CreateStepper = () => {
                   <CashCoin /> <strong>{credits}/400</strong>
                 </li>
                 <li>
-                  <PersonFill /> <strong>{myTeam.length}/10</strong>
+                  {myTeam && <><PersonFill /> <strong>{myTeam.length}/10</strong></>}
                 </li>
               </ul>
             )}

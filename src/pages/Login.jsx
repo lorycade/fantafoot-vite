@@ -12,27 +12,27 @@ function Login() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const { user, setUser } = useContext(UserContext);
+  // const { user, setUser } = useContext(UserContext);
 
   const history = useNavigate();
 
-
-  useEffect(() => {
-    if (user) {
-      history("/profilo");
-    }
-  }, [user]);
+  // useEffect(() => {
+  //   if (user) {
+  //     history("/profilo");
+  //   }
+  // }, [user]);
 
   const handleSubmit = async (event) => {
     axios
-      .post(import.meta.env.VITE_API_URL + "/api/auth/local", {
+      .post(import.meta.env.VITE_API_URL + "/api/auth/local?populate=*", {
         identifier: email,
         password,
       })
       .then((response) => {
-        setUser(response.data.user);
+        // console.log(response.data);
+        // setUser(response.data.user);
+        history("/profilo");
         const date = new Date();
-        // localStorage.setItem("user", JSON.stringify(response.data.user));
         localStorage.setItem("jwt", response.data.jwt);
         localStorage.setItem("jwt-expiration", date);
 

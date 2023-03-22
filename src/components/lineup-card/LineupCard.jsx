@@ -9,7 +9,6 @@ import {
 } from "@mui/icons-material";
 
 function LineupCard({ user }) {
-  console.log(user);
   return (
     <div className="lineup-card">
       <div className="card-head">

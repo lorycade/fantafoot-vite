@@ -20,14 +20,28 @@ function Profilo() {
   const jwt = localStorage.getItem("jwt");
   // const userData = JSON.parse(localStorage.getItem("user"));
   // const userPlayers = JSON.parse(localStorage.getItem("userPlayers"));
-  const { user } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
   const history = useNavigate();
 
   useEffect(() => {
     if (!jwt) {
       history("/");
     }
+    getMyData()
   }, []);
+
+  const getMyData = async () => {
+    const response = await axios.get(
+      import.meta.env.VITE_API_URL + "/api/users/me?populate=*",
+      {
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+        },
+      }
+    );
+    
+    setUser(response.data)
+  };
 
   const handleChangePassword = () => {
     axios

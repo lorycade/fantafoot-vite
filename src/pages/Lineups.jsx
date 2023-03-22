@@ -2,7 +2,6 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import LineupCard from "../components/lineup-card/LineupCard";
 
-
 function Lineups() {
   const [users, setUsers] = useState([]);
 
