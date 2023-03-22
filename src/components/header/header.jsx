@@ -11,7 +11,7 @@ function Header() {
   const {user, setUser} = useContext(UserContext)
 
   const handleLogout = () => {
-    localStorage.removeItem('jwt')
+    localStorage.clear()
     setUser(null)
     history('/')
   }

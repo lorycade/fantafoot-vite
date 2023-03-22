@@ -4,17 +4,26 @@ export const UserContext = createContext(null);
 
 export default ({ children }) => {
   const jwt = localStorage.getItem('jwt')
+  const jwtWxpiration = localStorage.getItem('jwt-expiration')
   const [user, setUser] = useState(null);
 
   useEffect(() => {
     if (!!jwt) {
+      checkExpiration()
       getMyData()
     }
   }, [])
 
-  useEffect(() => {
-    // getMyData()
-  }, [user])
+  const checkExpiration = () => {
+    const now = new Date();
+    const initialLogin = new Date(jwtWxpiration)
+
+    const minutes = (((now - initialLogin)/1000)/60)
+
+    if (minutes > 60) {
+      localStorage.clear()
+    }
+  }
 
   const getMyData = async () => {
     const response = await axios.get(

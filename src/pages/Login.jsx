@@ -31,8 +31,11 @@ function Login() {
       })
       .then((response) => {
         setUser(response.data.user);
+        const date = new Date();
         // localStorage.setItem("user", JSON.stringify(response.data.user));
         localStorage.setItem("jwt", response.data.jwt);
+        localStorage.setItem("jwt-expiration", date);
+
       })
       .catch((error) => {
         console.log("An error occurred:", error.response);
