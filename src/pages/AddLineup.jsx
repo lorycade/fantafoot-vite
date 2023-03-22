@@ -163,7 +163,8 @@ function AddLineup() {
     }
 
     if (user && user.players) {
-      user.players.length === 10 ? setPlayerLengthOk(true) : setPlayerLengthOk(false);
+      console.log(user.players.length);
+      user.players.length === 9 ? setPlayerLengthOk(true) : setPlayerLengthOk(false);
     }
 
     
