@@ -1,6 +1,7 @@
+import { ArrowBack } from "@mui/icons-material";
 import axios from "axios";
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 // import TeamCard from "../components/team-card/TeamCard";
 
@@ -22,6 +23,7 @@ function TeamDetail() {
 
   return (
     <div className="container my-5">
+      <Link to={'/squadre'} className="back-link"><ArrowBack/> Torna indietro</Link>
       <div className="main-info">
         <div className="circle-user">{user && user.name.split('')[0]}{user && user.surname.split('')[0]}</div>
         <div className="names-wrapper">
