@@ -25,7 +25,7 @@ function Listone() {
       </div>
       <div>
       </div>
-      <div className="filters">
+      {/* <div className="filters">
         <div className="form-item">
           <label htmlFor="player" className="form-label">
             Cerca giocatore
@@ -37,7 +37,7 @@ function Listone() {
             placeholder="Mario Rossi"
           />
         </div>
-      </div>
+      </div> */}
       <div className="leaderboard my-5">
         <div className="line head">
           <div className="cell">Giocatore</div>

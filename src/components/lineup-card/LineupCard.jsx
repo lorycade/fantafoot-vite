@@ -25,7 +25,7 @@ function LineupCard({ user }) {
           {user.lineups[0].formation
             .filter((item) => item.captain == true)
             .map((player) => (
-              <div className="player-wrapper">
+              <div className="player-wrapper" key={player.id}>
                 <div className="icon-box">
                   <Copyright />
                 </div>
@@ -43,7 +43,7 @@ function LineupCard({ user }) {
                 item.couple == false
             )
             .map((player) => (
-              <div className="player-wrapper">
+              <div className="player-wrapper" key={player.id}>
                 <div className="icon-box">
                   <Person />
                 </div>
@@ -61,7 +61,7 @@ function LineupCard({ user }) {
                 item.couple == true
             )
             .map((player) => (
-              <div className="player-wrapper">
+              <div className="player-wrapper" key={player.id}>
                 <div className="icon-box">
                   <Group />
                 </div>
@@ -75,7 +75,7 @@ function LineupCard({ user }) {
           {user.lineups[0].formation
             .filter((item) => item.starter == false && item.benchOrder == 1)
             .map((player) => (
-              <div className="player-wrapper">
+              <div className="player-wrapper" key={player.id}>
                 <div className="icon-box">
                   <LooksOne />
                 </div>
@@ -88,7 +88,7 @@ function LineupCard({ user }) {
           {user.lineups[0].formation
             .filter((item) => item.starter == false && item.benchOrder == 2)
             .map((player) => (
-              <div className="player-wrapper">
+              <div className="player-wrapper" key={player.id}>
                 <div className="icon-box">
                   <LooksTwo />
                 </div>
@@ -101,7 +101,7 @@ function LineupCard({ user }) {
           {user.lineups[0].formation
             .filter((item) => item.starter == false && item.benchOrder == 3)
             .map((player) => (
-              <div className="player-wrapper">
+              <div className="player-wrapper" key={player.id}>
                 <div className="icon-box">
                   <Looks3 />
                 </div>
@@ -114,7 +114,7 @@ function LineupCard({ user }) {
           {user.lineups[0].formation
             .filter((item) => item.starter == false && item.benchOrder == 4)
             .map((player) => (
-              <div className="player-wrapper">
+              <div className="player-wrapper" key={player.id}>
                 <div className="icon-box">
                   <Looks4 />
                 </div>

@@ -83,26 +83,6 @@ function Classifica() {
         : -1
     );
 
-    // const foundDuplicateName = orderByResult.find((nnn, index) => {
-    //   return orderByResult.find(
-    //     (x, ind) =>
-    //       x.custom_result[tappaId].gamePoints ===
-    //         nnn.custom_result[tappaId].gamePoints && index !== ind
-    //   );
-    // });
-
-    // const duplicatePoint = foundDuplicateName.custom_result[tappaId].gamePoints;
-
-    // const listOfDuplicates = orderByResult.filter(item => item.custom_result[tappaId].gamePoints == duplicatePoint)
-
-    // const sumPointsDivider = listOfDuplicates.reduce((accumulator, object) => {
-    //   return accumulator + Number(object.custom_result[tappaId].leaderboardPoints);
-    // }, 0);
-
-    // const pointsForPlayersDivider = sumPointsDivider / listOfDuplicates.length;
-
-    // console.log("non ce la farò", pointsForPlayersDivider);
-
     let leaderboardPoint;
     orderByResult.forEach((user, i) => {
       switch (i + 1) {
@@ -185,12 +165,47 @@ function Classifica() {
       }
 
       user.custom_result[tappaId].leaderboardPoints = leaderboardPoint;
-      user.points = user.points + leaderboardPoint;
-      handleCalculate(user);
     });
 
-    
+    checkForSameGamePoints(tappaId)
   };
+
+  const checkForSameGamePoints = (tappaId) => {
+    const lookup = userPlayers.reduce((a, e) => {
+      a.set(e.custom_result[tappaId].gamePoints, (a.get(e.custom_result[tappaId].gamePoints) ?? 0) + 1);
+      return a;
+    }, new Map());
+
+    const duplicates = userPlayers.slice(0, 25).filter(e => lookup.get(e.custom_result[tappaId].gamePoints) > 1);
+
+    const output = duplicates.reduce((a,v) => ((a[v.custom_result[tappaId].gamePoints] = a[v.custom_result[tappaId].gamePoints] || []).push(v), a), {});
+    
+    const newArray = Object.values(output);
+
+    newArray.forEach(element => {
+      let singlesResults = element.reduce((accumulator, object) => {
+        return accumulator + Number(object.custom_result[tappaId].leaderboardPoints);
+      }, 0);
+      console.log(singlesResults / element.length);
+
+      element.forEach(dupObj => {
+        const player = userPlayers.find(item => item.id == dupObj.id)
+        player.custom_result[tappaId].leaderboardPoints = singlesResults / element.length;
+      });
+
+    });
+
+    userPlayers.forEach(user => {
+
+      let pointsSum = user.custom_result.reduce((accumulator, object) => {
+        return accumulator + Number(object.leaderboardPoints);
+      }, 0);
+
+      user.points = pointsSum;
+
+      handleCalculate(user)
+    });
+  }
 
   const handleCalculate = (user) => {
     axios
@@ -208,13 +223,6 @@ function Classifica() {
       )
       .then((response) => {
         console.log("response", response);
-        // setUser(newUser)
-        // setTeamCreated(true);
-
-        // setTimeout(() => {
-        //   setTeamCreated(false);
-        //   history("/profilo");
-        // }, 3000);
       })
       .catch((error) => {
         console.log("An error occurred:", error.response);
@@ -301,13 +309,11 @@ function Classifica() {
             userPlayers
               .sort((a, b) => (a.points > b.points ? -1 : 1))
               .map((user, i) => (
-                <>
-                  <div className="line body" key={i}>
+                  <div className="line body" key={user.id}>
                     <div className="cell">{i + 1}</div>
                     <div className="cell">{user.teamName}</div>
                     <div className="cell">{user.points}</div>
                   </div>
-                </>
               ))}
           {sortType != null &&
             userPlayers
@@ -318,16 +324,14 @@ function Classifica() {
                   : 1
               )
               .map((user, i) => (
-                <>
-                  <div className="line body single-tour" key={i}>
+                  <div className="line body single-tour" key={user.id}>
                     <div className="cell">{i + 1}</div>
                     <div className="cell">{user.teamName}</div>
-                    <div className="cell">{user.custom_result[0].gamePoints}</div>
+                    <div className="cell">{user.custom_result[sortType].gamePoints}</div>
                     <div className="cell">
                       {user.custom_result[sortType].leaderboardPoints}
                     </div>
                   </div>
-                </>
               ))}
         </div>
         {user && user.role && user.role.type == "admin" && (
