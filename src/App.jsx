@@ -11,7 +11,7 @@ import CreateTeam from "./pages/CreateTeam";
 import Teams from "./pages/Teams";
 import TeamDetail from "./pages/TeamDetail";
 import RecoverPassword from "./pages/RecoverPassword";
-// import Signup from "./pages/Signup";
+import Signup from "./pages/Signup";
 import AddLineup from "./pages/AddLineup";
 import Lineups from "./pages/Lineups";
 
@@ -29,7 +29,7 @@ const router = createBrowserRouter([
     { path: '/login', element: <Login />},
     { path: '/api/auth/email-confirmation', element: <Login />},
     { path: '/login/recover-password/:recoverCode', element: <RecoverPassword />},
-    // { path: '/registrazione', element: <Signup />},
+    { path: '/registrazione', element: <Signup />},
     { path: '/squadre', element: <Teams />},
     { path: '/squadre/:teamId', element: <TeamDetail />},
     { path: '/formazioni', element: <Lineups />},
