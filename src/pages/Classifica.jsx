@@ -52,11 +52,11 @@ function Classifica() {
         return accumulator + Number(object.results[tappaId].result);
       }, 0);
 
-      const captainIsBest = singlePlayers.filter(
-        (item) => Number(item.results[tappaId].result) <= captainResult
+      const singleBestResult = Math.min(
+        ...singlePlayers.map((item) => item.results[tappaId].result)
       );
 
-      if (captainIsBest.length == 0) {
+      if (captainResult <= singleBestResult) {
         captainResult = captainResult + -5;
       }
 
