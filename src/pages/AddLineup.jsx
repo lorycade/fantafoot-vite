@@ -259,7 +259,7 @@ function AddLineup() {
       <div className="container mb-5 formation-container">
         {teamInsert && (
           <Alert severity="success" className="alert-custom">
-            Formazione inserita correttaemnte
+            Formazione inserita correttamente
           </Alert>
         )}
 

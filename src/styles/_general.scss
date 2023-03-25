@@ -71,6 +71,14 @@ body {
 
     &.single-tour {
       grid-template-columns: 0.5fr 1fr 1fr 0.5fr;
+      position: relative;
+
+      .detail-btn {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        translate: 0 -50%;
+      }
     }
   }
 }
@@ -197,16 +205,16 @@ body {
   font-size: 32px;
 }
 
-.drag-wrapper {
+// .drag-wrapper {
 
-  .draggable {
-    padding: 10px;
+//   .draggable {
+//     padding: 10px;
 
-    &.used {
-      opacity: 0.3;
-    }
-  }
-}
+//     &.used {
+//       opacity: 0.3;
+//     }
+//   }
+// }
 
 .form-floating {
   .toggle-psw-btn {
@@ -265,5 +273,17 @@ body {
   &:hover {
     text-decoration: underline;
     color: black;
+  }
+}
+
+.lineup-wrapper-leaderboard {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  background-color: rgb(238, 238, 238);
+  padding: 24px 16px;
+
+  .player-wrapper {
+    text-align: center;
   }
 }

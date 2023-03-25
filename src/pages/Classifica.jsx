@@ -1,8 +1,15 @@
 import { useEffect, useState, useContext } from "react";
-import axios from "axios";
+import axios, { all } from "axios";
 import { UserContext } from "../context/UserContext";
+import {
+  Copyright,
+  Group,
+  Person,
+} from "@mui/icons-material";
 
 function Classifica() {
+  const [allPlayers, setAllPlayers] = useState([])
+  const [detailOpen, setDetailOpen] = useState(null)
   const [userPlayers, setUserPlayers] = useState([]);
   const { user } = useContext(UserContext);
   const [sortType, setSortType] = useState(null);
@@ -36,7 +43,6 @@ function Classifica() {
           return obj;
         });
       }
-      
 
       let captainResult = Number(
         playerResults.find((item) => item.captain == true).results[tappaId]
@@ -58,6 +64,7 @@ function Classifica() {
 
       if (captainResult <= singleBestResult) {
         captainResult = captainResult + -5;
+        playerResults.find((item) => item.captain == true).captainBest = true;
       }
 
       const couplePlayers = playerResults.filter(
@@ -167,45 +174,56 @@ function Classifica() {
       user.custom_result[tappaId].leaderboardPoints = leaderboardPoint;
     });
 
-    checkForSameGamePoints(tappaId)
+    checkForSameGamePoints(tappaId);
   };
 
   const checkForSameGamePoints = (tappaId) => {
     const lookup = userPlayers.reduce((a, e) => {
-      a.set(e.custom_result[tappaId].gamePoints, (a.get(e.custom_result[tappaId].gamePoints) ?? 0) + 1);
+      a.set(
+        e.custom_result[tappaId].gamePoints,
+        (a.get(e.custom_result[tappaId].gamePoints) ?? 0) + 1
+      );
       return a;
     }, new Map());
 
-    const duplicates = userPlayers.slice(0, 25).filter(e => lookup.get(e.custom_result[tappaId].gamePoints) > 1);
+    const duplicates = userPlayers
+      .slice(0, 25)
+      .filter((e) => lookup.get(e.custom_result[tappaId].gamePoints) > 1);
 
-    const output = duplicates.reduce((a,v) => ((a[v.custom_result[tappaId].gamePoints] = a[v.custom_result[tappaId].gamePoints] || []).push(v), a), {});
-    
+    const output = duplicates.reduce(
+      (a, v) => (
+        (a[v.custom_result[tappaId].gamePoints] =
+          a[v.custom_result[tappaId].gamePoints] || []).push(v),
+        a
+      ),
+      {}
+    );
+
     const newArray = Object.values(output);
 
-    newArray.forEach(element => {
+    newArray.forEach((element) => {
       let singlesResults = element.reduce((accumulator, object) => {
-        return accumulator + Number(object.custom_result[tappaId].leaderboardPoints);
+        return (
+          accumulator + Number(object.custom_result[tappaId].leaderboardPoints)
+        );
       }, 0);
-      console.log(singlesResults / element.length);
 
-      element.forEach(dupObj => {
-        const player = userPlayers.find(item => item.id == dupObj.id)
-        player.custom_result[tappaId].leaderboardPoints = singlesResults / element.length;
+      element.forEach((dupObj) => {
+        const player = userPlayers.find((item) => item.id == dupObj.id);
+        player.custom_result[tappaId].leaderboardPoints = (singlesResults / element.length).toFixed(1);
       });
-
     });
 
-    userPlayers.forEach(user => {
-
+    userPlayers.forEach((user) => {
       let pointsSum = user.custom_result.reduce((accumulator, object) => {
         return accumulator + Number(object.leaderboardPoints);
       }, 0);
 
       user.points = pointsSum;
 
-      handleCalculate(user)
+      handleCalculate(user);
     });
-  }
+  };
 
   const handleCalculate = (user) => {
     axios
@@ -229,9 +247,61 @@ function Classifica() {
       });
   };
 
+  const updateusersForCalculate = (user) => {
+    axios
+      .put(
+        import.meta.env.VITE_API_URL + "/api/users/" + user.id,
+        {
+          lineups: user.lineups
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${jwt}`,
+          },
+        }
+      )
+      .then((response) => {
+        console.log("response", response);
+      })
+      .catch((error) => {
+        console.log("An error occurred:", error.response);
+      });
+  };
+
   const handleLeaderboard = (tappa) => {
     setSortType(tappa);
   };
+
+  const handleDetailOpen = (id) => {
+    if (id !== detailOpen) {
+      setDetailOpen(id)
+    } else {
+      setDetailOpen(null)
+    }
+  }
+
+  const getAllPlayers = async () => {
+    const response = await axios.get(
+      import.meta.env.VITE_API_URL + "/api/players"
+    );
+
+    setAllPlayers(response.data.data)
+  }
+
+  const handleUpdateLineupResult = async (tappa) => {
+    userPlayers.forEach(user => {
+      const lineupPlayers = user.lineups[tappa].formation;
+      lineupPlayers.forEach(player => {
+        const x = allPlayers.find(item => item.id === player.id)
+        player.results = x.results
+        
+      });
+
+      updateusersForCalculate(user)
+    });
+
+    // console.log();
+  }
 
   return (
     <>
@@ -299,7 +369,9 @@ function Classifica() {
           </button>
         </div>
         <div className="leaderboard mt-5">
-          <div className={sortType != null ? 'line head single-tour' : 'line head'}>
+          <div
+            className={sortType != null ? "line head single-tour" : "line head"}
+          >
             <div className="cell">Pos.</div>
             <div className="cell">Giocatore</div>
             {sortType !== null && <div className="cell">Punteggio</div>}
@@ -309,11 +381,11 @@ function Classifica() {
             userPlayers
               .sort((a, b) => (a.points > b.points ? -1 : 1))
               .map((user, i) => (
-                  <div className="line body" key={user.id}>
-                    <div className="cell">{i + 1}</div>
-                    <div className="cell">{user.teamName}</div>
-                    <div className="cell">{user.points}</div>
-                  </div>
+                <div className="line body" key={user.id}>
+                  <div className="cell">{i + 1}</div>
+                  <div className="cell">{user.teamName}</div>
+                  <div className="cell">{user.points}</div>
+                </div>
               ))}
           {sortType != null &&
             userPlayers
@@ -324,18 +396,92 @@ function Classifica() {
                   : 1
               )
               .map((user, i) => (
+                <>
                   <div className="line body single-tour" key={user.id}>
                     <div className="cell">{i + 1}</div>
                     <div className="cell">{user.teamName}</div>
-                    <div className="cell">{user.custom_result[sortType].gamePoints}</div>
+                    <div className="cell">
+                      {user.custom_result[sortType].gamePoints}
+                    </div>
                     <div className="cell">
                       {user.custom_result[sortType].leaderboardPoints}
                     </div>
+                    <button className="detail-btn" type="button" onClick={() => handleDetailOpen(i)}>Dettagli</button>
                   </div>
+                  {detailOpen == i && 
+                  <div className="lineup-wrapper-leaderboard">
+                    {user.lineups[sortType].formation
+                      .filter((item) => item.captain == true)
+                      .map((player) => (
+                        <div className="player-wrapper" key={player.id}>
+                          <div className="icon-box">
+                            <Copyright />
+                          </div>
+                          <div className="player">
+                            {player.name} {player.surname}
+                          </div>
+                          <div className="result">
+                            {player.results[sortType].result}
+                          </div>
+                          {/* {console.log(player)}
+                          {!!player.captainBest && <span>-5</span>} */}
+                        </div>
+                      ))}
+
+                    {user.lineups[sortType].formation
+                      .filter(
+                        (item) =>
+                          item.captain == false &&
+                          item.starter == true &&
+                          item.couple == false
+                      )
+                      .map((player) => (
+                        <div className="player-wrapper" key={player.id}>
+                          <div className="icon-box">
+                            <Person />
+                          </div>
+                          <div className="player">
+                            {player.name} {player.surname}
+                          </div>
+                          <div className="result">
+                            {player.results[sortType].result}
+                          </div>
+                        </div>
+                      ))}
+
+                    {user.lineups[sortType].formation
+                      .filter(
+                        (item) =>
+                          item.captain == false &&
+                          item.starter == true &&
+                          item.couple == true
+                      )
+                      .map((player) => (
+                        <div className="player-wrapper" key={player.id}>
+                          <div className="icon-box">
+                            <Group />
+                          </div>
+                          <div className="player">
+                            {player.name} {player.surname}
+                          </div>
+                          <div className="result">
+                            {player.results[sortType].result}
+                          </div>
+                        </div>
+                      ))}
+                  </div>
+                  }
+                </>
               ))}
         </div>
         {user && user.role && user.role.type == "admin" && (
           <>
+          <button onClick={() => getAllPlayers()}>
+              Ottine giocatori
+            </button>
+            <button onClick={() => handleUpdateLineupResult(0)}>
+              Aggiorna punteggi formazioni
+            </button>
             <button onClick={() => calculatePoints(0)}>
               Calcola giornata 1
             </button>
