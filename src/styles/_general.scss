@@ -279,11 +279,39 @@ body {
 .lineup-wrapper-leaderboard {
   display: flex;
   align-items: center;
-  gap: 24px;
+  flex-wrap: wrap;
+  gap: 40px;
   background-color: rgb(238, 238, 238);
   padding: 24px 16px;
+  border-bottom: 1px solid #000;
 
   .player-wrapper {
     text-align: center;
+    position: relative;
+
+    .bonus {
+      position: absolute;
+      top: 0;
+      right: 0;
+      translate: 60% 0;
+      padding: 3px 8px;
+      background-color: $green-dark;
+      color: #fff;
+      font-size: 14px;
+      line-height: 1;
+      border-radius: 4px;
+    }
+
+    &.couple {
+      border: 2px solid red;
+      background-color: rgba($color: red, $alpha: 0.1);
+      padding: 8px 16px;
+      border-radius: 6px;
+
+      &.best {
+        border-color: green;
+        background-color: rgba($color: green, $alpha: 0.1);
+      }
+    }
   }
 }

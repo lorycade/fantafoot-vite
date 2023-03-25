@@ -1,15 +1,10 @@
 import { useEffect, useState, useContext } from "react";
 import axios, { all } from "axios";
 import { UserContext } from "../context/UserContext";
-import {
-  Copyright,
-  Group,
-  Person,
-} from "@mui/icons-material";
+import { Copyright, Group, Person } from "@mui/icons-material";
 
 function Classifica() {
-  const [allPlayers, setAllPlayers] = useState([])
-  const [detailOpen, setDetailOpen] = useState(null)
+  const [detailOpen, setDetailOpen] = useState(null);
   const [userPlayers, setUserPlayers] = useState([]);
   const { user } = useContext(UserContext);
   const [sortType, setSortType] = useState(null);
@@ -34,11 +29,6 @@ function Classifica() {
       let playerResults;
       if (user.lineups[tappaId]) {
         playerResults = user.lineups[tappaId].formation.map((obj) => {
-          obj.results = user.players.find(({ id }) => id === obj.id).results;
-          return obj;
-        });
-      } else {
-        playerResults = user.lineups[tappaId - 1].formation.map((obj) => {
           obj.results = user.players.find(({ id }) => id === obj.id).results;
           return obj;
         });
@@ -75,6 +65,12 @@ function Classifica() {
       var coupleBestResult = Math.min(
         ...couplePlayers.map((item) => item.results[tappaId].result)
       );
+
+      playerResults.find(
+        (item) =>
+          item.results[tappaId].result === coupleBestResult &&
+          item.couple === true
+      ).coupleBest = true;
 
       const totalPoints = captainResult + singlesResults + coupleBestResult;
 
@@ -210,7 +206,9 @@ function Classifica() {
 
       element.forEach((dupObj) => {
         const player = userPlayers.find((item) => item.id == dupObj.id);
-        player.custom_result[tappaId].leaderboardPoints = (singlesResults / element.length).toFixed(1);
+        player.custom_result[tappaId].leaderboardPoints = (
+          singlesResults / element.length
+        ).toFixed(1);
       });
     });
 
@@ -232,6 +230,7 @@ function Classifica() {
         {
           points: user.points,
           custom_result: user.custom_result,
+          lineups: user.lineups,
         },
         {
           headers: {
@@ -252,7 +251,7 @@ function Classifica() {
       .put(
         import.meta.env.VITE_API_URL + "/api/users/" + user.id,
         {
-          lineups: user.lineups
+          lineups: user.lineups,
         },
         {
           headers: {
@@ -274,33 +273,61 @@ function Classifica() {
 
   const handleDetailOpen = (id) => {
     if (id !== detailOpen) {
-      setDetailOpen(id)
+      setDetailOpen(id);
     } else {
-      setDetailOpen(null)
+      setDetailOpen(null);
     }
-  }
+  };
 
-  const getAllPlayers = async () => {
-    const response = await axios.get(
-      import.meta.env.VITE_API_URL + "/api/players"
-    );
+  const getAllPlayers = async (index) => {
+    const response = await axios
+      .get(import.meta.env.VITE_API_URL + "/api/players")
+      .then((response) => {
+        const allPlayers = response.data.data;
+        handleUpdateLineupResult(allPlayers, index);
+      })
+      .catch((error) => {
+        console.log("An error occurred:", error.response);
+      });
+  };
 
-    setAllPlayers(response.data.data)
-  }
-
-  const handleUpdateLineupResult = async (tappa) => {
-    userPlayers.forEach(user => {
+  const handleUpdateLineupResult = async (allPlayers, tappa) => {
+    userPlayers.forEach((user) => {
       const lineupPlayers = user.lineups[tappa].formation;
-      lineupPlayers.forEach(player => {
-        const x = allPlayers.find(item => item.id === player.id)
-        player.results = x.results
-        
+      lineupPlayers.forEach((player) => {
+        const single = allPlayers.find((item) => item.id === player.id);
+        player.results = single.results;
       });
 
-      updateusersForCalculate(user)
+      updateusersForCalculate(user);
     });
+  };
 
-    // console.log();
+  const updateAllLineups = () => {
+    userPlayers.forEach(user => {
+      let allLineups = Array(7).fill(user.lineups[0])
+
+      user.lineups = allLineups
+
+      axios
+      .put(
+        import.meta.env.VITE_API_URL + "/api/users/" + user.id,
+        {
+          lineups: user.lineups,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${jwt}`,
+          },
+        }
+      )
+      .then((response) => {
+        console.log("response", response);
+      })
+      .catch((error) => {
+        console.log("An error occurred:", error.response);
+      });
+    });
   }
 
   return (
@@ -406,81 +433,89 @@ function Classifica() {
                     <div className="cell">
                       {user.custom_result[sortType].leaderboardPoints}
                     </div>
-                    <button className="detail-btn" type="button" onClick={() => handleDetailOpen(i)}>Dettagli</button>
+                    <button
+                      className="detail-btn"
+                      type="button"
+                      onClick={() => handleDetailOpen(i)}
+                    >
+                      Dettagli
+                    </button>
                   </div>
-                  {detailOpen == i && 
-                  <div className="lineup-wrapper-leaderboard">
-                    {user.lineups[sortType].formation
-                      .filter((item) => item.captain == true)
-                      .map((player) => (
-                        <div className="player-wrapper" key={player.id}>
-                          <div className="icon-box">
-                            <Copyright />
+                  {detailOpen == i && (
+                    <div className="lineup-wrapper-leaderboard">
+                      {user.lineups[sortType].formation
+                        .filter((item) => item.captain == true)
+                        .map((player) => (
+                          <div className="player-wrapper" key={player.id}>
+                            <div className="icon-box">
+                              <Copyright />
+                            </div>
+                            <div className="player"> {player.surname}</div>
+                            <div className="result">
+                              {player.results[sortType].result}
+                            </div>
+                            {player.captainBest && (
+                              <span className="bonus">-5</span>
+                            )}
                           </div>
-                          <div className="player">
-                            {player.name} {player.surname}
-                          </div>
-                          <div className="result">
-                            {player.results[sortType].result}
-                          </div>
-                          {/* {console.log(player)}
-                          {!!player.captainBest && <span>-5</span>} */}
-                        </div>
-                      ))}
+                        ))}
 
-                    {user.lineups[sortType].formation
-                      .filter(
-                        (item) =>
-                          item.captain == false &&
-                          item.starter == true &&
-                          item.couple == false
-                      )
-                      .map((player) => (
-                        <div className="player-wrapper" key={player.id}>
-                          <div className="icon-box">
-                            <Person />
+                      {user.lineups[sortType].formation
+                        .filter(
+                          (item) =>
+                            item.captain == false &&
+                            item.starter == true &&
+                            item.couple == false
+                        )
+                        .map((player) => (
+                          <div className="player-wrapper" key={player.id}>
+                            <div className="icon-box">
+                              <Person />
+                            </div>
+                            <div className="player">{player.surname}</div>
+                            <div className="result">
+                              {player.results[sortType].result}
+                            </div>
                           </div>
-                          <div className="player">
-                            {player.name} {player.surname}
-                          </div>
-                          <div className="result">
-                            {player.results[sortType].result}
-                          </div>
-                        </div>
-                      ))}
+                        ))}
 
-                    {user.lineups[sortType].formation
-                      .filter(
-                        (item) =>
-                          item.captain == false &&
-                          item.starter == true &&
-                          item.couple == true
-                      )
-                      .map((player) => (
-                        <div className="player-wrapper" key={player.id}>
-                          <div className="icon-box">
-                            <Group />
+                      {user.lineups[sortType].formation
+                        .filter(
+                          (item) =>
+                            item.captain == false &&
+                            item.starter == true &&
+                            item.couple == true
+                        )
+                        .map((player) => (
+                          <div
+                            className={
+                              player.coupleBest
+                                ? "player-wrapper couple best"
+                                : "player-wrapper couple"
+                            }
+                            key={player.id}
+                          >
+                            <div className="icon-box">
+                              <Group />
+                            </div>
+                            <div className="player"> {player.surname}</div>
+                            <div className="result">
+                              {player.results[sortType].result}
+                            </div>
                           </div>
-                          <div className="player">
-                            {player.name} {player.surname}
-                          </div>
-                          <div className="result">
-                            {player.results[sortType].result}
-                          </div>
-                        </div>
-                      ))}
-                  </div>
-                  }
+                        ))}
+                    </div>
+                  )}
                 </>
               ))}
         </div>
         {user && user.role && user.role.type == "admin" && (
           <>
-          <button onClick={() => getAllPlayers()}>
-              Ottine giocatori
+            <button onClick={() => updateAllLineups()}>
+              Aggiorna tutte le formazioni
             </button>
-            <button onClick={() => handleUpdateLineupResult(0)}>
-              Aggiorna punteggi formazioni
+            <button onClick={() => getAllPlayers(0)}>
+              Aggiorna punteggi giocatori
             </button>
             <button onClick={() => calculatePoints(0)}>
               Calcola giornata 1
