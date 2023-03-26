@@ -7,12 +7,12 @@ import Listone from "./pages/Listone";
 import Classifica from "./pages/Classifica";
 import Profilo from "./pages/Profilo";
 import Login from "./pages/Login";
-import CreateTeam from "./pages/CreateTeam";
+// import CreateTeam from "./pages/CreateTeam";
 import Teams from "./pages/Teams";
 import TeamDetail from "./pages/TeamDetail";
 import RecoverPassword from "./pages/RecoverPassword";
 // import Signup from "./pages/Signup";
-import AddLineup from "./pages/AddLineup";
+// import AddLineup from "./pages/AddLineup";
 import Lineups from "./pages/Lineups";
 
 const router = createBrowserRouter([
@@ -24,8 +24,8 @@ const router = createBrowserRouter([
     { path: '/listone', element: <Listone />},
     { path: '/classifica', element: <Classifica />},
     { path: '/profilo', element: <Profilo />},
-    { path: '/inserisci-formazione', element: <AddLineup />},
-    { path: '/crea-squadra', element: <CreateTeam />},
+    // { path: '/inserisci-formazione', element: <AddLineup />},
+    // { path: '/crea-squadra', element: <CreateTeam />},
     { path: '/login', element: <Login />},
     { path: '/api/auth/email-confirmation', element: <Login />},
     { path: '/login/recover-password/:recoverCode', element: <RecoverPassword />},

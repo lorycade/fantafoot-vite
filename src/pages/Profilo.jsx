@@ -103,13 +103,13 @@ function Profilo() {
                 {/* <button onClick={() => setShowModal(true)}>Modifica</button> */}
               </div>
 
-              <p>
+              {/* <p>
                 Per creare/modificare il nome della squadra o la tua rosa,
                 clicca qui sotto
               </p>
               <Link to="/crea-squadra">
                 {user && user.teamName ? "Modifica Squadra" : "Crea Squadra"}
-              </Link>
+              </Link> */}
             </div>
             <div className="col-lg-5">
               <h3>Modifica Password</h3>
