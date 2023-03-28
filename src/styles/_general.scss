@@ -72,12 +72,21 @@ body {
     &.single-tour {
       grid-template-columns: 0.5fr 1fr 1fr 0.5fr;
       position: relative;
+      height: 100px;
+
+      @include media-breakpoint-up(lg) {
+        height: auto;
+      }
 
       .detail-btn {
         position: absolute;
         right: 15px;
-        top: 50%;
+        bottom: 0;
         translate: 0 -50%;
+
+        @include media-breakpoint-up(lg) {
+          top: 50%;
+        }
       }
     }
   }
