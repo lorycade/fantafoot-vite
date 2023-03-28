@@ -416,10 +416,10 @@ function Classifica() {
           {sortType != null &&
             userPlayers
               .sort((a, b) =>
-                a.custom_result[sortType].leaderboardPoints >
-                b.custom_result[sortType].leaderboardPoints
-                  ? -1
-                  : 1
+                a.custom_result[sortType].gamePoints >
+                b.custom_result[sortType].gamePoints
+                  ? 1
+                  : -1
               )
               .map((user, i) => (
                 <>
