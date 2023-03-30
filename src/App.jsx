@@ -24,7 +24,7 @@ const router = createBrowserRouter([
     { path: '/listone', element: <Listone />},
     { path: '/classifica', element: <Classifica />},
     { path: '/profilo', element: <Profilo />},
-    // { path: '/inserisci-formazione', element: <AddLineup />},
+    { path: '/inserisci-formazione', element: <AddLineup />},
     // { path: '/crea-squadra', element: <CreateTeam />},
     { path: '/login', element: <Login />},
     { path: '/api/auth/email-confirmation', element: <Login />},

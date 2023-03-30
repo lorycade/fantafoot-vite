@@ -516,9 +516,9 @@ function Classifica() {
             <button onClick={() => getAllPlayers(0)}>
               Aggiorna punteggi giocatori
             </button>
-            <button onClick={() => calculatePoints(0)}>
+            {/* <button onClick={() => calculatePoints(0)}>
               Calcola giornata 1
-            </button>
+            </button> */}
             <button onClick={() => calculatePoints(1)}>
               Calcola giornata 2
             </button>

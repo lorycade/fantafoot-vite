@@ -157,7 +157,7 @@ function AddLineup() {
 
   useEffect(() => {
     if (user && user.lineups) {
-      setPlayers(user.lineups[0].formation);
+      setPlayers(user.lineups[1].formation);
     } else if (user) {
       setPlayers(user.players);
     }
@@ -166,9 +166,6 @@ function AddLineup() {
       console.log(user);
       user.players.length === 10 ? setPlayerLengthOk(true) : setPlayerLengthOk(false);
     }
-
-    
-
   }, [user]);
 
   useEffect(() => {
@@ -203,7 +200,7 @@ function AddLineup() {
 
     if (areAllInsert.length > 0) return;
     const lineup = {
-      tappa: 1,
+      tappa: 2,
       formation: players,
     };
 
@@ -213,25 +210,27 @@ function AddLineup() {
       emptyArr.push(lineup);
       oldLineups = emptyArr;
     } else {
-      const isSetYet = user.lineups.filter(
-        (item) => item.tappa == lineup.tappa
-      );
+      // const isSetYet = user.lineups.filter(
+      //   (item) => item.tappa == lineup.tappa
+      // );
 
-      if (isSetYet.length === 1) {
-        const index = user.lineups.indexOf(isSetYet[0]);
-        user.lineups[index] = lineup;
-        oldLineups = user.lineups;
-      } else {
-        user.lineups.push(lineup);
-        oldLineups = user.lineups;
-      }
+      // if (isSetYet.length === 1) {
+      //   const index = user.lineups.indexOf(isSetYet[0]);
+      //   user.lineups[index] = lineup;
+      //   oldLineups = user.lineups;
+      // } else {
+      //   user.lineups.push(lineup);
+      //   oldLineups = user.lineups;
+      // }
+      
+      user.lineups[1] = lineup
     }
 
     axios
       .put(
         import.meta.env.VITE_API_URL + "/api/users/" + user.id,
         {
-          lineups: oldLineups,
+          lineups: user.lineups,
         },
         {
           headers: {

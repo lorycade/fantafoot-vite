@@ -1,7 +1,10 @@
 .banner-action {
-  padding: 60px 0;
+  padding: 32px 0;
   background-color: $green-dark;
-  // background-image: url('https://picsum.photos/1000/300');
+
+  @media (min-width: 768px) {
+    padding: 60px 0;
+  }
 
   .container {
     display: flex;

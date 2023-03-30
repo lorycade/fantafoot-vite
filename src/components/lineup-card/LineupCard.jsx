@@ -8,7 +8,7 @@ import {
   Person,
 } from "@mui/icons-material";
 
-function LineupCard({ user }) {
+function LineupCard({ user, activeGame }) {
   return (
     <div className="lineup-card">
       <div className="card-head">
@@ -22,7 +22,7 @@ function LineupCard({ user }) {
       }
       {user.lineups != null && 
         <div className="lineup-wrapper">
-          {user.lineups[0].formation
+          {user.lineups[activeGame].formation
             .filter((item) => item.captain == true)
             .map((player) => (
               <div className="player-wrapper" key={player.id}>
@@ -35,7 +35,7 @@ function LineupCard({ user }) {
               </div>
             ))}
 
-          {user.lineups[0].formation
+          {user.lineups[activeGame].formation
             .filter(
               (item) =>
                 item.captain == false &&
@@ -53,7 +53,7 @@ function LineupCard({ user }) {
               </div>
             ))}
 
-          {user.lineups[0].formation
+          {user.lineups[activeGame].formation
             .filter(
               (item) =>
                 item.captain == false &&
@@ -72,7 +72,7 @@ function LineupCard({ user }) {
             ))}
           <div className="bench">Panchina</div>
 
-          {user.lineups[0].formation
+          {user.lineups[activeGame].formation
             .filter((item) => item.starter == false && item.benchOrder == 1)
             .map((player) => (
               <div className="player-wrapper" key={player.id}>
@@ -85,7 +85,7 @@ function LineupCard({ user }) {
               </div>
             ))}
 
-          {user.lineups[0].formation
+          {user.lineups[activeGame].formation
             .filter((item) => item.starter == false && item.benchOrder == 2)
             .map((player) => (
               <div className="player-wrapper" key={player.id}>
@@ -98,7 +98,7 @@ function LineupCard({ user }) {
               </div>
             ))}
 
-          {user.lineups[0].formation
+          {user.lineups[activeGame].formation
             .filter((item) => item.starter == false && item.benchOrder == 3)
             .map((player) => (
               <div className="player-wrapper" key={player.id}>
@@ -111,7 +111,7 @@ function LineupCard({ user }) {
               </div>
             ))}
 
-          {user.lineups[0].formation
+          {user.lineups[activeGame].formation
             .filter((item) => item.starter == false && item.benchOrder == 4)
             .map((player) => (
               <div className="player-wrapper" key={player.id}>
