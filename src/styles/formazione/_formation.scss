@@ -28,32 +28,34 @@
     bottom: 0;
     left: 0;
     width: 100%;
-    padding: 24px 0;
+    padding: 18px 0;
     background-color: #fff;
     box-shadow: 0 16px 16px 15px rgba($color: #000000, $alpha: 0.5);
+
+    @include media-breakpoint-up(md) {
+      padding: 24px 0;
+    }
 
     .container-lg {
       display: flex;
       align-items: center;
-      flex-direction: column;
+      justify-content: space-between;
       gap: 20px;
-
-      @include media-breakpoint-up(md) {
-        flex-direction: row;
-        justify-content: space-between;
-      }
     }
 
     .count-wrapper {
-      display: flex;
-      align-items: center;
-      gap: 32px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      row-gap: 10px;
+      column-gap: 16px;
       list-style: none;
       padding-left: 0;
-      margin-bottom: 10px;
+      margin-bottom: 0;
 
-      @include media-breakpoint-up(md) {
-        margin-bottom: 0;
+      @include media-breakpoint-up(sm) {
+        display: flex;
+        align-items: center;
+        gap: 24px;
       }
 
       li {
