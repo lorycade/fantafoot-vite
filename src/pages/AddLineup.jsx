@@ -163,8 +163,9 @@ function AddLineup() {
     }
 
     if (user && user.players) {
-      console.log(user);
-      user.players.length === 10 ? setPlayerLengthOk(true) : setPlayerLengthOk(false);
+      user.players.length === 10
+        ? setPlayerLengthOk(true)
+        : setPlayerLengthOk(false);
     }
   }, [user]);
 
@@ -222,8 +223,8 @@ function AddLineup() {
       //   user.lineups.push(lineup);
       //   oldLineups = user.lineups;
       // }
-      
-      user.lineups[1] = lineup
+
+      user.lineups[1] = lineup;
     }
 
     axios
@@ -239,7 +240,11 @@ function AddLineup() {
         }
       )
       .then((response) => {
-        const newUser = { ...response.data, lineups: oldLineups, players: user.players };
+        const newUser = {
+          ...response.data,
+          lineups: oldLineups,
+          players: user.players,
+        };
         setUser(newUser);
         setTeamInsert(true);
 
@@ -251,6 +256,54 @@ function AddLineup() {
       .catch((error) => {
         console.log("An error occurred:", error);
       });
+  };
+
+  const getSelectedValue = (player) => {
+    if (
+      player.captain == false &&
+      player.starter == false &&
+      player.couple == false &&
+      player.bench == false
+    ) {
+      return "";
+    }
+    if (player.captain == true) {
+      return "captain";
+    }
+    if (
+      player.captain == false &&
+      player.starter == true &&
+      player.couple == false
+    ) {
+      return "singolo";
+    }
+    if (
+      player.captain == false &&
+      player.starter == true &&
+      player.couple == true
+    ) {
+      return "couple";
+    }
+
+    if (player.starter == false) {
+      switch (player.benchOrder) {
+        case 1:
+          return "bench-1";
+          break;
+        case 2:
+          return "bench-2";
+          break;
+        case 3:
+          return "bench-3";
+          break;
+        case 4:
+          return "bench-4";
+          break;
+
+        default:
+          break;
+      }
+    }
   };
 
   return (
@@ -292,77 +345,20 @@ function AddLineup() {
                     onChange={(e) => handleRoleChange(e, player)}
                     name={`select-role`}
                     id={`select-role`}
+                    value={getSelectedValue(player)}
                   >
-                    <option
-                      value=""
-                      disabled
-                      selected={
-                        player.captain == false &&
-                        player.starter == false &&
-                        player.couple == false &&
-                        player.bench == false
-                      }
-                    >
+                    <option value="" disabled>
                       Seleziona ruolo
                     </option>
                     {player.id > 10 && (
-                      <option value="captain" selected={player.captain == true}>
-                        Capitano
-                      </option>
+                      <option value="captain">Capitano</option>
                     )}
-
-                    <option
-                      value="single"
-                      selected={
-                        player.captain == false &&
-                        player.starter == true &&
-                        player.couple == false
-                      }
-                    >
-                      Singolo
-                    </option>
-                    <option
-                      value="couple"
-                      selected={
-                        player.captain == false &&
-                        player.starter == true &&
-                        player.couple == true
-                      }
-                    >
-                      Coppia
-                    </option>
-                    <option
-                      value="bench-1"
-                      selected={
-                        player.starter == false && player.benchOrder === 1
-                      }
-                    >
-                      Panchina 1
-                    </option>
-                    <option
-                      value="bench-2"
-                      selected={
-                        player.starter == false && player.benchOrder === 2
-                      }
-                    >
-                      Panchina 2
-                    </option>
-                    <option
-                      value="bench-3"
-                      selected={
-                        player.starter == false && player.benchOrder === 3
-                      }
-                    >
-                      Panchina 3
-                    </option>
-                    <option
-                      value="bench-4"
-                      selected={
-                        player.starter == false && player.benchOrder === 4
-                      }
-                    >
-                      Panchina 4
-                    </option>
+                    <option value="single">Singolo</option>
+                    <option value="couple">Coppia</option>
+                    <option value="bench-1">Panchina 1</option>
+                    <option value="bench-2">Panchina 2</option>
+                    <option value="bench-3">Panchina 3</option>
+                    <option value="bench-4">Panchina 4</option>
                   </select>
                 </div>
               ))}

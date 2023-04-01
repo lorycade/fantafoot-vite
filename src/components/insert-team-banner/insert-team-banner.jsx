@@ -9,7 +9,6 @@ const InsertTeamBanner = ({ nextStage }) => {
 
   useEffect(() => {
     if (!nextStage) return;
-    console.log(nextStage);
     const dateString = String(nextStage.start).split("Z");
     setEndDate(dateString[0]);
   }, []);
