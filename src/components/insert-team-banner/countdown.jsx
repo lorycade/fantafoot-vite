@@ -81,7 +81,9 @@ class Countdown extends Component {
     const countDown = this.state;
 
     return (
-      <Box sx={{ display: "flex", gap: "10px", }}>
+      <Box sx={{ display: "flex", gap: "10px", '@media (max-width: 768px)': {
+        justifyContent: 'center'
+      } }}>
         <Box
           sx={{
             width: "90px",
@@ -94,6 +96,10 @@ class Countdown extends Component {
             textAlign: "center",
             borderRadius: "50%",
             color: "#000",
+            '@media (max-width: 768px)': {
+              width: '70px',
+              height: '70px'
+            }
           }}
         >
           <strong>{this.addLeadingZeros(countDown.days)}</strong>
@@ -111,6 +117,10 @@ class Countdown extends Component {
             textAlign: "center",
             borderRadius: "50%",
             color: "#000",
+            '@media (max-width: 768px)': {
+              width: '70px',
+              height: '70px'
+            }
           }}
         >
           <strong>{this.addLeadingZeros(countDown.hours)}</strong>
@@ -128,6 +138,10 @@ class Countdown extends Component {
             textAlign: "center",
             borderRadius: "50%",
             color: "#000",
+            '@media (max-width: 768px)': {
+              width: '70px',
+              height: '70px'
+            }
           }}
         >
           <strong>{this.addLeadingZeros(countDown.min)}</strong>

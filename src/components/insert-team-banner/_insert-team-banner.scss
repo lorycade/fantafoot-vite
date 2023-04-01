@@ -2,11 +2,7 @@
   padding: 32px 0;
   background-color: $green-dark;
 
-  @media (min-width: 768px) {
-    padding: 60px 0;
-  }
-
-  .container {
+  .container-lg {
     display: flex;
     justify-content: flex-end;
   }
@@ -16,10 +12,9 @@
     color: #fff;
     font-weight: 600;
     font-size: 20px;
-    border: 2px solid #000;
     text-decoration: none;
     border-radius: 4px;
-    background-color: #000;
+    background-color: rgb(32, 32, 32);
 
     &:hover {
       text-decoration: underline;
