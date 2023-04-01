@@ -22,7 +22,7 @@ function TeamDetail() {
   };
 
   return (
-    <div className="container my-5">
+    <div className="container-lg my-5">
       <Link to={'/squadre'} className="back-link"><ArrowBack/> Torna indietro</Link>
       <div className="main-info">
         <div className="circle-user">{user && user.name.split('')[0]}{user && user.surname.split('')[0]}</div>

@@ -79,7 +79,7 @@ function Profilo() {
   return (
     <>
       {!!user && (
-        <div className="container">
+        <div className="container-lg">
           {passwordChanged && (
             <Alert severity="success" className="alert-custom">
               Password modificata correttamente

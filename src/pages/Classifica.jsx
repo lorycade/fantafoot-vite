@@ -332,7 +332,7 @@ function Classifica() {
 
   return (
     <>
-      <div className="container">
+      <div className="container-lg">
         <div className="row mt-40 fx-center">
           <div className="col-12">
             <h2 className="follow-title t-bold text-center">Classifica</h2>

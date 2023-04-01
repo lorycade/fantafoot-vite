@@ -24,7 +24,7 @@ function Lineups() {
   };
 
   return (
-    <div className="container">
+    <div className="container-lg">
       <Box sx={{display: "flex", justifyContent: "flex-end", p: "40px 0 0"}}>
         <FormControl sx={{ minWidth: 250 }}>
           <InputLabel

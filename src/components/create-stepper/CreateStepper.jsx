@@ -201,7 +201,7 @@ const CreateStepper = () => {
   };
 
   return (
-    <div className="container my-5">
+    <div className="container-lg my-5">
       {teamCreated && (
         <Alert severity="success" className="alert-custom">Complimenti, hai creato la tua squadra !!</Alert>
       )}
@@ -375,7 +375,7 @@ const CreateStepper = () => {
           )}
         </div>
         <div className="stepper-footer">
-          <div className="container">
+          <div className="container-lg">
             {activeStep > 1 && (
               <button
                 className="btn btn-secondary prev"

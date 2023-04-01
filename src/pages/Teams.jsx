@@ -19,7 +19,7 @@ function Teams() {
   };
 
   return (
-    <div className="container">
+    <div className="container-lg">
       <div className="row mt-5 g-4">
         {users.map((user) => (
           <div className="col-sm-6 col-md-4 col-lg-3" key={user.id}>

@@ -6,7 +6,7 @@ import Countdown from "./countdown";
 const InsertTeamBanner = () => {
   return (
     <div className="banner-action">
-      <div className="container">
+      <div className="container-lg">
         <Box sx={{width: "100%", gap: "32px", display: "flex", flexDirection: "column", alignItems: "center", "@media (min-width: 768px)": {
         flexDirection: "row", justifyContent: "space-between"
       }}}>

@@ -255,7 +255,7 @@ function AddLineup() {
 
   return (
     <>
-      <div className="container mb-5 formation-container">
+      <div className="container-lg mb-5 formation-container">
         {teamInsert && (
           <Alert severity="success" className="alert-custom">
             Formazione inserita correttamente
@@ -369,7 +369,7 @@ function AddLineup() {
             </div>
 
             <div className="bottom-action">
-              <div className="container">
+              <div className="container-lg">
                 <ul className="count-wrapper">
                   <li>
                     <CCircleFill /> {captainCount}/1
