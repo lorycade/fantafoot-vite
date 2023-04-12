@@ -9,10 +9,12 @@ import {
   PersonFillSlash,
 } from "react-bootstrap-icons";
 import { Alert } from "@mui/material";
+import {StageContext} from "../context/StageContext";
 
 function AddLineup() {
   const jwt = localStorage.getItem("jwt");
   const { user, setUser } = useContext(UserContext);
+  const { nextStage } = useContext(StageContext);
   const [players, setPlayers] = useState([]);
   const [teamInsert, setTeamInsert] = useState(false);
   const [insertCorrect, setInsertCorrect] = useState(false);
@@ -24,6 +26,7 @@ function AddLineup() {
   const [coupleCount, setCoupleCount] = useState(0);
   const [benchCount, setBenchCount] = useState(0);
   const history = useNavigate();
+  // const nextStage = getNextStage();
 
   const handleRoleChange = (e, player) => {
     const role = e.target.value;
@@ -156,8 +159,9 @@ function AddLineup() {
   }, []);
 
   useEffect(() => {
+    if (!nextStage) return
     if (user && user.lineups) {
-      setPlayers(user.lineups[1].formation);
+      setPlayers(user.lineups[nextStage].formation);
     } else if (user) {
       setPlayers(user.players);
     }
@@ -167,7 +171,7 @@ function AddLineup() {
         ? setPlayerLengthOk(true)
         : setPlayerLengthOk(false);
     }
-  }, [user]);
+  }, [user, nextStage]);
 
   useEffect(() => {
     const countCaptains = players.filter((item) => item.captain == true).length;
@@ -201,7 +205,7 @@ function AddLineup() {
 
     if (areAllInsert.length > 0) return;
     const lineup = {
-      tappa: 2,
+      tappa: (nextStage + 1),
       formation: players,
     };
 
@@ -211,20 +215,8 @@ function AddLineup() {
       emptyArr.push(lineup);
       oldLineups = emptyArr;
     } else {
-      // const isSetYet = user.lineups.filter(
-      //   (item) => item.tappa == lineup.tappa
-      // );
-
-      // if (isSetYet.length === 1) {
-      //   const index = user.lineups.indexOf(isSetYet[0]);
-      //   user.lineups[index] = lineup;
-      //   oldLineups = user.lineups;
-      // } else {
-      //   user.lineups.push(lineup);
-      //   oldLineups = user.lineups;
-      // }
-
-      user.lineups[1] = lineup;
+      console.log('nel salva in pratica', nextStage);
+      user.lineups[nextStage] = lineup;
     }
 
     axios

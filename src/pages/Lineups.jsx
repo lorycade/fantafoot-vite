@@ -1,14 +1,19 @@
 import { FormControl, InputLabel, Select, MenuItem, Box } from "@mui/material";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import LineupCard from "../components/lineup-card/LineupCard";
+import {StageContext} from "../context/StageContext";
 
 function Lineups() {
   const [users, setUsers] = useState([]);
+  const {nextStage}  = useContext(StageContext);
   const [gameFilter, setGameFilter] = useState(1);
+  
 
   useEffect(() => {
     getUsers();
+    if (!nextStage) return
+    setGameFilter(nextStage)
   }, []);
 
   const getUsers = async () => {
@@ -17,10 +22,6 @@ function Lineups() {
     );
 
     setUsers(response.data);
-  };
-
-  const handleChange = () => {
-    console.log("hi");
   };
 
   return (
@@ -41,9 +42,24 @@ function Lineups() {
             onChange={(e) => setGameFilter(e.target.value)}
             size="small"
           >
-            <MenuItem value={0}>Tappa 1</MenuItem>
-            <MenuItem value={1} selected>
+            <MenuItem value={0} selected={nextStage === 0}>Tappa 1</MenuItem>
+            <MenuItem value={1} selected={nextStage === 1} disabled={nextStage < 1}>
               Tappa 2
+            </MenuItem>
+            <MenuItem value={2} selected={nextStage === 2} disabled={nextStage < 2}>
+              Tappa 3
+            </MenuItem>
+            <MenuItem value={3} selected={nextStage === 3} disabled={nextStage < 3}>
+              Tappa 4
+            </MenuItem>
+            <MenuItem value={4} selected={nextStage === 4} disabled={nextStage < 4}>
+              Tappa 5
+            </MenuItem>
+            <MenuItem value={5} selected={nextStage === 5} disabled={nextStage < 5}>
+              Tappa 6
+            </MenuItem>
+            <MenuItem value={6} selected={nextStage === 6} disabled={nextStage < 6}>
+              Tappa 7
             </MenuItem>
           </Select>
         </FormControl>

@@ -4,9 +4,12 @@ import App from "./App";
 import "./index.scss";
 
 import UserContextProvider from "./context/UserContext";
+import StageContextProvider from "./context/StageContext";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <UserContextProvider>
-    <App />
+    <StageContextProvider>
+      <App />
+    </StageContextProvider>
   </UserContextProvider>
 );

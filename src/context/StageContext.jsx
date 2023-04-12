@@ -1,0 +1,40 @@
+import { createContext, useEffect, useState } from "react";
+import axios from "axios";
+import { getNextStage } from "../hooks/gameStatus";
+export const StageContext = createContext(null);
+
+export default ({ children }) => {
+  const [nextStage, setNextStage] = useState(null);
+  // const [stages, setStages] = useState();
+    // const [nextId, setNextId] = useState(null);
+
+  useEffect(() => {
+    getStages()
+  }, [])
+
+  const getStages = () => {
+    axios
+    .get(import.meta.env.VITE_API_URL + "/api/stages")
+    .then((response) => {
+      checkNextStage(response.data.data)
+    })
+    .catch((error) => {
+      console.log("An error occurred:", error);
+    });
+  }
+  
+    const checkNextStage = (stages) => {
+      if (!stages.length > 0) return;
+      const next = stages.filter(
+        (item) => new Date() < new Date(item.start)
+      );
+      setNextStage(next[0].id - 1)
+    };
+
+  
+  return (
+    <StageContext.Provider value={{ nextStage, setNextStage }}>
+      {children}
+    </StageContext.Provider>
+  );
+};
