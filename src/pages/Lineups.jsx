@@ -98,6 +98,7 @@ function Lineups() {
           </Select>
         </FormControl>
       </Box>
+      {!!user && 
       <Box sx={{ display: "flex", justifyContent: "flex-end", p: "20px 0 0" }}>
         <FormGroup>
           <FormControlLabel
@@ -108,6 +109,7 @@ function Lineups() {
           />
         </FormGroup>
       </Box>
+      }
 
       <div className="row my-3 my-md-5 g-4">
         {!checked &&
