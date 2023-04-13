@@ -18,6 +18,7 @@ function Header() {
 
   const menuToggleHandler = () => {
     const body = document.querySelector('body')
+    console.log('menu', menuOpen);
     if (menuOpen === false) {
       body.style.overflowY = 'hidden'
     } else {
@@ -49,35 +50,35 @@ function Header() {
           >
             <ul>
               <li>
-                <NavLink to="/listone" className="nav-link" onClick={() => setMenuOpen(false)}>
+                <NavLink to="/listone" className="nav-link" onClick={() => {setMenuOpen(false), menuToggleHandler()}}>
                   Listone
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/classifica" className="nav-link" onClick={() => setMenuOpen(false)}>
+                <NavLink to="/classifica" className="nav-link" onClick={() => {setMenuOpen(false), menuToggleHandler()}}>
                   Classifica
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/formazioni" className="nav-link" onClick={() => setMenuOpen(false)}>
+                <NavLink to="/formazioni" className="nav-link" onClick={() => {setMenuOpen(false), menuToggleHandler()}}>
                   Formazioni
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/squadre" className="nav-link" onClick={() => setMenuOpen(false)}>
+                <NavLink to="/squadre" className="nav-link" onClick={() => {setMenuOpen(false), menuToggleHandler()}}>
                   Squadre
                 </NavLink>
               </li>
               {user && user.confirmed && (
                 <li>
-                  <NavLink to="/profilo" className="nav-link" onClick={() => setMenuOpen(false)}>
+                  <NavLink to="/profilo" className="nav-link" onClick={() => {setMenuOpen(false), menuToggleHandler()}}>
                     Profilo
                   </NavLink>
                 </li>
               )}
               {!user && (
                 <li>
-                  <NavLink to="/login" className="nav-link" onClick={() => setMenuOpen(false)}>
+                  <NavLink to="/login" className="nav-link" onClick={() => {setMenuOpen(false), menuToggleHandler()}}>
                     Accedi
                   </NavLink>
                 </li>
@@ -94,8 +95,6 @@ function Header() {
           <div className="header__content__toggle">
             {menuOpen === true ? (
               <Close onClick={menuToggleHandler} fontSize="large" />
-              
-              
             ) : (
               <Menu onClick={menuToggleHandler} fontSize="large" />
             )}
