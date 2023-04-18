@@ -413,7 +413,7 @@ function Classifica() {
               .map((user, i) => (
                 <div className="line body" key={user.id}>
                   <div className="cell">{i + 1}</div>
-                  <div className="cell">{user.teamName} - <i>({user.name.split('')[0] + '. '}{user.surname})</i></div>
+                  <div className="cell teamname">{user.teamName} - <i>({user.name.split('')[0] + '. '}{user.surname})</i></div>
                   <div className="cell">{user.points}</div>
                 </div>
               ))}
