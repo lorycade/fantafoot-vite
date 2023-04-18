@@ -67,6 +67,10 @@ body {
 
     .cell {
       padding: 16px 8px;
+
+      &.teamname {
+        text-transform: capitalize;
+      }
     }
 
     &.single-tour {
