@@ -18,13 +18,14 @@ function Header() {
 
   const menuToggleHandler = () => {
     const body = document.querySelector('body')
-    console.log('menu', menuOpen);
-    if (menuOpen === false) {
-      body.style.overflowY = 'hidden'
-    } else {
-      body.removeAttribute('style')
+    if (window.matchMedia("(max-width: 1023.9px)").matches) {
+      if (menuOpen === false) {
+        body.style.overflowY = 'hidden'
+      } else {
+        body.removeAttribute('style')
+      }
+      setMenuOpen(!menuOpen);
     }
-    setMenuOpen(!menuOpen);
   };
 
   const handleLogout = () => {
