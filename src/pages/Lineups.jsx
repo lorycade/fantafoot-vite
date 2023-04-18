@@ -45,7 +45,7 @@ function Lineups() {
           <Select
             labelId="game-label"
             id="select-game"
-            value={1}
+            value={gameFilter}
             label="Tappa"
             onChange={(e) => setGameFilter(e.target.value)}
             size="small"
