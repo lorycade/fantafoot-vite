@@ -23,8 +23,8 @@ function Lineups() {
 
   useEffect(() => {
     getUsers();
-    if (!nextStage) return;
-    setGameFilter(nextStage);
+    // if (!nextStage) return;
+    // setGameFilter(nextStage);
   }, []);
 
   const getUsers = async () => {
@@ -45,7 +45,7 @@ function Lineups() {
           <Select
             labelId="game-label"
             id="select-game"
-            value={gameFilter}
+            value={1}
             label="Tappa"
             onChange={(e) => setGameFilter(e.target.value)}
             size="small"
@@ -55,22 +55,20 @@ function Lineups() {
             </MenuItem>
             <MenuItem
               value={1}
-              selected={nextStage === 1}
-              disabled={nextStage < 1}
+              selected
             >
               Tappa 2
             </MenuItem>
             <MenuItem
-              value={2}
-              selected={nextStage === 2}
-              disabled={nextStage < 2}
+              value={2}// agg nextStage === 2
+              disabled // agg nextStage < 2
             >
               Tappa 3
             </MenuItem>
             <MenuItem
               value={3}
-              selected={nextStage === 3}
-              disabled={nextStage < 3}
+              selected={false} // agg nextStage === 2
+              disabled={true} // agg nextStage < 2
             >
               Tappa 4
             </MenuItem>

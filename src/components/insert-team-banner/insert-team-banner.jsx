@@ -39,9 +39,9 @@ const InsertTeamBanner = ({ nextStage }) => {
               <Typography variant="h6" fontWeight={'bold'} sx={{mb: 2, '@media (max-width: 768px)': {
               textAlign: 'center'
             }}} >
-                Termine inserimento formazione
+                Inserire formazione della seconda giornata
               </Typography>
-              {endDate !== undefined && <Countdown date={endDate} />}
+              {/* {endDate !== undefined && <Countdown date={endDate} />} */}
             </Box>
 
             <Link to="/inserisci-formazione" className="action-link">

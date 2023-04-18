@@ -14,7 +14,7 @@ import {StageContext} from "../context/StageContext";
 function AddLineup() {
   const jwt = localStorage.getItem("jwt");
   const { user, setUser } = useContext(UserContext);
-  const { nextStage } = useContext(StageContext);
+  // const { nextStage } = useContext(StageContext);
   const [players, setPlayers] = useState([]);
   const [teamInsert, setTeamInsert] = useState(false);
   const [insertCorrect, setInsertCorrect] = useState(false);
@@ -159,9 +159,9 @@ function AddLineup() {
   }, []);
 
   useEffect(() => {
-    if (!nextStage) return
+    // if (!nextStage) return
     if (user && user.lineups) {
-      setPlayers(user.lineups[nextStage].formation);
+      setPlayers(user.lineups[1].formation);
     } else if (user) {
       setPlayers(user.players);
     }
@@ -171,7 +171,7 @@ function AddLineup() {
         ? setPlayerLengthOk(true)
         : setPlayerLengthOk(false);
     }
-  }, [user, nextStage]);
+  }, [user]); // aggiungere nextStage
 
   useEffect(() => {
     const countCaptains = players.filter((item) => item.captain == true).length;
@@ -205,9 +205,11 @@ function AddLineup() {
 
     if (areAllInsert.length > 0) return;
     const lineup = {
-      tappa: (nextStage + 1),
+      tappa: 2, // aggiungere (nextStage + 1)
       formation: players,
     };
+
+    console.log('lineup', lineup);
 
     let oldLineups;
     if (user && user.lineups == null) {
@@ -215,9 +217,11 @@ function AddLineup() {
       emptyArr.push(lineup);
       oldLineups = emptyArr;
     } else {
-      console.log('nel salva in pratica', nextStage);
-      user.lineups[nextStage] = lineup;
+      // console.log('nel salva in pratica', );
+      user.lineups[1] = lineup;
     }
+
+    console.log('user lineup', user.lineups);
 
     axios
       .put(
@@ -249,54 +253,6 @@ function AddLineup() {
         console.log("An error occurred:", error);
       });
   };
-
-  // const getSelectedValue = (player) => {
-  //   if (
-  //     player.captain == false &&
-  //     player.starter == false &&
-  //     player.couple == false &&
-  //     player.bench == false
-  //   ) {
-  //     return "";
-  //   }
-  //   if (player.captain == true) {
-  //     return "captain";
-  //   }
-  //   if (
-  //     player.captain == false &&
-  //     player.starter == true &&
-  //     player.couple == false
-  //   ) {
-  //     return "singolo";
-  //   }
-  //   if (
-  //     player.captain == false &&
-  //     player.starter == true &&
-  //     player.couple == true
-  //   ) {
-  //     return "couple";
-  //   }
-
-  //   if (player.starter == false) {
-  //     switch (player.benchOrder) {
-  //       case 1:
-  //         return "bench-1";
-  //         break;
-  //       case 2:
-  //         return "bench-2";
-  //         break;
-  //       case 3:
-  //         return "bench-3";
-  //         break;
-  //       case 4:
-  //         return "bench-4";
-  //         break;
-
-  //       default:
-  //         break;
-  //     }
-  //   }
-  // };
 
   return (
     <>

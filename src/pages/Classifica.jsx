@@ -306,32 +306,34 @@ function Classifica() {
     });
   };
 
-  const updateAllLineups = () => {
-    userPlayers.forEach(user => {
-      let allLineups = Array(7).fill(user.lineups[0])
+  // const updateAllLineups = (tappa) => {
+  //   userPlayers.forEach(user => {
+  //     console.log('prima', user.lineups);
+  //     // let allLineups = Array(7).fill(user.lineups[tappa])
+  //     // console.log('allLineups', allLineups);
+  //     // user.lineups = allLineups
 
-      user.lineups = allLineups
-
-      axios
-      .put(
-        import.meta.env.VITE_API_URL + "/api/users/" + user.id,
-        {
-          lineups: user.lineups,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${jwt}`,
-          },
-        }
-      )
-      .then((response) => {
-        console.log("response", response);
-      })
-      .catch((error) => {
-        console.log("An error occurred:", error.response);
-      });
-    });
-  }
+  //     return
+  //     axios
+  //     .put(
+  //       import.meta.env.VITE_API_URL + "/api/users/" + user.id,
+  //       {
+  //         lineups: user.lineups,
+  //       },
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${jwt}`,
+  //         },
+  //       }
+  //     )
+  //     .then((response) => {
+  //       console.log("response", response);
+  //     })
+  //     .catch((error) => {
+  //       console.log("An error occurred:", error.response);
+  //     });
+  //   });
+  // }
 
   return (
     <>
@@ -512,10 +514,10 @@ function Classifica() {
         </div>
         {user && user.role && user.role.type == "admin" && (
           <>
-            <button onClick={() => updateAllLineups()}>
+            {/* <button onClick={() => updateAllLineups(1)}>
               Aggiorna tutte le formazioni
-            </button>
-            <button onClick={() => getAllPlayers(0)}>
+            </button> */}
+            <button onClick={() => getAllPlayers(2)}>
               Aggiorna punteggi giocatori
             </button>
             {/* <button onClick={() => calculatePoints(0)}>
