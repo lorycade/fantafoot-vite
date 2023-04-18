@@ -271,9 +271,12 @@ function Classifica() {
     setSortType(tappa);
   };
 
-  const handleDetailOpen = (id) => {
-    if (id !== detailOpen) {
-      setDetailOpen(id);
+  const handleDetailOpen = (user) => {
+    // const idCustom = `${id}-detail-${sortType}`;
+    console.log(user);
+    
+    if (user.teamName !== detailOpen) {
+      setDetailOpen(user.teamName);
     } else {
       setDetailOpen(null);
     }
@@ -402,7 +405,7 @@ function Classifica() {
             {sortType !== null && <div className="cell">Punteggio</div>}
             <div className="cell">Punti</div>
           </div>
-          {sortType == null &&
+          {sortType === null &&
             userPlayers
               .sort((a, b) => (a.points > b.points ? -1 : 1))
               .map((user, i) => (
@@ -412,7 +415,7 @@ function Classifica() {
                   <div className="cell">{user.points}</div>
                 </div>
               ))}
-          {sortType != null &&
+          {sortType !== null &&
             userPlayers
               .sort((a, b) =>
                 a.custom_result[sortType].gamePoints >
@@ -434,12 +437,12 @@ function Classifica() {
                     <button
                       className="detail-btn"
                       type="button"
-                      onClick={() => handleDetailOpen(i)}
+                      onClick={() => handleDetailOpen(user)}
                     >
                       Dettagli
                     </button>
                   </div>
-                  {detailOpen == i && (
+                  {detailOpen === user.teamName && (
                     <div className="lineup-wrapper-leaderboard">
                       {user.lineups[sortType].formation
                         .filter((item) => item.captain == true)
