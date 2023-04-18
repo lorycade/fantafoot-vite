@@ -183,7 +183,7 @@ function Classifica() {
     }, new Map());
 
     const duplicates = userPlayers
-      .slice(0, 25)
+      .slice(0, 30)
       .filter((e) => lookup.get(e.custom_result[tappaId].gamePoints) > 1);
 
     const output = duplicates.reduce(
