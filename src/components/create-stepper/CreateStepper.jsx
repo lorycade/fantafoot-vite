@@ -54,7 +54,6 @@ const CreateStepper = () => {
 
   useEffect(() => {
     if (user && user.teamName != null) {
-      console.log(user);
       initChangeMode();
     }
   }, [user]);

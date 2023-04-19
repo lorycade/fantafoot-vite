@@ -14,7 +14,7 @@ import {StageContext} from "../context/StageContext";
 function AddLineup() {
   const jwt = localStorage.getItem("jwt");
   const { user, setUser } = useContext(UserContext);
-  // const { nextStage } = useContext(StageContext);
+  const { nextStage } = useContext(StageContext);
   const [players, setPlayers] = useState([]);
   const [teamInsert, setTeamInsert] = useState(false);
   const [insertCorrect, setInsertCorrect] = useState(false);
@@ -26,7 +26,6 @@ function AddLineup() {
   const [coupleCount, setCoupleCount] = useState(0);
   const [benchCount, setBenchCount] = useState(0);
   const history = useNavigate();
-  // const nextStage = getNextStage();
 
   const handleRoleChange = (e, player) => {
     const role = e.target.value;
@@ -159,9 +158,9 @@ function AddLineup() {
   }, []);
 
   useEffect(() => {
-    // if (!nextStage) return
+    if (!nextStage) return
     if (user && user.lineups) {
-      setPlayers(user.lineups[1].formation);
+      setPlayers(user.lineups[nextStage].formation);
     } else if (user) {
       setPlayers(user.players);
     }
@@ -171,7 +170,7 @@ function AddLineup() {
         ? setPlayerLengthOk(true)
         : setPlayerLengthOk(false);
     }
-  }, [user]); // aggiungere nextStage
+  }, [user, nextStage]);
 
   useEffect(() => {
     const countCaptains = players.filter((item) => item.captain == true).length;
@@ -205,11 +204,9 @@ function AddLineup() {
 
     if (areAllInsert.length > 0) return;
     const lineup = {
-      tappa: 2, // aggiungere (nextStage + 1)
+      tappa: (nextStage + 1),
       formation: players,
     };
-
-    console.log('lineup', lineup);
 
     let oldLineups;
     if (user && user.lineups == null) {
@@ -217,11 +214,8 @@ function AddLineup() {
       emptyArr.push(lineup);
       oldLineups = emptyArr;
     } else {
-      // console.log('nel salva in pratica', );
-      user.lineups[1] = lineup;
+      user.lineups[nextStage] = lineup;
     }
-
-    console.log('user lineup', user.lineups);
 
     axios
       .put(

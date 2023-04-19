@@ -5,9 +5,6 @@ export const StageContext = createContext(null);
 
 export default ({ children }) => {
   const [nextStage, setNextStage] = useState(null);
-  // const [stages, setStages] = useState();
-    // const [nextId, setNextId] = useState(null);
-
   useEffect(() => {
     getStages()
   }, [])

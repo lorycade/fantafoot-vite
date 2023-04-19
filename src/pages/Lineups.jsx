@@ -18,13 +18,13 @@ function Lineups() {
   const [users, setUsers] = useState([]);
   const { nextStage } = useContext(StageContext);
   const { user } = useContext(UserContext);
-  const [gameFilter, setGameFilter] = useState(1);
+  const [gameFilter, setGameFilter] = useState(2);
   const [checked, setChecked] = useState(false);
 
   useEffect(() => {
     getUsers();
-    // if (!nextStage) return;
-    // setGameFilter(nextStage);
+    if (!nextStage) return;
+    setGameFilter(nextStage);
   }, []);
 
   const getUsers = async () => {
@@ -55,20 +55,22 @@ function Lineups() {
             </MenuItem>
             <MenuItem
               value={1}
-              selected
+              selected={nextStage === 1}
+              disabled={nextStage < 1}
             >
               Tappa 2
             </MenuItem>
             <MenuItem
-              value={2}// agg nextStage === 2
-              disabled // agg nextStage < 2
+              value={2}
+              selected={nextStage === 2}
+              disabled={nextStage < 2}
             >
               Tappa 3
             </MenuItem>
             <MenuItem
               value={3}
-              selected={false} // agg nextStage === 2
-              disabled={true} // agg nextStage < 2
+              selected={nextStage === 3}
+              disabled={nextStage < 3}
             >
               Tappa 4
             </MenuItem>

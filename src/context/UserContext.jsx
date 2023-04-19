@@ -22,8 +22,6 @@ export default ({ children }) => {
       }
     );
 
-    console.log(response.data);
-    
     setUser(response.data)
   };
   

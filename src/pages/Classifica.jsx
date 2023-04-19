@@ -2,6 +2,7 @@ import { useEffect, useState, useContext } from "react";
 import axios, { all } from "axios";
 import { UserContext } from "../context/UserContext";
 import { Copyright, Group, Person } from "@mui/icons-material";
+import {StageContext} from "../context/StageContext";
 
 function Classifica() {
   const [detailOpen, setDetailOpen] = useState(null);
@@ -9,6 +10,7 @@ function Classifica() {
   const { user } = useContext(UserContext);
   const [sortType, setSortType] = useState(null);
   const jwt = localStorage.getItem("jwt");
+  const { nextStage } = useContext(StageContext);
 
   useEffect(() => {
     getUserPlayers();
@@ -272,9 +274,6 @@ function Classifica() {
   };
 
   const handleDetailOpen = (user) => {
-    // const idCustom = `${id}-detail-${sortType}`;
-    console.log(user);
-    
     if (user.teamName !== detailOpen) {
       setDetailOpen(user.teamName);
     } else {
@@ -305,35 +304,6 @@ function Classifica() {
       updateusersForCalculate(user);
     });
   };
-
-  // const updateAllLineups = (tappa) => {
-  //   userPlayers.forEach(user => {
-  //     console.log('prima', user.lineups);
-  //     // let allLineups = Array(7).fill(user.lineups[tappa])
-  //     // console.log('allLineups', allLineups);
-  //     // user.lineups = allLineups
-
-  //     return
-  //     axios
-  //     .put(
-  //       import.meta.env.VITE_API_URL + "/api/users/" + user.id,
-  //       {
-  //         lineups: user.lineups,
-  //       },
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${jwt}`,
-  //         },
-  //       }
-  //     )
-  //     .then((response) => {
-  //       console.log("response", response);
-  //     })
-  //     .catch((error) => {
-  //       console.log("An error occurred:", error.response);
-  //     });
-  //   });
-  // }
 
   return (
     <>
@@ -514,17 +484,11 @@ function Classifica() {
         </div>
         {user && user.role && user.role.type == "admin" && (
           <>
-            {/* <button onClick={() => updateAllLineups(1)}>
-              Aggiorna tutte le formazioni
-            </button> */}
-            <button onClick={() => getAllPlayers(2)}>
+            <button onClick={() => getAllPlayers(nextStage)}>
               Aggiorna punteggi giocatori
             </button>
-            {/* <button onClick={() => calculatePoints(0)}>
-              Calcola giornata 1
-            </button> */}
-            <button onClick={() => calculatePoints(1)}>
-              Calcola giornata 2
+            <button onClick={() => calculatePoints(nextStage)}>
+              Calcola giornata {nextStage + 1}
             </button>
           </>
         )}

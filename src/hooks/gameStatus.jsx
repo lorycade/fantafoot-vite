@@ -65,11 +65,6 @@ export function getNextStage() {
       (item) => new Date() < new Date(item.start)
     );
     setNextId(next[0].id - 1);
-
-    console.log(next[0].id);
-
-    // setNextStage(next[0].id - 1)
-
   };
   setNextStage(nextId)
   return nextId;

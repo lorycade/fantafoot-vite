@@ -29,8 +29,6 @@ function Login() {
         password,
       })
       .then((response) => {
-        // console.log(response.data);
-        // setUser(response.data.user);
         history("/profilo");
         const date = new Date();
         localStorage.setItem("jwt", response.data.jwt);
