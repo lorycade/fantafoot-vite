@@ -334,14 +334,14 @@ function Classifica() {
           </button>
           <button
             className={sortType == 2 ? "active" : ""}
-            onClick={() => handleLeaderboard(1)}
+            onClick={() => handleLeaderboard(2)}
           >
             Tappa 3
           </button>
           <button
             disabled
             className={sortType == 3 ? "active" : ""}
-            onClick={() => handleLeaderboard(1)}
+            onClick={() => handleLeaderboard(3)}
           >
             Tappa 4
           </button>
