@@ -484,11 +484,11 @@ function Classifica() {
         </div>
         {user && user.role && user.role.type == "admin" && (
           <>
-            <button onClick={() => getAllPlayers(nextStage)}>
+            <button onClick={() => getAllPlayers(nextStage - 1)}>
               Aggiorna punteggi giocatori
             </button>
-            <button onClick={() => calculatePoints(nextStage)}>
-              Calcola giornata {nextStage + 1}
+            <button onClick={() => calculatePoints(nextStage - 1)}>
+              Calcola giornata {nextStage}
             </button>
           </>
         )}
