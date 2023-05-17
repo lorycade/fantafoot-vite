@@ -68,11 +68,15 @@ function Classifica() {
         ...couplePlayers.map((item) => item.results[tappaId].result)
       );
 
-      playerResults.find(
+      const best = playerResults.find(
         (item) =>
           item.results[tappaId].result === coupleBestResult &&
           item.couple === true
-      )?.coupleBest = true;
+      )
+
+      if (!!best) {
+        best.coupleBest = true;
+      }
 
       const totalPoints = captainResult + singlesResults + coupleBestResult;
 
