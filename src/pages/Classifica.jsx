@@ -333,7 +333,6 @@ function Classifica() {
             Tappa 2
           </button>
           <button
-            disabled
             className={sortType == 2 ? "active" : ""}
             onClick={() => handleLeaderboard(1)}
           >
