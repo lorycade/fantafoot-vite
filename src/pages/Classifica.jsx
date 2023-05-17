@@ -72,7 +72,7 @@ function Classifica() {
         (item) =>
           item.results[tappaId].result === coupleBestResult &&
           item.couple === true
-      ).coupleBest = true;
+      )?.coupleBest = true;
 
       const totalPoints = captainResult + singlesResults + coupleBestResult;
 
