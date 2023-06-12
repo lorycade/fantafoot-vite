@@ -50,7 +50,7 @@ function App() {
         { path: '/classifica', element: <Classifica />},
         { path: '/profilo', element: <Profilo />},
         { path: '/inserisci-formazione', element: <AddLineup />},
-        // { path: '/crea-squadra', element: <CreateTeam />},
+        { path: '/crea-squadra', element: <CreateTeam />},
         { path: '/login', element: <Login />},
         { path: '/api/auth/email-confirmation', element: <Login />},
         { path: '/login/recover-password/:recoverCode', element: <RecoverPassword />},

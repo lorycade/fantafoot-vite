@@ -7,16 +7,16 @@ import Offcanvas from "react-bootstrap/Offcanvas";
 import { Alert } from "@mui/material";
 
 const steps = [
+  // {
+  //   number: 1,
+  //   head: "Inserisci Nome Squadra",
+  // },
   {
     number: 1,
-    head: "Inserisci Nome Squadra",
-  },
-  {
-    number: 2,
     head: "Crea rosa",
   },
   {
-    number: 3,
+    number: 2,
     head: "Riepilogo",
   },
 ];
@@ -46,7 +46,6 @@ const CreateStepper = () => {
     setSurnameAdd('')
     setAddPlayerError(false)
   }
-
 
   useEffect(() => {
     getPlayers();
@@ -120,13 +119,11 @@ const CreateStepper = () => {
     setMyTeam(user.players);
     setSquadName(user.teamName);
     if (user.players) {
-      const myPlayersCost = user.players.reduce((accumulator, object) => {
-        return accumulator + object.value;
-      }, 0);
-      setCredits(credits - myPlayersCost);
+      // const myPlayersCost = user.players.reduce((accumulator, object) => {
+      //   return accumulator + object.value;
+      // }, 0);
+      setCredits(user.credits);
     }
-    
-    
   };
 
   const handleAddPlayer = () => {
@@ -174,9 +171,9 @@ const CreateStepper = () => {
         import.meta.env.VITE_API_URL + "/api/users/" + user.id,
         {
           players: myTeam,
-          teamName: squadName,
+          teamName: user.teamName,
           credits,
-          lineups: null, //modificare dopo prima giornata
+          lineups: user.lineups, //modificare dopo prima giornata
         },
         {
           headers: {
@@ -218,7 +215,7 @@ const CreateStepper = () => {
           ))}
         </div>
         <div className="stepper-content">
-          {activeStep == 1 && (
+          {/* {activeStep == 1 && (
             <div className="step-item active">
               <h3>Inserisci il nome della tua squadra</h3>
               <div className="form-floating mb-3">
@@ -233,8 +230,8 @@ const CreateStepper = () => {
                 <label htmlFor="squad-name">Nome squadra</label>
               </div>
             </div>
-          )}
-          {activeStep == 2 && (
+          )} */}
+          {activeStep == 1 && (
             <div className="step-item active">
               <h2 className="mb-5">Lista giocatori</h2>
               <div className="filter-wrapper">
@@ -354,13 +351,13 @@ const CreateStepper = () => {
                 ))}
             </div>
           )}
-          {activeStep == 3 && (
+          {activeStep == 2 && (
             <div className="step-item active">
               <h2 className="mb-5">Riepilogo</h2>
-              <h3>Nome Squadra</h3>
+              {/* <h3>Nome Squadra</h3>
               <p className="mb-5 my-team-name">
                 <strong>{squadName}</strong>
-              </p>
+              </p> */}
               <h3>Giocatori scelti</h3>
               {myTeam.map((player) => (
                 <div className="player-line selected" key={player.id}>
@@ -383,7 +380,7 @@ const CreateStepper = () => {
                 Indietro
               </button>
             )}
-            {activeStep == 2 && (
+            {activeStep == 1 && (
               <ul className="info-creation">
                 <li>
                   <CashCoin /> <strong>{credits}/400</strong>
@@ -402,7 +399,7 @@ const CreateStepper = () => {
                 Avanti
               </button>
             )}
-            {activeStep == 2 && (
+            {/* {activeStep == 2 && (
               <button
                 className="btn btn-primary next"
                 disabled={myTeam.length != 10}
@@ -410,13 +407,13 @@ const CreateStepper = () => {
               >
                 Avanti
               </button>
-            )}
-            {activeStep == 3 && (
+            )} */}
+            {activeStep == 2 && (
               <button
                 className="btn btn-primary next"
                 onClick={() => handleCreateTeam()}
               >
-                Crea squadra
+                Modifica squadra
               </button>
             )}
           </div>

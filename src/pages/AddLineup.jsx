@@ -160,7 +160,15 @@ function AddLineup() {
   useEffect(() => {
     if (!nextStage) return
     if (user && user.lineups) {
-      setPlayers(user.lineups[nextStage].formation);
+      const next = user && user.lineups[nextStage] && user.lineups[nextStage]?.formation;
+      const plr = user && user.players;
+      let newPlayers = next.filter(o1 => !plr.some(o2 => o1.id === o2.id));
+      if (newPlayers.length > 0) {
+        setPlayers(user.players);
+      } else {
+        setPlayers(user.lineups[nextStage].formation);
+      }
+      
     } else if (user) {
       setPlayers(user.players);
     }
