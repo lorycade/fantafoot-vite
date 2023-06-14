@@ -35,6 +35,8 @@ function Lineups() {
     setUsers(response.data);
   };
 
+  console.log(nextStage);
+
   return (
     <div className="container-lg">
       <Box sx={{ display: "flex", justifyContent: "flex-end", p: "40px 0 0" }}>
@@ -56,42 +58,39 @@ function Lineups() {
             <MenuItem
               value={1}
               selected={nextStage === 1}
-              disabled={nextStage < 1}
             >
               Tappa 2
             </MenuItem>
             <MenuItem
               value={2}
               selected={nextStage === 2}
-              disabled={nextStage < 2}
             >
               Tappa 3
             </MenuItem>
             <MenuItem
               value={3}
               selected={nextStage === 3}
-              disabled={nextStage < 3}
             >
               Tappa 4
             </MenuItem>
             <MenuItem
               value={4}
               selected={nextStage === 4}
-              disabled={nextStage < 4}
+              disabled={true}
             >
               Tappa 5
             </MenuItem>
             <MenuItem
               value={5}
               selected={nextStage === 5}
-              disabled={nextStage < 5}
+              disabled={true}
             >
               Tappa 6
             </MenuItem>
             <MenuItem
               value={6}
               selected={nextStage === 6}
-              disabled={nextStage < 6}
+              disabled={true}
             >
               Tappa 7
             </MenuItem>

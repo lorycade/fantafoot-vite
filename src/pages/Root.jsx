@@ -46,6 +46,8 @@ function Root() {
     setNextStage(next[0])
   }
 
+  console.log(nextStage);
+
   return (
     <>
       <Header />
