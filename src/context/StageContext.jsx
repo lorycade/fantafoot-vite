@@ -25,7 +25,10 @@ export default ({ children }) => {
       const next = stages.filter(
         (item) => new Date() < new Date(item.start)
       );
-      setNextStage(next[0].id - 1)
+      const ordered = next.sort(function(a, b) { 
+        return a.id - b.id;
+      });
+      setNextStage(ordered[0].id)
     };
 
   
