@@ -326,7 +326,7 @@ function AddLineup() {
                     >
                       Seleziona ruolo
                     </option>
-                    {player.id > 10 && (
+                    {player.value < 72 && (
                       <option value="captain" selected={player.captain == true}>
                         Capitano
                       </option>
