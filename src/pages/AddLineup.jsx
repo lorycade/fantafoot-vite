@@ -166,7 +166,12 @@ function AddLineup() {
       if (newPlayers.length > 0) {
         setPlayers(user.players);
       } else {
-        setPlayers(user.lineups[nextStage].formation);
+        if (user.lineups[nextStage].formation.length === 0) {
+          setPlayers(user.players);
+        } else {
+          setPlayers(user.lineups[nextStage].formation);
+        }
+        
       }
       
     } else if (user) {
@@ -216,15 +221,26 @@ function AddLineup() {
       formation: players,
     };
 
-    let oldLineups;
-    if (user && user.lineups == null) {
-      let emptyArr = [];
-      emptyArr.push(lineup);
-      oldLineups = emptyArr;
+    if (user.lineups[nextStage].formation.length === 0) {
+      user.lineups[3] = lineup
+      user.lineups[4] = lineup
+      user.lineups[5] = lineup
+      user.lineups[6] = lineup
     } else {
       user.lineups[nextStage] = lineup;
     }
 
+    // let oldLineups;
+    // if (user && user.lineups == null) {
+    //   let emptyArr = [];
+    //   emptyArr.push(lineup);
+    //   oldLineups = emptyArr;
+    // } else {
+    //   user.lineups[nextStage] = lineup;
+    // }
+
+    
+    
     axios
       .put(
         import.meta.env.VITE_API_URL + "/api/users/" + user.id,
@@ -240,7 +256,7 @@ function AddLineup() {
       .then((response) => {
         const newUser = {
           ...response.data,
-          lineups: oldLineups,
+          lineups: user.lineups,
           players: user.players,
         };
         setUser(newUser);

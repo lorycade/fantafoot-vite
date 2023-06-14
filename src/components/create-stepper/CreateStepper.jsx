@@ -166,6 +166,7 @@ const CreateStepper = () => {
   }
 
   const handleCreateTeam = async () => {
+    user.lineups[3] = {tappa: 4, formation: []}
     axios
       .put(
         import.meta.env.VITE_API_URL + "/api/users/" + user.id,

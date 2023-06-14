@@ -9,6 +9,7 @@ import {
 } from "@mui/icons-material";
 
 function LineupCard({ user, activeGame }) {
+  // console.log('card', user.lineups[3]);
   return (
     <div className="lineup-card">
       <div className="card-head">
@@ -17,10 +18,10 @@ function LineupCard({ user, activeGame }) {
           {user.name} {user.surname}
         </p>
       </div>
-      {user.lineups == null && 
+      {user.lineups == null || user.lineups[activeGame].formation.length === 0 && 
         <p className="no-lineup">Formazione non inserita</p>
       }
-      {user.lineups != null && 
+      {user.lineups != null && user.lineups[activeGame].formation.length > 0 && 
         <div className="lineup-wrapper">
           {user.lineups[activeGame].formation
             .filter((item) => item.captain == true)
