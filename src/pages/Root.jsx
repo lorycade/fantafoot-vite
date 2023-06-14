@@ -52,7 +52,7 @@ function Root() {
 
     console.log(next);
     
-    setNextStage(next[0])
+    setNextStage(ordered[0])
   }
 
   console.log(nextStage);
