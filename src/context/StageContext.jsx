@@ -28,7 +28,7 @@ export default ({ children }) => {
       const ordered = next.sort(function(a, b) { 
         return a.id - b.id;
       });
-      setNextStage(ordered[0].id)
+      setNextStage(ordered[0].id -1)
     };
 
   
