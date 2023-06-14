@@ -44,6 +44,12 @@ function Root() {
     console.log(stages);
     const next = stages.filter(item => new Date(item.start) > new Date())
 
+    const ordered = next.sort(function(a, b) { 
+      return a.id - b.id;
+    });
+
+    console.log('ordered', ordered);
+
     console.log(next);
     
     setNextStage(next[0])
