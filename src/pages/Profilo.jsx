@@ -104,7 +104,7 @@ function Profilo() {
               </div>
 
               <p>
-                Per creare/modificare il nome della squadra o la tua rosa,
+                Per modificare il nome della squadra o la tua rosa,
                 clicca qui sotto
               </p>
               <Link to="/crea-squadra">

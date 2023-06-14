@@ -52,44 +52,44 @@ function Lineups() {
             onChange={(e) => setGameFilter(e.target.value)}
             size="small"
           >
-            <MenuItem value={0} selected={nextStage === 0}>
+            <MenuItem value={0} selected={false}>
               Tappa 1
             </MenuItem>
             <MenuItem
               value={1}
-              selected={nextStage === 1}
+              selected={false}
             >
               Tappa 2
             </MenuItem>
             <MenuItem
               value={2}
-              selected={nextStage === 2}
+              selected={false}
             >
               Tappa 3
             </MenuItem>
             <MenuItem
               value={3}
-              selected={nextStage === 3}
+              selected={true}
             >
               Tappa 4
             </MenuItem>
             <MenuItem
               value={4}
-              selected={nextStage === 4}
+              selected={false}
               disabled={true}
             >
               Tappa 5
             </MenuItem>
             <MenuItem
               value={5}
-              selected={nextStage === 5}
+              selected={false}
               disabled={true}
             >
               Tappa 6
             </MenuItem>
             <MenuItem
               value={6}
-              selected={nextStage === 6}
+              selected={false}
               disabled={true}
             >
               Tappa 7

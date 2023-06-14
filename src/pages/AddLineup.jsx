@@ -222,13 +222,15 @@ function AddLineup() {
     };
 
     if (user.lineups[nextStage].formation.length === 0) {
-      user.lineups[3] = lineup
-      user.lineups[4] = lineup
-      user.lineups[5] = lineup
-      user.lineups[6] = lineup
+      user.lineups[3] = lineup;
+      user.lineups[4] = lineup;
+      user.lineups[5] = lineup;
+      user.lineups[6] = lineup;
     } else {
       user.lineups[nextStage] = lineup;
     }
+
+    console.log(user.lineups);
 
     // let oldLineups;
     // if (user && user.lineups == null) {
