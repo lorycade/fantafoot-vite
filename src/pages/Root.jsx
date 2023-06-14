@@ -41,7 +41,10 @@ function Root() {
 
   const checkNextStage = () => {
     if (!stages.length > 0) return
+    console.log(stages);
     const next = stages.filter(item => new Date(item.start) > new Date())
+
+    console.log(next);
     
     setNextStage(next[0])
   }
