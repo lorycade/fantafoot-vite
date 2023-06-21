@@ -1,11 +1,14 @@
 import { useState, useContext, useEffect } from "react";
-// import { UserContext } from "../context/UserContext";
+import { UserContext } from "../context/UserContext";
 import axios from "axios";
+import TextField from '@mui/material/TextField'
+import Button from '@mui/material/Button'
+import { Box } from "@mui/material";
 
 function Listone() {
   const [playerList, setPlayerlist] = useState([]);
-
-  // const { user } = useContext(UserContext);
+  const { user } = useContext(UserContext);
+  const jwt = localStorage.getItem("jwt");
 
   useEffect(() => {
     getPlayers();
@@ -15,6 +18,37 @@ function Listone() {
     const response = await axios.get(import.meta.env.VITE_API_URL + "/api/players?sort=value:desc");
     setPlayerlist(response.data.data);
   };
+
+  const updateResult = (player, e) => {
+    const father = e.target.closest('.box-input');
+    const inputValue = father.querySelector('input').value;
+
+    const resultObj = {
+      result: !!Number(inputValue) ? Number(inputValue) : null
+    }
+    const newResults = [...player.results, resultObj]
+    
+    axios
+      .put(
+        import.meta.env.VITE_API_URL + "/api/players/" + player.id,
+        {
+          data: {
+            results: newResults,
+          }
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${jwt}`,
+          },
+        }
+      )
+      .then((response) => {
+        console.log("response", response);
+      })
+      .catch((error) => {
+        console.log("An error occurred:", error.response);
+      });
+  }
 
   return (
     <div className="container-lg">
@@ -47,6 +81,14 @@ function Listone() {
           <div className="line body" key={player.id}>
             <div className="cell">{player.name} {player.surname}</div>
             <div className="cell">{player.value}</div>
+            {user && user.role && user.role.type == "admin" && 
+              <Box className="box-input" display={'flex'} alignItems={'center'} gap={'15px'} p={'10px 20px'}>
+              <TextField sx={{margin: '10px'}} inputProps={{ type: 'number', inputMode: 'numeric', pattern: '[0-9]*' }} />
+              <Button variant="contained" color="primary" p={'5px'} onClick={(e) => updateResult(player, e)}>
+                Aggiorna
+              </Button>
+              </Box>
+            }
           </div>
         ))}
       </div>
