@@ -70,7 +70,7 @@ function Classifica() {
 
       const best = playerResults.find(
         (item) =>
-          item.results[tappaId].result === coupleBestResult &&
+          item.results[tappaId]?.result === coupleBestResult &&
           item.couple === true
       )
 
