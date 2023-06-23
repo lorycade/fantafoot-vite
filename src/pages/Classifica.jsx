@@ -37,8 +37,7 @@ function Classifica() {
       }
 
       let captainResult = Number(
-        playerResults.find((item) => item.captain == true).results[tappaId]
-          .result
+        playerResults.find((item) => item.captain == true).results[tappaId]?.result
       );
 
       const singlePlayers = playerResults.filter(
@@ -47,11 +46,11 @@ function Classifica() {
       );
 
       const singlesResults = singlePlayers.reduce((accumulator, object) => {
-        return accumulator + Number(object.results[tappaId].result);
+        return accumulator + Number(object.results[tappaId]?.result);
       }, 0);
 
       const singleBestResult = Math.min(
-        ...singlePlayers.map((item) => item.results[tappaId].result)
+        ...singlePlayers.map((item) => item.results[tappaId]?.result)
       );
 
       if (captainResult <= singleBestResult) {
@@ -65,7 +64,7 @@ function Classifica() {
       );
 
       var coupleBestResult = Math.min(
-        ...couplePlayers.map((item) => item.results[tappaId].result)
+        ...couplePlayers.map((item) => item.results[tappaId]?.result)
       );
 
       const best = playerResults.find(
