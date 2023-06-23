@@ -28,6 +28,8 @@ function Classifica() {
     userPlayers.forEach((user) => {
       if (!user.lineups) return;
 
+      console.log('formazioni', user.lineups[tappaId].formation);
+
       let playerResults;
       if (user.lineups[tappaId]) {
         playerResults = user.lineups[tappaId].formation.map((obj) => {
@@ -37,7 +39,7 @@ function Classifica() {
       }
 
       let captainResult = Number(
-        playerResults.find((item) => item.captain == true).results[tappaId]?.result
+        playerResults.find((item) => item.captain == true)?.results[tappaId]?.result
       );
 
       const singlePlayers = playerResults.filter(
