@@ -33,7 +33,7 @@ function Classifica() {
       let playerResults;
       if (user.lineups[tappaId]) {
         playerResults = user.lineups[tappaId].formation.map((obj) => {
-          obj.results = user.players.find(({ id }) => id === obj.id).results;
+          obj.results = user.players.find(({ id }) => id === obj.id)?.results;
           return obj;
         });
       }
