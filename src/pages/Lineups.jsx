@@ -69,14 +69,13 @@ function Lineups() {
             </MenuItem>
             <MenuItem
               value={3}
-              selected={true}
+              selected={false}
             >
               Tappa 4
             </MenuItem>
             <MenuItem
               value={4}
-              selected={false}
-              disabled={true}
+              selected={true}
             >
               Tappa 5
             </MenuItem>
