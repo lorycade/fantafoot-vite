@@ -83,6 +83,9 @@ function Listone() {
             <div className="cell">{player.value}</div>
             {user && user.role && user.role.type == "admin" && 
               <Box className="box-input" display={'flex'} alignItems={'center'} gap={'15px'} p={'10px 20px'}>
+              {player.results[4] && player.results[4].result === null && 
+                <Typography>null</Typography>
+              }
               <Typography>{player.results[4] && player.results[4].result}</Typography>
               <TextField sx={{margin: '10px'}} inputProps={{ type: 'number', inputMode: 'numeric', pattern: '[0-9]*' }} />
               <Button variant="contained" color="primary" p={'5px'} onClick={(e) => updateResult(player, e)}>
