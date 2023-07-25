@@ -351,21 +351,21 @@ function Classifica() {
           </button>
           <button
             className={sortType == 4 ? "active" : ""}
-            onClick={() => handleLeaderboard(1)}
+            onClick={() => handleLeaderboard(4)}
           >
             Tappa 5
           </button>
           <button
             disabled
             className={sortType == 5 ? "active" : ""}
-            onClick={() => handleLeaderboard(1)}
+            onClick={() => handleLeaderboard(5)}
           >
             Tappa 6
           </button>
           <button
             disabled
             className={sortType == 6 ? "active" : ""}
-            onClick={() => handleLeaderboard(1)}
+            onClick={() => handleLeaderboard(6)}
           >
             Tappa 7
           </button>
