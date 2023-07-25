@@ -28,7 +28,7 @@ function Classifica() {
     userPlayers.forEach((user) => {
       if (!user.lineups) return;
 
-      console.log('formazioni', user.lineups[tappaId].formation);
+      console.log('formazioni',user.surname, user.lineups[tappaId].formation);
 
       let playerResults;
       if (user.lineups[tappaId]) {
