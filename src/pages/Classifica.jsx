@@ -48,7 +48,8 @@ function Classifica() {
       );
 
       const singlesResults = singlePlayers.reduce((accumulator, object) => {
-        return accumulator + Number(object.results[tappaId]?.result);
+        console.log('object.results', object);
+        return accumulator + Number(object.results && object.results[tappaId]?.result);
       }, 0);
 
       const singleBestResult = Math.min(
