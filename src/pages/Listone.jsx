@@ -3,7 +3,7 @@ import { UserContext } from "../context/UserContext";
 import axios from "axios";
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 
 function Listone() {
   const [playerList, setPlayerlist] = useState([]);
@@ -43,7 +43,7 @@ function Listone() {
         }
       )
       .then((response) => {
-        console.log("response", response);
+        console.log(response.data.data.surname, response.data.data.results[4].result);
       })
       .catch((error) => {
         console.log("An error occurred:", error.response);
@@ -83,6 +83,7 @@ function Listone() {
             <div className="cell">{player.value}</div>
             {user && user.role && user.role.type == "admin" && 
               <Box className="box-input" display={'flex'} alignItems={'center'} gap={'15px'} p={'10px 20px'}>
+              <Typography>{player.results[4] && player.results[4].result}</Typography>
               <TextField sx={{margin: '10px'}} inputProps={{ type: 'number', inputMode: 'numeric', pattern: '[0-9]*' }} />
               <Button variant="contained" color="primary" p={'5px'} onClick={(e) => updateResult(player, e)}>
                 Aggiorna
