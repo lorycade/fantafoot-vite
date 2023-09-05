@@ -53,7 +53,7 @@ function Root() {
   return (
     <>
       <Header />
-      {/* {user && !!nextStage && <InsertTeamBanner nextStage={nextStage} />} */}
+      {user && !!nextStage && <InsertTeamBanner nextStage={nextStage} />}
       <Outlet />
     </>
   );
