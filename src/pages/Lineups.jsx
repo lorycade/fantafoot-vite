@@ -18,7 +18,7 @@ function Lineups() {
   const [users, setUsers] = useState([]);
   const { nextStage } = useContext(StageContext);
   const { user } = useContext(UserContext);
-  const [gameFilter, setGameFilter] = useState(2);
+  const [gameFilter, setGameFilter] = useState(5);
   const [checked, setChecked] = useState(false);
 
   useEffect(() => {
@@ -75,14 +75,13 @@ function Lineups() {
             </MenuItem>
             <MenuItem
               value={4}
-              selected={true}
+              selected={false}
             >
               Tappa 5
             </MenuItem>
             <MenuItem
               value={5}
-              selected={false}
-              disabled={true}
+              selected={true}
             >
               Tappa 6
             </MenuItem>
