@@ -12,6 +12,8 @@ function Classifica() {
   const jwt = localStorage.getItem("jwt");
   const { nextStage } = useContext(StageContext);
 
+  console.log('nextstage', nextStage);
+
   useEffect(() => {
     getUserPlayers();
   }, []);
@@ -357,7 +359,6 @@ function Classifica() {
             Tappa 5
           </button>
           <button
-            disabled
             className={sortType == 5 ? "active" : ""}
             onClick={() => handleLeaderboard(5)}
           >
