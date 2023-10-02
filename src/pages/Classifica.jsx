@@ -10,9 +10,6 @@ function Classifica() {
   const { user } = useContext(UserContext);
   const [sortType, setSortType] = useState(null);
   const jwt = localStorage.getItem("jwt");
-  const { nextStage } = useContext(StageContext);
-
-  console.log('nextstage', nextStage);
 
   useEffect(() => {
     getUserPlayers();
@@ -487,11 +484,11 @@ function Classifica() {
         </div>
         {user && user.role && user.role.type == "admin" && (
           <>
-            <button onClick={() => getAllPlayers(nextStage - 1)}>
+            <button onClick={() => getAllPlayers(6)}>
               Aggiorna punteggi giocatori
             </button>
-            <button onClick={() => calculatePoints(nextStage - 1)}>
-              Calcola giornata {nextStage}
+            <button onClick={() => calculatePoints(6)}>
+              Calcola giornata 7
             </button>
           </>
         )}
