@@ -365,7 +365,6 @@ function Classifica() {
             Tappa 6
           </button>
           <button
-            disabled
             className={sortType == 6 ? "active" : ""}
             onClick={() => handleLeaderboard(6)}
           >
